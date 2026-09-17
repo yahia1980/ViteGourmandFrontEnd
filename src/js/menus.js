@@ -6,7 +6,7 @@ const menus = [{
     description:"Bœuf mariné au soja & gingembre, légumes croquants au wok, riz jasmin parfumé.",
     personnesMin:6,
     prix:147,
-    image:"images/img2.png",
+    image:"/public/images/img2.png",
     theme:"pâques",
     regime:"classique"
 },
@@ -16,7 +16,7 @@ const menus = [{
     description:"Saumon fumé, avocat, pamplemousse rose et jeunes pousses, vinaigrette au citron vert & aneth.",
     personnesMin:5,
     prix:66,
-    image:"images/végitarien.png",
+    image:"/public/images/végitarien.png",
     theme:"classique",
     regime:"végitarien"
 },
@@ -26,7 +26,7 @@ const menus = [{
     description:"Poulet fermier rôti au thym frais, jus corsé et pommes grenailles confites.",
     personnesMin:4,
     prix:85,
-    image:"images/img3.png",
+    image:"/public/images/img3.png",
     theme:"Noël",
     regime:"classique"
 }]
