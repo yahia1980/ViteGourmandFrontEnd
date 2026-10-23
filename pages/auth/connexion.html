@@ -1,0 +1,40 @@
+<div class="formConnexion">
+  <div class="imageConnexion">
+    <h2 class="bigTitleConnexion">Connexion</h2>
+    <img
+      src="/images/imagesBanniere/chef-traiteur.jpg"
+      alt="Un plat préparé par Vite&Gourmand"
+    />
+  </div>
+  <div class="connexionGrid">
+    <form>
+      <div class="formConnexionMail">
+        <label for="email"><i class="fa-solid fa-at"></i> Email </label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="passwordFormConnexion">
+        <label for="password"
+          ><i class="fa-solid fa-lock"></i> Mot de passe
+        </label>
+        <input type="password" id="password" name="mdp" required />
+        <div class="role">
+          <label for="role"
+            ><i class="fa-solid fa-person-military-to-person"></i>Rôle</label
+          >
+          <select name="role" id="role">
+            <option value="utilisateur">Client</option>
+            <option value="employe">Employé</option>
+            <option value="admin">Administrateur</option>
+          </select>
+        </div>
+      </div>
+      <div class="btnConnexion">
+        <button type="submit" class="btnCon connexionBtn">Connexion</button>
+        <div class="lienConnexion">
+          <a href="/mdp_oublie">Mot de passe oublié</a>
+          <a href="/inscription">S'inscrire</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

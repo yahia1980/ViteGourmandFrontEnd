@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+:root {
+    --bleue: #333398;
+    --white: #fff;
+    --black: #000;
+
+    --heading: "DM Serif Display", serif;
+    --content: "Outfit", sans-serif;
+
+    --transition: 0.3s ease;
+}
+
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style-type: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    font-size: 14px;
+}
+
+h1,
+h2,
+h3, h4,
+h5,
+h6 {
+    font-family: var(--heading);
+}
+
+body {
+    max-width: 100%;
+    min-height: 100vh;
+    background-color: var(--bleue);
+    font-family: var(--content);
+}
+
+.container {
+    background-color: var(--white);
+    margin: 20px;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.colorBlue {
+    color: var(--bleue);
+}
+
+

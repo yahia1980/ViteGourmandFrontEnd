@@ -1,0 +1,93 @@
+
+/* ==========================================================================
+    Mobile 
+   ========================================================================== */
+
+.formMdpOublie {
+    width: 95%;
+    margin: 0 auto;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--bleue);
+    box-shadow: 3px 3px 20px var(--bleue);
+}
+.formMdpOublieMail,
+.passwordFormMdpOublie {
+    width: 80%;
+    margin: 20px auto;
+}
+
+.formMdpOublie label {
+    padding-left: 30px;
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+
+
+.btnMdpOublie,
+.lienCompte {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   margin-block: 15px;
+}
+.lienCompte a {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--bleue);
+    transition: opacity var(--transition);
+}
+.lienCompte a:hover{
+    opacity: 0.7;
+    text-decoration: underline;
+    text-underline-offset: 10px;
+}
+.btnStyleCh {
+    width: 250px;
+    box-sizing: border-box;
+    background-color: var(--bleue);
+    padding: 10px 15px;
+    color: var(--white);
+    font-weight: 900;
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.btnStyleCh:hover {
+    background-color: var(--white);
+    color: var(--bleue);
+}
+
+.fa-solid {
+    font-size: 1.2rem;
+    color: var(--bleue);
+    margin-left: 15px;
+}
+
+/* ==========================================================================
+   À partir de 768px
+   ========================================================================== */
+
+
+@media (min-width: 768px) {
+.formMdpOublie {
+    width: 80%;
+    height: 500px;
+
+}
+.formMdpOublieMail,
+.passwordFormMdpOublie {
+    width: 50%;
+    margin: 20px auto;
+}
+.btnMdpOublie,
+.lienCompte {
+   margin-block: 35px;
+}
+
+}

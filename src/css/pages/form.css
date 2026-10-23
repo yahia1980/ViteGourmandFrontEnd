@@ -1,0 +1,184 @@
+/*=============================
+Mobile
+===============================*/
+/* formulaire */
+
+.containerForm {
+    height: 680px;
+    display: grid;
+    width: 95%;
+    margin: 0 auto;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas:
+        "img img"
+        "form form";
+}
+
+.imageForm {
+    grid-area: img;
+}
+
+.formContainer {
+    grid-area: form;
+}
+
+.imageForm img {
+    display: block;
+    width: 100%;
+    margin: 35px auto;
+    height: 200px;
+    object-fit: cover;
+    filter: brightness(0.5);
+    box-shadow: 3px 3px 10px var(--black);
+    position: relative;
+}
+.bigTitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: var(--white);
+    z-index: 10;
+    text-align: center;
+}
+
+.titleForm {
+    padding-block: 20px;
+    font-size: 1.2rem;
+    color: var(--bleue);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.formGrid {
+    width: 90%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+}
+
+label {
+    display: block;
+    color: var(--bleue);
+    padding-bottom: 5px;
+    font-weight: 500;
+}
+
+input,
+textarea {
+    width: 100%;
+    color: rgba(18, 18, 21, 0.573);
+    font-size: 1rem;
+    border-bottom: 1px solid var(--bleue);
+    padding: 10px 0;
+    font-weight: 700;
+}
+
+input[type="submit"] {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+input[type="submit"]:hover {
+    letter-spacing: 1px;
+    font-style: italic;
+}
+
+textarea {
+    resize: none;
+}
+
+form .btnCon {
+    width: 300px;
+    padding: 10px 0;
+    background-color: var(--bleue);
+    border-radius: 8px;
+    color: var(--white);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition:all var(--transition);
+    margin: 20px auto;
+}
+
+form .btnCon:hover {
+    background-color: rgba(60, 207, 73, 0.836);
+    color: var(--bleue);
+}
+
+
+/* ==========================================================================
+   2. TABLETTES (À partir de 768px)
+   ========================================================================== */
+@media (min-width: 768px) {
+
+    .containerForm {
+        width: 80%;
+        margin-inline: auto;
+        margin-top: 100px;
+        height: 600px;
+        grid-template-areas:
+            "form img"
+            "form img";
+    }
+
+    .imageForm img {
+        width: 70%;
+        height: 83%;
+    }
+
+
+    .formGrid {
+        width: 100%;
+        height: 500px;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        grid-template-areas:
+            "prenom nom"
+            "mail mail"
+            "txt txt"
+            "btn btn";
+    }
+
+    .prenomForm {
+        grid-area: prenom;
+    }
+
+    .nomForm {
+        grid-area: nom;
+    }
+
+    .mailForm {
+        grid-area: mail;
+        grid-column: 1 / span 2;
+    }
+
+    .areaForm {
+        grid-area: txt;
+        grid-column: 1 / span 2;
+    }
+    .prenomForm, .nomForm,.mailForm,.areaForm {
+        width: 95%;
+        margin: 0 auto;
+    }
+
+    .btnForm {
+        grid-area: btn;
+        grid-column: 1 / span 2;
+        margin-inline: auto;
+    }
+    label {
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+    .titleForm {
+    margin-top: 35px;
+    font-size: 2rem;
+   
+}
+  
+}

@@ -1,0 +1,169 @@
+/* =========================================
+   MOBILES
+========================================= */
+
+@media (max-width: 480px) {
+    main.pageLegale {
+        width: calc(100% - 20px);
+        margin: 15px auto;
+        padding: 22px 18px;
+        border-radius: 12px;
+        line-height: 1.7;
+    }
+
+    .pageLegale h1 {
+        padding-bottom: 16px;
+        font-size: 1.8rem;
+    }
+
+    .pageLegale > p:first-of-type {
+        margin: 20px 0 28px;
+        font-size: 0.98rem;
+    }
+
+    .pageLegale section {
+        margin-top: 25px;
+        padding-top: 20px;
+    }
+
+    .pageLegale section h2 {
+        font-size: 1.12rem;
+    }
+
+    .pageLegale section h3 {
+        font-size: 1rem;
+    }
+
+    .pageLegale section p,
+    .pageLegale li {
+        font-size: 0.93rem;
+    }
+}
+/* =========================================
+   MENTIONS LÉGALES ET CGV
+   Vite&Gourmand
+========================================= */
+
+.pageLegale {
+    width: min(100% - 40px, 1000px);
+    margin: 40px auto;
+    padding: 45px 55px;
+    background-color: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(36, 70, 56, 0.06);
+    color: var(--text);
+    line-height: 1.8;
+}
+
+
+.pageLegale h1 {
+    margin: 0 0 25px;
+    padding-bottom: 20px;
+    color: var(--bleue);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 1.25;
+    border-bottom: 3px solid var(--bleue);
+}
+
+
+
+.pageLegale > p:first-of-type {
+    margin: 25px 0 35px;
+    font-size: 1.05rem;
+}
+
+
+
+.pageLegale section {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid #e2e6de;
+}
+
+.pageLegale section h2 {
+    margin: 0 0 18px;
+    color: var(--bleue);
+    font-size: 1.35rem;
+    line-height: 1.4;
+}
+
+
+.pageLegale section h3 {
+    margin: 25px 0 10px;
+    color: var(--bleue);
+    font-size: 1.08rem;
+}
+
+
+
+.pageLegale section p {
+    margin: 10px 0;
+    font-size: 0.98rem;
+    overflow-wrap: anywhere;
+}
+
+
+
+.pageLegale strong {
+    font-weight: 700;
+}
+
+
+
+.pageLegale ul {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+.pageLegale li {
+    margin: 8px 0;
+    padding-left: 5px;
+}
+
+.pageLegale li::marker {
+    color: var(--bleue);
+}
+
+
+
+.pageLegale a {
+    overflow-wrap: anywhere;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+}
+
+.pageLegale a:hover {
+    color: var(--bleue);
+}
+
+
+
+.pageLegale > p:last-child {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e6de;
+    font-size: 0.85rem;
+}
+
+/* =========================================
+   TABLETTES
+========================================= */
+
+@media (max-width: 768px) {
+    .pageLegale {
+        width: calc(100% - 30px);
+        margin: 25px auto;
+        padding: 30px;
+    }
+
+    .pageLegale section {
+        margin-top: 28px;
+        padding-top: 20px;
+    }
+
+    .pageLegale section h2 {
+        font-size: 1.22rem;
+    }
+}
+
+

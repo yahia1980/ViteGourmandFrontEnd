@@ -1,0 +1,120 @@
+
+/* ==========================================================================
+    Mobile 
+   ========================================================================== */
+
+.inscriptionForm {
+    width: 95%;
+    margin: 0 auto;
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.inscriptionGrid {
+    width: 90%;
+    margin-inline: auto;
+    order: 2;
+}
+
+
+.imageInscription {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 200px;
+    position: relative;
+    order: 1;
+}
+
+.imageInscription img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.4);
+}
+
+.bigTitleInscription {
+    position: absolute;
+    text-align: center;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--white);
+    font-size: 2rem;
+}
+
+
+.inscriptionGrid label {
+    margin-top: 10px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+
+.InscriptionEnvoi {
+    margin-block: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.btnStyleCom {
+    width: 200px;
+    box-sizing: border-box;
+    background-color: var(--bleue);
+    padding: 10px 20px;
+    color: var(--white);
+    font-weight: 900;
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.btnStyleCom:hover {
+    background-color: var(--white);
+    color: var(--bleue);
+}
+
+.fa-solid {
+    font-size: 1.2rem;
+    color: var(--bleue);
+    margin-right: 3px;
+}
+
+/* ==========================================================================
+   À partir de 768px
+   ========================================================================== */
+
+
+@media (min-width: 768px) {
+
+
+   .inscriptionGrid form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .prenomForm,
+    .nomForm,
+    .formInscriptionMail,
+    .telForm,
+    .postaleForm,
+    .passwordForm,
+    .confirmPasswordForm {
+        flex: 1 1 calc(50% - 20px);
+        min-width: 0;
+    }
+
+    .InscriptionEnvoi {
+        flex: 1 1 100%;
+        gap: 15px;
+    }
+}

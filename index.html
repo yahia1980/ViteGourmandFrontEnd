@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vite&Gourmand</title>
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/header.css">
+    <link rel="stylesheet" href="/src/css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css"
+        integrity="sha512-x9WwyMYBnlXMNQ6kQ/Lyzu1NqIhLQKL5Oq6xByfXuRj7s9CskyCbLv/1IjqzJmXwFXWr0ov6jBV7Qbc0hh9nHg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="containerHeader">
+                <div class="logo">
+                    Vite<span class="logo_vG">&</span><br>Gourmand
+                </div>
+                <button type="button" id="hamburger" class="hamburger" aria-label="Ouvrir le menu">
+                    <span class="topLine"></span>
+                    <span class="mediumLine"></span>
+                    <span class="bottomLine"></span>
+                </button>
+            </div>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li>
+                        <a href="/">Accueil</a>
+                    </li>
+                    <li>
+                        <a href="/menus">Menus</a>
+                    </li>
+                    <li>
+                        <a href="/contact">Contact</a>
+                    </li>
+                    <li>
+                        <a href="/reserver">Réservation</a>
+                    </li>
+                    <li>
+                        <a href="/connexion">Connexion</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <h1>Service traiteur</h1>
+        <main id="main-page"></main>
+        <footer>
+            <div class="containerFooter full_width">
+                <div class="horaire center flexColumn">
+                    <h4>Horaires</h4>
+                    <p>Du Lundi au Dimanche.</p>
+                    <p>horaires libres</p>
+                </div>
+                <div class="information center flexColumn">
+                    <h4>Informations</h4>
+                    <a href="#">Mentions légales</a>
+                    <a href="#">CGV</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+     <script type="module" src="/Router/router.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+.containerFooter {
+display: flex;
+justify-content: space-around;
+align-items: center;
+min-height: 150px;
+margin-top: 105px;
+border-top: 1px solid var(--bleue);
+box-shadow: 0 0 3px var(--black);
+}
+
+.horaire,
+.information { gap: 10px; }
+.horaire h4,
+.information h4 { font-size: 1.2rem; }
+.horaire p,
+.information p,
+.information a { color: var(--bleue); }
+
+@media (max-width: 600px) {
+.containerFooter { flex-direction: column; gap: 24px; padding: 24px 12px; text-align: center; }
+.horaire h4,
+.information h4 { font-size: 1rem; }
+.horaire p,
+.information p,
+.information a { font-size: 0.8rem; }
+}

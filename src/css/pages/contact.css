@@ -1,0 +1,108 @@
+/* ==========================================================================
+   PAGE CONTACT (Base Mobile)
+   ========================================================================== */
+
+.contactForm {
+    width: 95%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    grid-template-areas:
+        "img"
+        "form"
+        "pp";
+}
+
+/* Zone Image et Titre */
+.imageFormContact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 200px;
+    position: relative;
+    grid-area: img;
+}
+
+.imageFormContact img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.4);
+}
+
+/* Conteneur Formulaire */
+.formContact {
+    grid-area: form;
+    width: 100%;
+}
+
+/* Zone Coordonnées */
+.coordContact {
+    grid-area: pp;
+    width: 100%;
+    color: var(--bleue);
+    margin-top: 15px;
+  
+}
+
+.coordContact a,
+.coordContact address {
+    padding-bottom: 5px;
+    font-family: var(--content);
+    font-size: 1.1rem;
+    color: var(--bleue);
+    font-weight: 400;
+    font-style: normal;
+}
+
+.coordContact p a {
+    display: inline-flex;
+    color: var(--bleue);
+    transition: opacity var(--transition);
+}
+
+.coordContact p a:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.fa-solid {
+    font-size: 1rem;
+    color: var(--bleue);
+    margin-right: 3px;
+}
+.btnContact {
+    margin: 15px auto;
+}
+/* ==========================================================================
+   MEDIA QUERIES - TABLETTES & DESKTOP (À partir de 768px)
+   ========================================================================== */
+
+@media (min-width: 768px) {
+    .contactForm {
+        width: 80%;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-areas:
+            "img form"
+            "pp pp";
+    }
+
+    .imageFormContact {
+        width: 100%;
+        min-height: 650px;
+    }
+    .contactGrid {
+        min-height: 500px;
+    }
+
+    .coordContact {
+        grid-area: pp;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        padding-top: 20px;
+    }
+}

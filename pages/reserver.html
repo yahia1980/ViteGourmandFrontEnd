@@ -1,0 +1,62 @@
+<div class="reserverForm">
+  <div class="reserverGrid">
+    <form>
+      <div class="prenomForm formrReserverPrenom">
+        <label for="prenom"> Prénom </label>
+        <input type="text" id="prenom" name="prenom" required />
+      </div>
+      <div class="nomForm formReserverNom">
+        <label for="nom"> Nom </label>
+        <input type="text" id="nom" name="nom" required />
+      </div>
+      <div class="formReserverAllergie">
+        <label for="allergie"> Allergies </label>
+        <input type="text" id="allergie" name="allergie" />
+      </div>
+      <div class="formNbrDeconvi">
+        <label for="nbr"> Nombre de convives habituel </label>
+        <input type="number" id="nbr" name="nbr" />
+      </div>
+      <div class="form-group">
+      <div class="form-group_1">
+        <label for="prestation">Type de prestation</label>
+        <select id="prestation" name="prestation" required>
+          <option value="">Choisir une prestation</option>
+          <option value="traiteur">Traiteur</option>
+          <option value="repas-livre">Repas livré</option>
+          <option value="evenement">Prestation événementielle</option>
+        </select>
+      </div>
+      <div class="form-group_2">
+        <label for="service">Service souhaité</label>
+        <select id="service" name="service" required>
+          <option value="">Choisir un service</option>
+          <option value="midi">Midi</option>
+          <option value="soir">Soir</option>
+          <option value="journee">Journée complète</option>
+        </select>
+      </div>
+
+      <div class="form-group_3">
+        <label for="materiel">Matériel nécessaire</label>
+        <select id="materiel" name="materiel" required>
+          <option value="">Choisir une option</option>
+          <option value="sans">Sans matériel</option>
+          <option value="avec">Avec matériel</option>
+        </select>
+      </div>
+      </div>
+      <div class="formReserverEnvoi">
+        <button type="submit" class="submitForm btnStyleCom">Reserver</button>
+        <button type="reset" class="restForm btnStyleCom">Annuler</button>
+      </div>
+    </form>
+</div>
+<div class="imageReserver">
+  <h2 class="bigTitleResever">Réserver</h2>
+  <img
+    src="/images/imagesBanniere/imageReserver.jpg"
+    alt="Un plat préparé par Vite&Gourmand"
+  />
+</div>
+</div>
