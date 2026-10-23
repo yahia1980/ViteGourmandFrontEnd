@@ -111,16 +111,16 @@ export const allRoutes = [
     new Route (
         "/mention-legale",
         "Mention legale",
-        "/pages/mention-legale.html",
+        "/pages/megale/mention-legale.html",
         "/src/js/main.js",
-        "/src/css/pages/commun_ml_cgv.css"
+        "/src/css/pages/commun-ml-cgv.css"
     ),
     new Route (
         "/cgv",
         "Conditions générales des ventes",
-        "/pages/cgv.html",
+        "/pages/megale/cgv.html",
         "/src/js/main.js",
-        "/src/css/pages/commun_ml_cgv.css"
+        "/src/css/pages/commun-ml-cgv.css"
     )
 
 
