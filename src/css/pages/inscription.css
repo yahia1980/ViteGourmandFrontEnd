@@ -57,6 +57,7 @@
 }
 
 
+
 .InscriptionEnvoi {
     margin-block: 25px;
     display: flex;
@@ -96,11 +97,13 @@
 @media (min-width: 768px) {
 
 
-   .inscriptionGrid form {
+   .inscriptionGrid form{
+    width: 100%;
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 50px;
     }
+    
 
     .prenomForm,
     .nomForm,
@@ -108,13 +111,17 @@
     .telForm,
     .postaleForm,
     .passwordForm,
-    .confirmPasswordForm {
-        flex: 1 1 calc(50% - 20px);
+    .confirmPasswordForm,
+    .addressForm,
+    .villeForm {
+        flex: 0 0 calc((100% - 100px)/3);
         min-width: 0;
+        margin-block: 10px;
     }
 
     .InscriptionEnvoi {
-        flex: 1 1 100%;
+        flex: 0 0 100%;
+         display: flex;
         gap: 15px;
     }
 }

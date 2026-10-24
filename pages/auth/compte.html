@@ -1,44 +1,183 @@
 
 <div class="monCompte">
-    <h1>Mon compte</h1>
+ 
 
-    <section>
-        <h2>Bienvenue dans votre espace personnel !</h2>
-        <p>Bonjour <span id="nomUtilisateur">Utilisateur</span>, bienvenue chez Vite&Gourmand.</p>
-        <p>Retrouvez ici toutes les informations concernant votre compte.</p>
+    <!-- ==========================
+         BANDEAU DE BIENVENUE
+    =========================== -->
+    <section class="compteBienvenue">
+
+        <div class="compteBienvenueContenu">
+
+            <span class="compteBienvenueLabel">
+                <i class="fa-solid fa-user-circle"></i>
+                MON ESPACE PERSONNEL
+            </span>
+
+            <h1>
+                Bonjour,
+                <span id="nomUtilisateur">Utilisateur</span> !
+            </h1>
+
+            <p>
+                Bienvenue dans votre espace Vite & Gourmand.
+                Retrouvez vos commandes, gérez vos informations
+                et profitez pleinement de nos services.
+            </p>
+
+            <a href="/menus" class="compteBienvenueBtn">
+                <i class="fa-solid fa-utensils"></i>
+                Découvrir nos menus
+            </a>
+
+        </div>
+
     </section>
 
-    <section>
-        <h2>Mon tableau de bord</h2>
+    <!-- ==========================
+         TABLEAU DE BORD
+    =========================== -->
+    <section class="compteTableauBord">
 
-        <div>
-            <h3>Mes commandes</h3>
-            <p>Consultez vos commandes et suivez leur statut.</p>
-            <a href="mes-commandes.html">Voir mes commandes</a>
+        <div class="compteTitreSection">
+            <span class="compteSousTitre">
+                VITE & GOURMAND
+            </span>
+
+            <h2>Mon tableau de bord</h2>
+
+            <p>
+                Tous vos services accessibles en quelques clics.
+            </p>
         </div>
 
-        <div>
-            <h3>Mes réservations</h3>
-            <p>Consultez vos réservations et leurs détails.</p>
-            <a href="mes-reservations.html">Voir mes réservations</a>
+        <div class="compteGrid">
+
+            <!-- MES COMMANDES -->
+            <article class="compteCard">
+
+                <div class="compteCardIcon">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+
+                <div class="compteCardContenu">
+                    <h3>Mes commandes</h3>
+
+                    <p>
+                        Retrouvez vos commandes,
+                        consultez leurs détails et
+                        suivez leur statut.
+                    </p>
+                </div>
+
+                <a href="/mes-commandes" class="compteCardLien">
+                    Voir mes commandes
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+            <!-- MES RÉSERVATIONS -->
+            <article class="compteCard">
+
+                <div class="compteCardIcon">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+
+                <div class="compteCardContenu">
+                    <h3>Mes réservations</h3>
+
+                    <p>
+                        Consultez vos réservations
+                        et retrouvez toutes les
+                        informations de vos événements.
+                    </p>
+                </div>
+
+                <a href="/mes-reservations" class="compteCardLien">
+                    Voir mes réservations
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+            <!-- INFORMATIONS PERSONNELLES -->
+            <article class="compteCard">
+
+                <div class="compteCardIcon">
+                    <i class="fa-solid fa-user-pen"></i>
+                </div>
+
+                <div class="compteCardContenu">
+                    <h3>Mes informations</h3>
+
+                    <p>
+                        Consultez et mettez à jour
+                        vos coordonnées et vos
+                        informations personnelles.
+                    </p>
+                </div>
+
+                <a href="/modifier-profil" class="compteCardLien">
+                    Modifier mon profil
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+            <!-- SÉCURITÉ -->
+            <article class="compteCard">
+
+                <div class="compteCardIcon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div class="compteCardContenu">
+                    <h3>Sécurité du compte</h3>
+
+                    <p>
+                        Protégez votre compte et
+                        modifiez votre mot de passe
+                        en toute sécurité.
+                    </p>
+                </div>
+
+                <a href="/mdp_oublie" class="compteCardLien">
+                    Changer mon mot de passe
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
         </div>
 
-        <div>
-            <h3>Mes informations personnelles</h3>
-            <p>Consultez ou modifiez vos informations personnelles.</p>
-            <a href="modifier-profil.html">Modifier mes informations</a>
-        </div>
-
-        <div>
-            <h3>Sécurité</h3>
-            <p>Modifiez le mot de passe de votre compte.</p>
-            <a href="changer-mot-de-passe.html">Changer mon mot de passe</a>
-        </div>
     </section>
 
-    <section>
-        <h2>Besoin d'aide ?</h2>
-        <p>Notre équipe est à votre disposition pour toute question concernant vos commandes ou vos réservations.</p>
-        <a href="contact.html">Nous contacter</a>
+    <!-- ==========================
+         ASSISTANCE CLIENT
+    =========================== -->
+    <section class="compteAssistance">
+
+        <div class="compteAssistanceIcon">
+            <i class="fa-solid fa-headset"></i>
+        </div>
+
+        <div class="compteAssistanceContenu">
+
+            <h2>Une question ? Nous sommes là pour vous.</h2>
+
+            <p>
+                Notre équipe vous accompagne pour
+                toutes vos questions concernant
+                vos commandes et nos prestations.
+            </p>
+
+        </div>
+
+        <a href="/contact" class="compteAssistanceLien">
+            Nous contacter
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
     </section>
 </div>

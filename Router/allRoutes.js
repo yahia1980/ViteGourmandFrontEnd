@@ -60,7 +60,8 @@ export const allRoutes = [
         "Connexion",
         "/pages/auth/connexion.html",
         ["/src/js/main.js",
-            "valide-form.js"],
+            "valide-form.js",
+        "/src/js/connexion.js"],
         ["/src/css/pages/connexion.css",
          "/src/css/pages/form.css"
         ]
@@ -69,7 +70,9 @@ export const allRoutes = [
         "/compte",
         "Compte",
         "/pages/auth/compte.html",
-        "/src/js/main.js",
+        ["/src/js/main.js",
+        "/src/js/compte.js"
+        ],
         ["/src/css/pages/compte.css",
          "/src/css/pages/form.css"
         ]

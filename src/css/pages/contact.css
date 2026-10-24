@@ -1,9 +1,10 @@
-/* ==========================================================================
-   PAGE CONTACT (Base Mobile)
-   ========================================================================== */
+/* =======================
+ Mobile
+========================== */
 
 .contactForm {
     width: 95%;
+    height: 800px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr;
@@ -14,7 +15,6 @@
         "pp";
 }
 
-/* Zone Image et Titre */
 .imageFormContact {
     display: flex;
     justify-content: center;
@@ -33,13 +33,21 @@
     filter: brightness(0.4);
 }
 
-/* Conteneur Formulaire */
 .formContact {
     grid-area: form;
     width: 100%;
 }
+.btnContact  .submitForm {
+    margin: 0;
+}
+.contactGrid label {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+.contactGrid input, .contactGrid textarea{
+    width: 90%;
+}
 
-/* Zone Coordonnées */
 .coordContact {
     grid-area: pp;
     width: 100%;
@@ -50,7 +58,7 @@
 
 .coordContact a,
 .coordContact address {
-    padding-bottom: 5px;
+    padding-bottom: 10px;
     font-family: var(--content);
     font-size: 1.1rem;
     color: var(--bleue);
@@ -75,11 +83,12 @@
     margin-right: 3px;
 }
 .btnContact {
-    margin: 15px auto;
+    width: 100%;
+    margin: 25px auto;
 }
-/* ==========================================================================
-   MEDIA QUERIES - TABLETTES & DESKTOP (À partir de 768px)
-   ========================================================================== */
+/* ==============================
+  À partir de 768px
+================================= */
 
 @media (min-width: 768px) {
     .contactForm {

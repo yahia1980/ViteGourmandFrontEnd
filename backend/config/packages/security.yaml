@@ -26,7 +26,8 @@ security:
 
             logout:
                 path: /api/deconnexion
-                target: /api/connexion
+                invalidate_session: true
+                enable_csrf: false
 
     access_control:
         - { path: ^/api/connexion$, roles: PUBLIC_ACCESS }

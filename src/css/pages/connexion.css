@@ -1,11 +1,11 @@
-/* ==========================================================================
-   PAGE CONTACT (Base Mobile)
-   ========================================================================== */
+/* ============================
+ Mobile
+=============================== */
 
 .formConnexion {
     width: 95%;
     margin: 0 auto;
-    height: 650px;
+    height: 500px;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(2, 1fr);
     gap: 30px;
@@ -66,14 +66,17 @@
 }
 
 .btnConnexion {
-    margin-block: 25px;
+    width:100%;
+    margin-block: 35px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
+.btnConnexion .connexionBtn {
+   margin: 0;
+}
 .lienConnexion {
-    margin-block: 35px;
+    margin-block: 30px;
     width: 100%;
     display: flex;
     justify-content: space-evenly;
@@ -96,9 +99,9 @@
     margin-right: 3px;
 }
 
-/* ==========================================================================
-   MEDIA QUERIES - TABLETTES & DESKTOP (À partir de 768px)
-   ========================================================================== */
+/* =============================
+partir de 768px)
+============================== */
 
 @media (min-width: 768px) {
 .formConnexion {
@@ -111,8 +114,8 @@
             "form img"
     }
  .connexionGrid {
-    width: 100%;
-    margin: 45px auto;
+    width: 60%;
+    margin:100px auto;
     grid-area: form;
     }
 .imageConnexion {
