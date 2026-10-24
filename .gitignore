@@ -1,0 +1,27 @@
+# Dépendances JavaScript
+node_modules/
+
+# Dépendances PHP
+vendor/
+
+# Cache et logs Symfony
+var/
+
+# Fichiers de configuration locaux et secrets
+.env.local
+.env.*.local
+/auth.json
+
+# Fichiers générés par Vite
+dist/
+
+# Fichiers temporaires
+*.log
+
+# Configuration locale des éditeurs
+.vscode/
+.idea/
+
+# Fichiers système Windows
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,9 @@
+
+# yaml-language-server: $schema=../vendor/symfony/routing/Loader/schema/routing.schema.json
+
+# Chargement automatique des routes des contrôleurs
+controllers:
+    resource: routing.controllers
+
+
+
