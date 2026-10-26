@@ -1,176 +1,319 @@
-/* mobile */
+
+/* ==========================================
+   HEADER - MOBILE FIRST
+========================================== */
 
 header {
     width: 100%;
-    min-height: 100px;
+    height: 90px;
     position: relative;
+    z-index: 1000;
+    isolation: isolate;
+    overflow-x: clip;
 }
 
 .containerHeader {
-   
-    padding: 10px 20px;
+    width: 100%;
+    height: 90px;
+    padding: 0 20px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    position: relative;
+
+    box-sizing: border-box;
 }
+
+/* ==========================================
+   LOGO
+========================================== */
+
+.logo {
+    color: var(--bleue);
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.logo span {
+    color: green;
+}
+
+/* ==========================================
+   NAVIGATION MOBILE
+========================================== */
+
 .navbar {
-    background-color: var(--bleue);
-    height: 100vh;
-    width: 100%;
-    position: fixed;
+    position: absolute;
     top: 0;
+    right: 0;
+
+    width: 100%;
+    height: 100dvh;
+
+    background-color: var(--bleue);
+
     transform: translateX(100%);
-    transition: var(--transition);
-    z-index: 999;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        transform 0.3s ease,
+        visibility 0.3s ease;
+
+    z-index: 10;
+    overflow-y: auto;
 }
+
+/* MENU OUVERT */
 
 .navbar.active {
     transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
 }
+
+/* ==========================================
+   LIENS DE NAVIGATION
+========================================== */
 
 .navbar ul {
     width: 100%;
-    height: 100%;
+    min-height: 100%;
+    min-height: 0;
+
+    margin: 0;
+    padding: 20px;
+
+    list-style: none;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 25px;
 }
+
 .navbar li {
-    padding-block: 20px;
+    margin: 0;
+    padding: 0;
 }
+
 .navbar a {
     display: inline-block;
-    font-size:2rem;
-    font-weight: 700;
+    padding: 8px 12px;
+
     color: var(--white);
-    transition: var(--transition);
+    font-size: clamp(1.3rem, 5vw, 2rem);
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
 }
+
 .navbar a:hover {
-    transform: scale(1.2);
-    color: #ffffff68;
-}
-.logo {
-font-size: 1.3rem;
-font-weight: bolder;
+    color: rgba(255, 255, 255, 0.7);
+    transform: scale(1.05);
 }
 
-.logo span {
-color: green;
+.navbar a:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 4px;
 }
 
-.hamburger{
-width: 25px;
-height: 20px;
-display: inline-flex;
-flex-direction: column;
-justify-content: space-between;
-background-color: transparent;
-cursor: pointer;
-position: relative;
-transition: 0.3s ease-in;
-z-index: 1001;
+/* ==========================================
+   BOUTON HAMBURGER
+========================================== */
+
+.hamburger {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    position: relative;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    z-index: 20;
 }
 
 .topLine,
 .mediumLine,
 .bottomLine {
-position: absolute;
-display: inline-block;
-width: 100%;
-height: 3px;
-background-color: var(--bleue);
-}
-.topLine {
-    top: 50%;
-}
-.bottomLine {
-    top: 100%;
+    position: absolute;
+    left: 2px;
+
+    display: block;
+    width: 28px;
+    height: 3px;
+
+    background-color: var(--bleue);
+    border-radius: 3px;
+
+    transition:
+        top 0.3s ease,
+        transform 0.3s ease,
+        opacity 0.3s ease,
+        background-color 0.3s ease;
 }
 
+.topLine {
+    top: 7px;
+}
+
+.mediumLine {
+    top: 15px;
+}
+
+.bottomLine {
+    top: 23px;
+}
+
+/* ==========================================
+   HAMBURGER OUVERT
+========================================== */
+
 .hamburger.active .topLine {
-    top: 50%;
+    top: 15px;
     transform: rotate(45deg);
     background-color: var(--white);
 }
-.hamburger.active .mediumLine{
+
+.hamburger.active .mediumLine {
     opacity: 0;
 }
-.hamburger.active .bottomLine{
-    top: 50%;
+
+.hamburger.active .bottomLine {
+    top: 15px;
     transform: rotate(-45deg);
     background-color: var(--white);
 }
 
-h1 {
-font-size: 1.3rem;
-text-align: center;
-margin-block: 35px;
-color: var(--bleue);
-text-shadow: 3px 3px 6px rgb(0, 0, 5);
+/* ==========================================
+   FOND DU BOUTON QUAND MENU OUVERT
+========================================== */
+
+.hamburger.active {
+    background-color: var(--bleue);
+    border-radius: 4px;
 }
 
-/* média */
+/* ==========================================
+   TABLETTE - 768px
+========================================== */
 
-/* ==========================================================================
-   2. TABLETTES (À partir de 768px)
-   ========================================================================== */
 @media (min-width: 768px) {
-.containerHeader {
-    padding: 20px 30px;
-    flex-direction: row-reverse;
-}
+
+    header {
+        height: 100px;
+    }
+
+    .containerHeader {
+        height: 100px;
+        padding: 0 35px;
+    }
+
     .logo {
-font-size: 1.5rem;
+        font-size: 1.8rem;
+    }
 
-}
-.logo span {
-font-size: 1.3rem;
+    .navbar {
+        top: 0;
+        right: 0;
+
+        width: 100%;
+        height: 100px;
+        max-height: none;
+
+        overflow: visible;
+    }
+
+    .navbar ul {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+
+        padding: 0 85px 0 25px;
+
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+
+        gap: 15px;
+    }
+
+    .navbar a {
+        font-size: 1.1rem;
+        padding: 8px 4px;
+        white-space: nowrap;
+    }
+
+    .hamburger {
+        position: relative;
+        margin: 0;
+    }
 }
 
-h1 {
-font-size: 1.4rem;
-color: var(--black);
-text-shadow: 3px 3px 6px rgb(4, 4, 155);
+/* ==========================================
+   ORDINATEUR - 1100px
+========================================== */
+
+@media (min-width: 1100px) {
+
+    .containerHeader {
+        padding: 0 50px;
+    }
+
+    .navbar ul {
+        gap: 30px;
+        padding: 0 90px 0 30px;
+    }
+
+    .navbar a {
+        font-size: 1.3rem;
+    }
 }
 
+/* ==========================================
+   ACCESSIBILITÉ
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .navbar,
+    .navbar a,
+    .topLine,
+    .mediumLine,
+    .bottomLine {
+        transition: none;
+    }
+}
+/* Header toujours au-dessus du contenu */
+header {
+    position: relative;
+    z-index: 1000;
+}
+
+/* Navigation au-dessus du Hero */
 .navbar {
-    position: fixed;
-    background-color:var(--bleue);
-    height: 100px;
-    transform: translateX(100%);
-}
-
-.navbar.active {
-    transform: translateX(0);
-}
-
-.navbar ul {
-    height: 100%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-}
-
-.navbar a {
-    font-size:1.5rem;
-    padding-right: 35px;
     z-index: 1001;
 }
 
-.hamburger{
-top: 38px;
-left: 50px;
-position: fixed;
-}
-
-.hamburger.active .topLine {
-    background-color: var(--white);
-}
-
-.hamburger.active .bottomLine{
-    background-color: var(--white);
-}
-
+/* Hamburger au-dessus de la navigation */
+.hamburger {
+    z-index: 1002;
 }

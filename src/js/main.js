@@ -9,7 +9,6 @@ btn.addEventListener("click", () => {
    rightBar.classList.toggle("active");
 });
 
-
 const links = rightBar.querySelectorAll("a");
 
 links.forEach(link => {
@@ -19,78 +18,7 @@ links.forEach(link => {
     });
 });
 
-/* connexion deconnexion */
-
-// Gestion du lien Connexion / Déconnexion
-
-async function updateAuthLink() {
-    const authLink = document.getElementById("authLink");
-
-    if (!authLink) {
-        console.error("Lien authLink introuvable");
-        return;
-    }
-
-    try {
-        const response = await fetch("/api/profil", {
-            credentials: "include"
-        });
-
-        console.log("Statut Symfony :", response.status);
-
-        if (response.status === 200) {
-            authLink.textContent = "Déconnexion";
-            authLink.href = "#";
-        } else {
-            authLink.textContent = "Connexion";
-            authLink.href = "/connexion";
-        }
-
-    } catch (error) {
-        console.error("Erreur API :", error);
-        authLink.textContent = "Connexion";
-        authLink.href = "/connexion";
-    }
-}
-
-updateAuthLink();
-
-// Déconnexion de l'utilisateur
-document.getElementById("authLink")?.addEventListener("click", async (event) => {
-    const authLink = event.currentTarget;
-
-    // Si le lien affiche Connexion, on laisse le routeur SPA fonctionner
-    if (authLink.textContent.trim() !== "Déconnexion") {
-        return;
-    }
-
-    event.preventDefault();
-
-    try {
-        const response = await fetch("/api/deconnexion", {
-            method: "POST",
-            credentials: "include"
-        });
-
-        if (!response.ok) {
-            throw new Error("La déconnexion a échoué");
-        }
-
-        // Vérifier la session et actualiser le lien
-        await updateAuthLink();
-
-        // Retourner à l'accueil
-        window.location.href = "/";
-
-    } catch (error) {
-        console.error("Erreur lors de la déconnexion :", error);
-    }
-});
-
-
-
 // défilement avis clients
-
 
 document.addEventListener("click", (event) => {
     const spanClique = event.target.closest(".avisRatio .ratio");
@@ -119,3 +47,117 @@ document.addEventListener("click", (event) => {
     });
 });
 
+/* =====================================================
+   AUTHENTIFICATION - VITE & GOURMAND
+===================================================== */
+
+if (!window.viteGourmandAuthInstalled) {
+
+    window.viteGourmandAuthInstalled = true;
+
+    // Vérifier si l'utilisateur est connecté
+    async function verifierConnexion() {
+
+        const authLink = document.getElementById("authLink");
+
+        if (!authLink) return;
+
+        try {
+
+            const response = await fetch("/api/profil", {
+                method: "GET",
+                credentials: "include"
+            });
+
+            if (response.ok) {
+
+                authLink.textContent = "Déconnexion";
+                authLink.setAttribute("href", "/deconnexion");
+
+            } else {
+
+                authLink.textContent = "Connexion";
+                authLink.setAttribute("href", "/connexion");
+
+            }
+
+        } catch (error) {
+
+            console.error("Erreur vérification connexion :", error);
+
+            authLink.textContent = "Connexion";
+            authLink.setAttribute("href", "/connexion");
+
+        }
+    }
+
+    // Gérer la déconnexion
+document.addEventListener("click", async (event) => {
+    const authLink = event.target.closest("#authLink");
+
+    if (!authLink || authLink.getAttribute("href") !== "/deconnexion") {
+        return;
+    }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    try {
+        const response = await fetch("/api/deconnexion", {
+            method: "POST",
+            credentials: "include"
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP : ${response.status}`);
+        }
+
+        // Actualiser le lien
+        authLink.textContent = "Connexion";
+        authLink.href = "/connexion";
+
+        // Naviguer dans la SPA
+        window.history.pushState({}, "", "/connexion");
+        window.dispatchEvent(new PopStateEvent("popstate"));
+
+    } catch (error) {
+        console.error("Erreur lors de la déconnexion :", error);
+    }
+}, true);
+
+
+    // Vérification initiale
+    verifierConnexion();
+
+}
+// Afficher / masquer les mots de passe
+document.addEventListener("click", (event) => {
+
+    const bouton = event.target.closest(".togglePassword");
+
+    if (!bouton) return;
+
+    const champ = bouton
+        .closest(".passwordField")
+        ?.querySelector("input");
+
+    if (!champ) return;
+
+    const estMasque = champ.type === "password";
+
+    champ.type = estMasque ? "text" : "password";
+
+    const icone = bouton.querySelector("i");
+
+    if (icone) {
+        icone.classList.toggle("fa-eye", !estMasque);
+        icone.classList.toggle("fa-eye-slash", estMasque);
+    }
+
+    bouton.setAttribute(
+        "aria-label",
+        estMasque ? "Masquer le mot de passe" : "Afficher le mot de passe"
+    );
+
+    bouton.setAttribute("aria-pressed", String(estMasque));
+});

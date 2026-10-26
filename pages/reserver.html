@@ -1,62 +1,328 @@
-<div class="reserverForm">
-  <div class="reserverGrid">
-    <form>
-      <div class="prenomForm formrReserverPrenom">
-        <label for="prenom"> Prénom </label>
-        <input type="text" id="prenom" name="prenom" required />
-      </div>
-      <div class="nomForm formReserverNom">
-        <label for="nom"> Nom </label>
-        <input type="text" id="nom" name="nom" required />
-      </div>
-      <div class="formReserverAllergie">
-        <label for="allergie"> Allergies </label>
-        <input type="text" id="allergie" name="allergie" />
-      </div>
-      <div class="formNbrDeconvi">
-        <label for="nbr"> Nombre de convives habituel </label>
-        <input type="number" id="nbr" name="nbr" />
-      </div>
-      <div class="form-group">
-      <div class="form-group_1">
-        <label for="prestation">Type de prestation</label>
-        <select id="prestation" name="prestation" required>
-          <option value="">Choisir une prestation</option>
-          <option value="traiteur">Traiteur</option>
-          <option value="repas-livre">Repas livré</option>
-          <option value="evenement">Prestation événementielle</option>
-        </select>
-      </div>
-      <div class="form-group_2">
-        <label for="service">Service souhaité</label>
-        <select id="service" name="service" required>
-          <option value="">Choisir un service</option>
-          <option value="midi">Midi</option>
-          <option value="soir">Soir</option>
-          <option value="journee">Journée complète</option>
-        </select>
-      </div>
 
-      <div class="form-group_3">
-        <label for="materiel">Matériel nécessaire</label>
-        <select id="materiel" name="materiel" required>
-          <option value="">Choisir une option</option>
-          <option value="sans">Sans matériel</option>
-          <option value="avec">Avec matériel</option>
-        </select>
-      </div>
-      </div>
-      <div class="formReserverEnvoi">
-        <button type="submit" class="submitForm btnStyleCom">Reserver</button>
-        <button type="reset" class="restForm btnStyleCom">Annuler</button>
-      </div>
-    </form>
-</div>
-<div class="imageReserver">
-  <h2 class="bigTitleResever">Réserver</h2>
-  <img
-    src="/images/imagesBanniere/imageReserver.jpg"
-    alt="Un plat préparé par Vite&Gourmand"
-  />
-</div>
-</div>
+<section class="reserverForm">
+
+    <!-- FORMULAIRE DE COMMANDE -->
+    <div class="reserverGrid">
+
+        <h2 class="titleForm">Commander un menu</h2>
+
+        <form id="formReserver">
+
+            <!-- INFORMATIONS CLIENT -->
+            <fieldset class="reserverSection">
+                <legend>Vos informations</legend>
+
+                <div class="prenomForm formrReserverPrenom">
+                    <label for="reserverPrenom">Prénom</label>
+                    <input
+                        type="text"
+                        id="reserverPrenom"
+                        name="prenom"
+                        autocomplete="given-name"
+                        required
+                    >
+                </div>
+
+                <div class="nomForm formReserverNom">
+                    <label for="reserverNom">Nom</label>
+                    <input
+                        type="text"
+                        id="reserverNom"
+                        name="nom"
+                        autocomplete="family-name"
+                        required
+                    >
+                </div>
+
+                <div class="formReserverMail">
+                    <label for="reserverEmail">Email</label>
+                    <input
+                        type="email"
+                        id="reserverEmail"
+                        name="email"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="formReserverTel">
+                    <label for="reserverTel">Téléphone</label>
+                    <input
+                        type="tel"
+                        id="reserverTel"
+                        name="telephone"
+                        autocomplete="tel"
+                        required
+                    >
+                </div>
+            </fieldset>
+
+            <!-- LIVRAISON -->
+            <fieldset class="reserverSection">
+                <legend>Informations de livraison</legend>
+
+                <div class="formReserverAdresse">
+                    <label for="reserverAdresse">
+                        Adresse de livraison
+                    </label>
+                    <input
+                        type="text"
+                        id="reserverAdresse"
+                        name="adresse"
+                        autocomplete="street-address"
+                        required
+                    >
+                </div>
+
+                <div class="formReserverVille">
+                    <label for="reserverVille">Ville</label>
+                    <input
+                        type="text"
+                        id="reserverVille"
+                        name="ville"
+                        autocomplete="address-level2"
+                        required
+                    >
+                </div>
+
+                <div class="formReserverCodePostal">
+                    <label for="reserverCodePostal">
+                        Code postal
+                    </label>
+                    <input
+                        type="text"
+                        id="reserverCodePostal"
+                        name="codePostal"
+                        autocomplete="postal-code"
+                        required
+                    >
+                </div>
+
+                <div class="formReserverDate">
+                    <label for="reserverDate">
+                        Date de livraison
+                    </label>
+                    <input
+                        type="date"
+                        id="reserverDate"
+                        name="dateLivraison"
+                        required
+                    >
+                </div>
+
+                <div class="formReserverHeure">
+                    <label for="reserverHeure">
+                        Heure souhaitée de livraison
+                    </label>
+                    <input
+                        type="time"
+                        id="reserverHeure"
+                        name="heureLivraison"
+                        required
+                    >
+                </div>
+
+                <div class="formReserverLieu">
+                    <label for="reserverLieu">
+                        Précisions sur le lieu
+                    </label>
+                    <input
+                        type="text"
+                        id="reserverLieu"
+                        name="lieu"
+                        placeholder="Étage, salle, instructions..."
+                    >
+                </div>
+            </fieldset>
+
+            <!-- CHOIX DU MENU -->
+            <fieldset class="reserverSection">
+                <legend>Votre commande</legend>
+
+                <div class="formReserverMenu">
+                    <label for="reserverMenu">
+                        Menu choisi
+                    </label>
+                    <select
+                        id="reserverMenu"
+                        name="menuId"
+                        required
+                    >
+                        <option value="">
+                            Choisir un menu
+                        </option>
+                        <!-- Options ajoutées depuis l'API -->
+                    </select>
+                </div>
+
+                <div class="formNbrDeconvi">
+                    <label for="nbr">
+                        Nombre de personnes
+                    </label>
+                    <input
+                        type="number"
+                        id="nbr"
+                        name="nombrePersonnes"
+                        min="1"
+                        step="1"
+                        required
+                    >
+                    <small id="minimumPersonnes">
+                        Le minimum dépend du menu choisi.
+                    </small>
+                </div>
+
+                <div class="formReserverAllergie">
+                    <label for="allergie">
+                        Allergies ou restrictions alimentaires
+                    </label>
+                    <textarea
+                        id="allergie"
+                        name="allergie"
+                        rows="3"
+                    ></textarea>
+                </div>
+
+                <!-- OPTIONS SUPPLÉMENTAIRES -->
+                <div class="form-group">
+
+                    <div class="form-group_1">
+                        <label for="prestation">
+                            Type de prestation
+                        </label>
+                        <select
+                            id="prestation"
+                            name="prestation"
+                        >
+                            <option value="">
+                                Choisir une prestation
+                            </option>
+                            <option value="traiteur">
+                                Traiteur
+                            </option>
+                            <option value="repas-livre">
+                                Repas livré
+                            </option>
+                            <option value="evenement">
+                                Événement
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group_2">
+                        <label for="service">
+                            Service souhaité
+                        </label>
+                        <select id="service" name="service">
+                            <option value="">
+                                Choisir un service
+                            </option>
+                            <option value="midi">Midi</option>
+                            <option value="soir">Soir</option>
+                            <option value="journee">
+                                Journée complète
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group_3">
+                        <label for="materiel">
+                            Matériel nécessaire
+                        </label>
+                        <select id="materiel" name="materiel">
+                            <option value="">
+                                Choisir une option
+                            </option>
+                            <option value="sans">
+                                Sans matériel
+                            </option>
+                            <option value="avec">
+                                Avec matériel
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+            </fieldset>
+
+            <!-- RÉCAPITULATIF -->
+            <section
+                class="recapitulatifCommande"
+                aria-labelledby="titreRecapitulatif"
+            >
+                <h3 id="titreRecapitulatif">
+                    Récapitulatif de votre commande
+                </h3>
+
+                <p>
+                    Menu :
+                    <strong id="recapMenu">À sélectionner</strong>
+                </p>
+
+                <p>
+                    Nombre de personnes :
+                    <strong id="recapPersonnes">—</strong>
+                </p>
+
+                <p>
+                    Prix du menu :
+                    <strong id="recapPrixMenu">—</strong>
+                </p>
+
+                <p>
+                    Réduction :
+                    <strong id="recapReduction">—</strong>
+                </p>
+
+                <p>
+                    Livraison :
+                    <strong id="recapLivraison">—</strong>
+                </p>
+
+                <p class="totalCommande">
+                    Total :
+                    <strong id="recapTotal">—</strong>
+                </p>
+
+                <p id="messageCommande" role="status"></p>
+            </section>
+
+            <!-- VALIDATION -->
+            <div class="formReserverEnvoi">
+
+                <button
+                    type="submit"
+                    class="submitForm btnStyleCom"
+                    id="validerCommande"
+                    disabled
+                >
+                    Valider la commande
+                </button>
+
+                <button
+                    type="reset"
+                    class="restForm btnStyleCom"
+                >
+                    Réinitialiser
+                </button>
+
+            </div>
+
+        </form>
+    </div>
+
+    <!-- IMAGE -->
+    <div class="imageReserver">
+
+        <h1 class="bigTitleResever">
+            Commander un menu
+        </h1>
+
+        <img
+            src="/images/imagesBanniere/imageReserver.jpg"
+            alt="Présentation des prestations Vite & Gourmand"
+        >
+
+    </div>
+
+</section>

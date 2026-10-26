@@ -1,127 +1,309 @@
-/* ============================
- Mobile
-=============================== */
+
+/* ==========================================
+   PAGE CONNEXION - MOBILE FIRST
+========================================== */
 
 .formConnexion {
     width: 95%;
-    margin: 0 auto;
-    height: 500px;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(2, 1fr);
-    gap: 30px;
+    max-width: 1200px;
+    margin: 30px auto 60px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
         "img"
-        "form"
+        "form";
+
+    gap: 30px;
+    align-items: center;
 }
 
-.connexionGrid {
-    width: 90%;
-    margin: 35px auto;
-    grid-area: form;
-}
+/* ==========================================
+   IMAGE ET TITRE
+========================================== */
+
 .imageConnexion {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    min-height: 200px;
     grid-area: img;
+
     position: relative;
+    width: 100%;
+    height: 220px;
+    min-width: 0;
+
+    overflow: hidden;
+    border-radius: 12px;
 }
-.bigTitleConnexion {
-    position: absolute;
-    text-align: center;
-    z-index: 100;
-    top: 50%;
-    left:50%;
-    transform: translate(-50%, -50%);
-    color: var(--white);
-    font-size: 2rem;
-}
+
 .imageConnexion img {
+    display: block;
     width: 100%;
     height: 100%;
+
     object-fit: cover;
     object-position: center;
-    filter: brightness(0.4);
-    border-radius: 10px;
-}
-.connexionGrid label {
-    margin-top: 15px;
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-.connexionGrid select {
-    width: 100%;
-    margin-top: 5px;
-    background-color: var(--bleue);
-    padding: 10px;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    color: var(--white);
-}
-.connexionGrid option {
-    background-color: var(--white);
-    color: var(--bleue);
+    filter: brightness(0.45);
 }
 
+.bigTitleConnexion {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+
+    width: 90%;
+    margin: 0;
+
+    transform: translate(-50%, -50%);
+
+    color: var(--white);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* ==========================================
+   CONTENEUR FORMULAIRE
+========================================== */
+
+.connexionGrid {
+    grid-area: form;
+
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+}
+
+#formConnexion {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+}
+
+/* ==========================================
+   CHAMPS DU FORMULAIRE
+========================================== */
+
+.formConnexionMail,
+.passwordFormConnexion {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.connexionGrid label {
+    display: block;
+    margin: 0;
+
+    color: var(--bleue);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.connexionGrid input {
+    display: block;
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 12px;
+
+    box-sizing: border-box;
+
+    color: var(--black);
+    background-color: var(--white);
+
+    border: 1px solid var(--bleue);
+    border-radius: 6px;
+
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.connexionGrid input:focus {
+    outline: 2px solid var(--bleue);
+    outline-offset: 2px;
+}
+
+.connexionGrid input::placeholder {
+    color: #777;
+    font-weight: 400;
+}
+
+/* ==========================================
+   BOUTON DE CONNEXION
+========================================== */
+
 .btnConnexion {
-    width:100%;
-    margin-block: 35px;
+    width: 100%;
+    margin: 5px 0 0;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    gap: 20px;
 }
+
 .btnConnexion .connexionBtn {
-   margin: 0;
-}
-.lienConnexion {
-    margin-block: 30px;
     width: 100%;
-    display: flex;
-    justify-content: space-evenly;
+    max-width: 320px;
+    min-height: 46px;
+    margin: 0;
+    padding: 12px 20px;
+
+    background-color: var(--bleue);
+    color: var(--white);
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
+
+.btnConnexion .connexionBtn:hover {
+    background-color: #16803c;
+    color: var(--white);
+}
+
+.btnConnexion .connexionBtn:focus-visible {
+    outline: 2px solid var(--bleue);
+    outline-offset: 4px;
+}
+
+/* ==========================================
+   LIENS DE CONNEXION
+========================================== */
+
+.lienConnexion {
+    width: 100%;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
 .lienConnexion a {
     color: var(--bleue);
-    transition: opacity var(--transition);
+    font-size: 0.95rem;
+    text-align: center;
+    text-decoration: none;
+
+    transition: opacity 0.2s ease;
 }
 
 .lienConnexion a:hover {
     opacity: 0.7;
     text-decoration: underline;
-    text-underline-offset: 10px;
+    text-underline-offset: 5px;
 }
 
+/* ==========================================
+   ICÔNES DU FORMULAIRE
+========================================== */
 
-.fa-solid {
-    font-size: 1.2rem;
+.connexionGrid .fa-solid {
+    margin-right: 5px;
     color: var(--bleue);
-    margin-right: 3px;
+    font-size: 1rem;
 }
 
-/* =============================
-partir de 768px)
-============================== */
+/* ==========================================
+   TABLETTE - 768px
+========================================== */
 
 @media (min-width: 768px) {
-.formConnexion {
-        width: 80%;
-        margin: 55px auto;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-areas:
-            "form img"
-            "form img"
-    }
- .connexionGrid {
-    width: 60%;
-    margin:100px auto;
-    grid-area: form;
-    }
-.imageConnexion {
-    width: 100%;
-    height: 450px;
-    grid-area: img;
 
+    .formConnexion {
+        width: 90%;
+        margin: 60px auto 80px;
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+
+        grid-template-areas: "form img";
+        gap: 35px;
+    }
+
+    .imageConnexion {
+        height: 450px;
+    }
+
+    .connexionGrid {
+        width: 100%;
+        max-width: 440px;
+        margin: 0 auto;
+    }
+
+    .lienConnexion {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 15px;
+    }
 }
+
+/* ==========================================
+   ORDINATEUR - 1100px
+========================================== */
+
+@media (min-width: 1100px) {
+
+    .formConnexion {
+        width: 85%;
+        gap: 70px;
+    }
+
+    .imageConnexion {
+        height: 520px;
+    }
+
+    .connexionGrid {
+        max-width: 460px;
+    }
+
+    .bigTitleConnexion {
+        font-size: 3rem;
+    }
+}
+.passwordField {
+    position: relative;
+    width: 100%;
+}
+
+.passwordField input {
+    width: 100%;
+    padding-right: 45px;
+}
+
+.togglePassword {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--bleue);
+    font-size: 18px;
+}
+
+.togglePassword i {
+    pointer-events: none;
 }

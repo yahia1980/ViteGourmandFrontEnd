@@ -1,9 +1,14 @@
 
 <section class="menus">
 
-    <!-- BANNIÈRE -->
-    <header class="menusHero">
+    <!-- ==========================================
+         BANNIÈRE
+         ========================================== -->
+
+    <div class="menusHero">
+
         <div class="menusHeroContenu">
+
             <span class="menusSurTitre">
                 <i class="fa-solid fa-utensils"></i>
                 VITE & GOURMAND
@@ -20,98 +25,227 @@
                 Explorer nos menus
                 <i class="fa-solid fa-arrow-down"></i>
             </a>
-        </div>
-    </header>
 
-    <!-- CATALOGUE -->
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         CATALOGUE DES MENUS
+         ========================================== -->
+
     <section class="menusCatalogue" id="catalogueMenus">
 
         <div class="menusIntroduction">
-            <span class="menusSurTitre">NOTRE SAVOIR-FAIRE</span>
+
+            <span class="menusSurTitre">
+                NOTRE SAVOIR-FAIRE
+            </span>
+
             <h2>Une expérience à partager</h2>
+
             <p>
                 Des propositions gourmandes adaptées à vos événements,
                 préparées avec soin pour satisfaire toutes vos envies.
             </p>
+
         </div>
 
-        <!-- FILTRES -->
+
+        <!-- ======================================
+             FILTRES
+             ====================================== -->
+
         <div class="menusFiltres">
 
+            <!-- THÈME -->
+
             <div class="menusFiltre">
+
                 <label for="filtreTheme">
                     <i class="fa-solid fa-calendar-days"></i>
                     Thème
                 </label>
+
                 <select id="filtreTheme">
                     <option value="tous">Tous les thèmes</option>
                     <option value="Classique">Classique</option>
                     <option value="Noël">Noël</option>
                     <option value="Pâques">Pâques</option>
                 </select>
+
             </div>
 
+
+            <!-- RÉGIME ALIMENTAIRE -->
+
             <div class="menusFiltre">
+
                 <label for="filtreRegime">
                     <i class="fa-solid fa-leaf"></i>
                     Régime alimentaire
                 </label>
+
                 <select id="filtreRegime">
                     <option value="tous">Tous les régimes</option>
                     <option value="Classique">Classique</option>
                     <option value="Végétarien">Végétarien</option>
+                    <option value="Pescétarien">Pescétarien</option>
                 </select>
+
             </div>
 
-            <button type="button" id="resetFiltres" class="menusReset">
+
+            <!-- PRIX MINIMUM -->
+
+            <div class="menusFiltre">
+
+                <label for="filtrePrixMin">
+                    Prix minimum (€)
+                </label>
+
+                <input
+                    type="number"
+                    id="filtrePrixMin"
+                    min="0"
+                    step="1"
+                    placeholder="Ex : 50"
+                >
+
+            </div>
+
+
+            <!-- PRIX MAXIMUM -->
+
+            <div class="menusFiltre">
+
+                <label for="filtrePrixMax">
+                    Prix maximum (€)
+                </label>
+
+                <input
+                    type="number"
+                    id="filtrePrixMax"
+                    min="0"
+                    step="1"
+                    placeholder="Ex : 150"
+                >
+
+            </div>
+
+
+            <!-- NOMBRE DE PERSONNES -->
+
+            <div class="menusFiltre">
+
+                <label for="filtrePersonnes">
+                    <i class="fa-solid fa-users"></i>
+                    Nombre de personnes
+                </label>
+
+                <input
+                    type="number"
+                    id="filtrePersonnes"
+                    min="1"
+                    step="1"
+                    placeholder="Ex : 6"
+                >
+
+            </div>
+
+
+            <!-- RÉINITIALISATION -->
+
+            <button
+                type="button"
+                id="resetFiltres"
+                class="menusReset"
+            >
                 <i class="fa-solid fa-rotate-left"></i>
                 Réinitialiser
             </button>
 
         </div>
 
-        <p id="menusResultats" class="menusResultats" aria-live="polite"></p>
+
+        <!-- NOMBRE DE RÉSULTATS -->
+
+        <p
+            id="menusResultats"
+            class="menusResultats"
+            aria-live="polite"
+        ></p>
+
 
         <!-- CARTES GÉNÉRÉES EN JAVASCRIPT -->
-        <div id="liste-menus" class="gridMenus"></div>
 
-        <!-- DÉTAILS DU MENU SÉLECTIONNÉ -->
-        <div id="details-menu" class="detailsContainer" aria-live="polite"></div>
+        <div
+            id="liste-menus"
+            class="gridMenus"
+        ></div>
 
     </section>
-    
-<!-- GALERIE GASTRONOMIQUE -->
-<section class="menusGalerie">
-
-    <div class="menusGalerieTitre">
-        <span class="menusSurTitre">NOTRE UNIVERS CULINAIRE</span>
-        <h2>La gastronomie en images</h2>
-        <p>
-            Découvrez notre passion pour la cuisine,
-            les saveurs et l'art de recevoir.
-        </p>
-    </div>
-
-    <div id="galerie-menus" class="menusGalerieGrid"></div>
-
-</section>
 
 
-    <!-- CONTACT -->
+    <!-- ==========================================
+         GALERIE GASTRONOMIQUE
+         ========================================== -->
+
+    <section class="menusGalerie">
+
+        <div class="menusGalerieTitre">
+
+            <span class="menusSurTitre">
+                NOTRE UNIVERS CULINAIRE
+            </span>
+
+            <h2>La gastronomie en images</h2>
+
+            <p>
+                Découvrez notre passion pour la cuisine,
+                les saveurs et l'art de recevoir.
+            </p>
+
+        </div>
+
+        <div
+            id="galerie-menus"
+            class="menusGalerieGrid"
+        ></div>
+
+    </section>
+
+
+    <!-- ==========================================
+         SECTION CONTACT
+         ========================================== -->
+
     <section class="menusContact">
+
         <div>
-            <span class="menusSurTitre">UN ÉVÉNEMENT À ORGANISER ?</span>
+
+            <span class="menusSurTitre">
+                UN ÉVÉNEMENT À ORGANISER ?
+            </span>
+
             <h2>Créons ensemble un moment gourmand.</h2>
+
             <p>
                 Une question sur nos menus ou nos prestations ?
                 Notre équipe est à votre écoute.
             </p>
+
         </div>
 
         <a href="/contact" class="menusContactBtn">
+
             Nous contacter
+
             <i class="fa-solid fa-arrow-right"></i>
+
         </a>
+
     </section>
 
 </section>

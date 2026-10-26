@@ -10,7 +10,6 @@ export const allRoutes = [
         "Accueil",
         "/pages/Accueil.html",
         ["/src/js/main.js",
-         "valide-form.js"
         ],
         ["/src/css/pages/accueil.css",
          "/src/css/pages/form.css"
@@ -31,15 +30,21 @@ export const allRoutes = [
         ["/src/js/menus.js", "/src/js/main.js"],
         ["/src/css/pages/menus.css",
          "/src/css/pages/form.css"
-        ]
+        ],
+    ),
+    new Route(
+        "/detail-menu",
+        "Détail menu",
+        "/pages/detail-menu.html",
+        ["/src/js/detail-menu.js", "/src/js/main.js"],
+        ["/src/css/pages/detail-menu.css", ]
     ),
 
     new Route(
         "/contact",
         "Contact",
         "/pages/contact.html",
-        ["/src/js/main.js",
-            "valide-form.js"],
+        ["/src/js/main.js"],
         ["/src/css/pages/contact.css",
          "/src/css/pages/form.css"
         ]
@@ -49,7 +54,8 @@ export const allRoutes = [
         "Inscription",
         "/pages/auth/inscription.html",
         ["/src/js/main.js",
-            "valide-form.js"],
+         "/src/js/inscription.js"
+        ],
         ["/src/css/pages/inscription.css",
          "/src/css/pages/form.css"
         ]
@@ -60,7 +66,6 @@ export const allRoutes = [
         "Connexion",
         "/pages/auth/connexion.html",
         ["/src/js/main.js",
-            "valide-form.js",
         "/src/js/connexion.js"],
         ["/src/css/pages/connexion.css",
          "/src/css/pages/form.css"
@@ -82,7 +87,8 @@ export const allRoutes = [
         "Changement de mot de passe",
         "/pages/auth/mdp_oublie.html",
         ["/src/js/main.js",
-            "valide-form.js"],
+         "/src/js/mdp-oublie.js"
+        ],
         ["/src/css/pages/mdp_oublie.css",
          "/src/css/pages/form.css"
         ]
@@ -91,8 +97,7 @@ export const allRoutes = [
         "/reserver",
         "Reservation",
         "/pages/reserver.html",
-        ["/src/js/main.js",
-            "valide-form.js"],
+        ["/src/js/main.js"],
         ["/src/css/pages/reserver.css",
          "/src/css/pages/form.css"
         ]
@@ -102,14 +107,14 @@ export const allRoutes = [
         "Espace employe",
         "/pages/espace-employe.html",
         "/src/js/main.js",
-        "/src/css/pages/espace-employe.css"
+        "/src/css/pages/espace_employe.css"
     ),
     new Route (
         "/espace-admin",
         "Espace admin",
         "/pages/espace-admin.html",
         "/src/js/main.js",
-        "/src/css/pages/espace-admin.css"
+        "/src/css/pages/espace_admin.css"
     ),
     new Route (
         "/mention-legale",

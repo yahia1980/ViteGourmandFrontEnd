@@ -1,348 +1,573 @@
 
 /* ==========================================
    VITE & GOURMAND - MENUS + GALERIE
+   Données récupérées depuis Symfony / MySQL
    ========================================== */
 
-const listeMenus = document.querySelector("#liste-menus");
-const detailsMenu = document.querySelector("#details-menu");
+(() => {
 
-const filtreTheme = document.querySelector("#filtreTheme");
-const filtreRegime = document.querySelector("#filtreRegime");
-const resetFiltres = document.querySelector("#resetFiltres");
-const menusResultats = document.querySelector("#menusResultats");
+    /* ==========================================
+       1. SÉLECTION DES ÉLÉMENTS HTML
+       ========================================== */
 
-const galerieMenus = document.querySelector("#galerie-menus");
+    const listeMenus = document.querySelector("#liste-menus");
 
-/* ==========================================
-   LES MENUS AVEC LES PRIX
-   ========================================== */
+    const filtreTheme = document.querySelector("#filtreTheme");
+    const filtreRegime = document.querySelector("#filtreRegime");
+    const filtrePrixMin = document.querySelector("#filtrePrixMin");
+    const filtrePrixMax = document.querySelector("#filtrePrixMax");
+    const filtrePersonnes = document.querySelector("#filtrePersonnes");
 
-const menus = [
-    {
-        titre: "Bœuf au soja",
-        description: "Bœuf mariné au soja & gingembre, légumes croquants au wok, riz jasmin parfumé.",
-        personnesMin: 6,
-        prix: 147,
-        image: "/images/imagesGaleries/img4.jpg",
-        theme: "Pâques",
-        regime: "Classique"
-    },
-    {
-        titre: "Salade au saumon",
-        description: "Saumon fumé, avocat, pamplemousse rose et jeunes pousses, vinaigrette au citron vert & aneth.",
-        personnesMin: 5,
-        prix: 66,
-        image: "/images/imagesGaleries/img3.jpg",
-        theme: "Classique",
-        regime: "Pescétarien"
-    },
-    {
-        titre: "Poulet rôti",
-        description: "Poulet fermier rôti au thym frais, jus corsé et pommes grenailles confites.",
-        personnesMin: 4,
-        prix: 85,
-        image: "/images/imagesGaleries/img1.jpg",
-        theme: "Noël",
-        regime: "Classique"
-    }
-];
+    const resetFiltres = document.querySelector("#resetFiltres");
+    const menusResultats = document.querySelector("#menusResultats");
 
-/* ==========================================
-   FONCTIONS UTILITAIRES
-   ========================================== */
+    const galerieMenus = document.querySelector("#galerie-menus");
 
-function creerElement(tag, texte, classe = "") {
-    const element = document.createElement(tag);
-    element.textContent = texte;
 
-    if (classe) {
-        element.className = classe;
-    }
+    /* ==========================================
+       2. DONNÉES DES MENUS
+       ========================================== */
 
-    return element;
-}
+    let menus = [];
 
-function creerImage(src, alt) {
-    const image = document.createElement("img");
-    image.src = src;
-    image.alt = alt;
-    image.loading = "lazy";
-    image.className = "image-menu";
-    return image;
-}
 
-/* ==========================================
-   AFFICHER LES CARTES DES MENUS
-   ========================================== */
+    /* ==========================================
+       3. CHARGEMENT DEPUIS SYMFONY
+       ========================================== */
 
-function creerCarteMenu(menu) {
-    const carte = document.createElement("article");
-    carte.className = "carte-menu";
+    async function chargerMenus() {
 
-    const imageWrapper = document.createElement("div");
-    imageWrapper.className = "menuImageWrapper";
+        if (!listeMenus) return;
 
-    const image = creerImage(menu.image, menu.titre);
-    const badge = creerElement("span", menu.theme, "menuBadge");
+        listeMenus.textContent = "Chargement des menus...";
 
-    imageWrapper.append(image, badge);
+        try {
 
-    const contenu = document.createElement("div");
-    contenu.className = "menuCarteContenu";
+            const response = await fetch("/api/menus");
 
-    const titre = creerElement("h3", menu.titre);
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status}`);
+            }
 
-    const description = creerElement(
-        "p",
-        menu.description,
-        "menuDescription"
-    );
+            const donneesAPI = await response.json();
 
-    const infos = document.createElement("div");
-    infos.className = "menuInfos";
+            if (!Array.isArray(donneesAPI)) {
+                throw new Error("Format des données invalide.");
+            }
 
-    const personnes = creerElement(
-        "span",
-        `${menu.personnesMin} personnes minimum`
-    );
+            menus = donneesAPI.map((menu) => {
 
-    const regime = creerElement("span", menu.regime);
+                const galerie = Array.isArray(menu.galerie)
+                    ? menu.galerie
+                    : [];
 
-    infos.append(personnes, regime);
+                const plats = menu.plats || {};
 
-    const bas = document.createElement("div");
-    bas.className = "menuCarteBas";
+                const conditions = Array.isArray(menu.conditions)
+                    ? menu.conditions
+                    : menu.conditions
+                        ? [menu.conditions]
+                        : [];
 
-    const prix = creerElement(
-        "strong",
-        `${menu.prix} €`,
-        "menuPrix"
-    );
+                return {
 
-    const bouton = creerElement(
-        "button",
-        "Découvrir",
-        "btnMenu"
-    );
+                    id: menu.id,
 
-    bouton.type = "button";
+                    titre: menu.titre || "",
 
-    bouton.addEventListener("click", () => {
-        afficherDetailMenu(menu);
-    });
+                    description: menu.description || "",
 
-    bas.append(prix, bouton);
-    contenu.append(titre, description, infos, bas);
-    carte.append(imageWrapper, contenu);
+                    personnesMin: Number(menu.personnesMin) || 0,
 
-    return carte;
-}
+                    prix: Number(menu.prix) || 0,
 
-/* ==========================================
-   DÉTAILS D'UN MENU
-   ========================================== */
+                    stock: Number(menu.stock) || 0,
 
-function fermerDetails() {
-    if (!detailsMenu) return;
+                    theme: menu.theme || "",
 
-    detailsMenu.replaceChildren();
-    detailsMenu.classList.remove("detailMenu");
-}
+                    regime: menu.regime || "",
 
-function afficherDetailMenu(menu) {
-    if (!detailsMenu) return;
+                    image: menu.image || galerie[0] || "",
 
-    fermerDetails();
-    detailsMenu.classList.add("detailMenu");
+                    galerie: galerie,
 
-    const image = creerImage(menu.image, menu.titre);
+                    plats: {
+                        entrees: Array.isArray(plats.entrees)
+                            ? plats.entrees
+                            : [],
 
-    const titre = creerElement("h2", menu.titre);
-    const description = creerElement("p", menu.description);
+                        principaux: Array.isArray(plats.principaux)
+                            ? plats.principaux
+                            : [],
 
-    const personnes = creerElement(
-        "p",
-        `Nombre de personnes minimum : ${menu.personnesMin}`
-    );
+                        desserts: Array.isArray(plats.desserts)
+                            ? plats.desserts
+                            : []
+                    },
 
-    const prix = creerElement(
-        "p",
-        `Prix du menu : ${menu.prix} €`
-    );
+                    allergenes: Array.isArray(menu.allergenes)
+                        ? menu.allergenes
+                        : [],
 
-    const theme = creerElement(
-        "p",
-        `Thème : ${menu.theme}`
-    );
+                    conditions: conditions
 
-    const regime = creerElement(
-        "p",
-        `Régime alimentaire : ${menu.regime}`
-    );
+                };
 
-    const fermer = creerElement(
-        "button",
-        "Fermer",
-        "btnMenu"
-    );
+            });
 
-    fermer.type = "button";
-    fermer.addEventListener("click", fermerDetails);
+            afficherMenus();
 
-    detailsMenu.append(
-        image,
-        titre,
-        description,
-        personnes,
-        prix,
-        theme,
-        regime,
-        fermer
-    );
+            console.log(
+                "Menus chargés depuis Symfony :",
+                menus
+            );
 
-    detailsMenu.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-}
+        } catch (erreur) {
 
-/* ==========================================
-   FILTRER ET AFFICHER LES MENUS
-   ========================================== */
+            console.error(
+                "Erreur de chargement des menus :",
+                erreur
+            );
 
-function afficherMenus() {
-    if (!listeMenus) return;
+            listeMenus.textContent =
+                "Impossible de charger les menus. Veuillez réessayer.";
 
-    const theme = filtreTheme?.value || "tous";
-    const regime = filtreRegime?.value || "tous";
+            if (menusResultats) {
+                menusResultats.textContent = "";
+            }
 
-    const resultats = menus.filter((menu) => {
-        const themeValide =
-            theme === "tous" || menu.theme === theme;
+        }
 
-        const regimeValide =
-            regime === "tous" || menu.regime === regime;
-
-        return themeValide && regimeValide;
-    });
-
-    const fragment = document.createDocumentFragment();
-
-    resultats.forEach((menu) => {
-        fragment.appendChild(creerCarteMenu(menu));
-    });
-
-    listeMenus.replaceChildren(fragment);
-    fermerDetails();
-
-    if (menusResultats) {
-        menusResultats.textContent =
-            `${resultats.length} menu(s) disponible(s)`;
     }
 
-    if (resultats.length === 0) {
-        listeMenus.appendChild(
-            creerElement(
-                "p",
-                "Aucun menu ne correspond à vos critères."
-            )
-        );
+
+    /* ==========================================
+       4. FONCTIONS UTILITAIRES
+       ========================================== */
+
+    function creerElement(tag, texte = "", classe = "") {
+
+        const element = document.createElement(tag);
+
+        element.textContent = texte;
+
+        if (classe) {
+            element.className = classe;
+        }
+
+        return element;
     }
-}
 
-if (listeMenus) {
-    afficherMenus();
 
-    filtreTheme?.addEventListener("change", afficherMenus);
-    filtreRegime?.addEventListener("change", afficherMenus);
-
-    resetFiltres?.addEventListener("click", () => {
-        if (filtreTheme) filtreTheme.value = "tous";
-        if (filtreRegime) filtreRegime.value = "tous";
-
-        afficherMenus();
-    });
-}
-
-/* ==========================================
-   GALERIE DES 11 PHOTOGRAPHIES
-   ========================================== */
-
-const photosGalerie = [
-    {
-        image: "/images/imagesGaleries/photo1.jpg",
-        titre: "Tartelettes aux fruits"
-    },
-    {
-        image: "/images/imagesGaleries/photo2.jpg",
-        titre: "Dessert aux fraises"
-    },
-    {
-        image: "/images/imagesGaleries/photo3.jpg",
-        titre: "Notre chef pâtissier"
-    },
-    {
-        image: "/images/imagesGaleries/photo4.jpg",
-        titre: "Bouchées apéritives"
-    },
-    {
-        image: "/images/imagesGaleries/photo5.jpg",
-        titre: "Saumon gastronomique"
-    },
-    {
-        image: "/images/imagesGaleries/photo6.jpg",
-        titre: "Dessert raffiné"
-    },
-    {
-        image: "/images/imagesGaleries/photo7.jpg",
-        titre: "Cuisine généreuse"
-    },
-    {
-        image: "/images/imagesGaleries/photo8.jpg",
-        titre: "Réception gastronomique"
-    },
-    {
-        image: "/images/imagesGaleries/photo9.jpg",
-        titre: "Nos créations culinaires"
-    },
-    {
-        image: "/images/imagesGaleries/photo10.jpg",
-        titre: "Dressage gastronomique"
-    },
-    {
-        image: "/images/imagesGaleries/photo11.jpg",
-        titre: "Viande gastronomique"
-    }
-];
-
-/* ==========================================
-   AFFICHER LA GALERIE
-   ========================================== */
-
-function afficherGalerie() {
-    if (!galerieMenus) return;
-
-    const fragment = document.createDocumentFragment();
-
-    photosGalerie.forEach((photo) => {
-        const figure = document.createElement("figure");
-        figure.className = "menusGalerieItem";
+    function creerImage(src, alt) {
 
         const image = document.createElement("img");
-        image.src = photo.image;
-        image.alt = photo.titre;
+
+        image.src = src;
+        image.alt = alt;
         image.loading = "lazy";
-        image.decoding = "async";
+        image.className = "image-menu";
 
-        const legende = document.createElement("figcaption");
-        legende.textContent = photo.titre;
+        return image;
+    }
 
-        figure.append(image, legende);
-        fragment.appendChild(figure);
-    });
 
-    galerieMenus.replaceChildren(fragment);
-}
+    /* ==========================================
+       5. CRÉATION DES CARTES MENUS
+       ========================================== */
 
-afficherGalerie();
+    function creerCarteMenu(menu) {
 
+        const carte = document.createElement("article");
+        carte.className = "carte-menu";
+
+
+        /* IMAGE ET BADGE */
+
+        const imageWrapper = document.createElement("div");
+        imageWrapper.className = "menuImageWrapper";
+
+        const image = creerImage(
+            menu.image,
+            menu.titre
+        );
+
+        const badge = creerElement(
+            "span",
+            menu.theme,
+            "menuBadge"
+        );
+
+        imageWrapper.append(image, badge);
+
+
+        /* CONTENU */
+
+        const contenu = document.createElement("div");
+        contenu.className = "menuCarteContenu";
+
+        const titre = creerElement(
+            "h3",
+            menu.titre
+        );
+
+        const description = creerElement(
+            "p",
+            menu.description,
+            "menuDescription"
+        );
+
+
+        /* INFORMATIONS */
+
+        const infos = document.createElement("div");
+        infos.className = "menuInfos";
+
+        const personnes = creerElement(
+            "span",
+            `${menu.personnesMin} personnes minimum`
+        );
+
+        const regime = creerElement(
+            "span",
+            menu.regime
+        );
+
+        infos.append(personnes, regime);
+
+
+        /* PRIX ET BOUTON DÉCOUVRIR */
+
+        const bas = document.createElement("div");
+        bas.className = "menuCarteBas";
+
+        const prix = creerElement(
+            "strong",
+            `${menu.prix} €`,
+            "menuPrix"
+        );
+
+        const bouton = creerElement(
+            "a",
+            "Découvrir",
+            "btnMenu"
+        );
+
+        bouton.href = "/detail-menu";
+
+        bouton.addEventListener("click", () => {
+
+            sessionStorage.setItem(
+                "menuSelectionne",
+                JSON.stringify(menu)
+            );
+
+        });
+
+
+        /* ASSEMBLAGE */
+
+        bas.append(prix, bouton);
+
+        contenu.append(
+            titre,
+            description,
+            infos,
+            bas
+        );
+
+        carte.append(
+            imageWrapper,
+            contenu
+        );
+
+        return carte;
+    }
+
+
+    /* ==========================================
+       6. FILTRER ET AFFICHER LES MENUS
+       ========================================== */
+
+    function afficherMenus() {
+
+        if (!listeMenus) return;
+
+
+        /* RÉCUPÉRATION DES FILTRES */
+
+        const theme = filtreTheme?.value || "tous";
+        const regime = filtreRegime?.value || "tous";
+
+        const prixMin = filtrePrixMin?.value
+            ? Number(filtrePrixMin.value)
+            : 0;
+
+        const prixMax = filtrePrixMax?.value
+            ? Number(filtrePrixMax.value)
+            : Infinity;
+
+        const personnes = filtrePersonnes?.value
+            ? Number(filtrePersonnes.value)
+            : null;
+
+
+        /* FILTRAGE */
+
+        const resultats = menus.filter((menu) => {
+
+            const themeValide =
+                theme === "tous" ||
+                menu.theme === theme;
+
+            const regimeValide =
+                regime === "tous" ||
+                menu.regime === regime;
+
+            const prixValide =
+                menu.prix >= prixMin &&
+                menu.prix <= prixMax;
+
+            const personnesValide =
+                personnes === null ||
+                menu.personnesMin <= personnes;
+
+            return (
+                themeValide &&
+                regimeValide &&
+                prixValide &&
+                personnesValide
+            );
+
+        });
+
+
+        /* AFFICHAGE DES CARTES */
+
+        const fragment = document.createDocumentFragment();
+
+        resultats.forEach((menu) => {
+
+            fragment.appendChild(
+                creerCarteMenu(menu)
+            );
+
+        });
+
+        listeMenus.replaceChildren(fragment);
+
+
+        /* NOMBRE DE RÉSULTATS */
+
+        if (menusResultats) {
+
+            menusResultats.textContent =
+                `${resultats.length} menu(s) trouvé(s)`;
+
+        }
+
+
+        /* AUCUN RÉSULTAT */
+
+        if (resultats.length === 0) {
+
+            const message = creerElement(
+                "p",
+                "Aucun menu ne correspond à vos critères."
+            );
+
+            listeMenus.appendChild(message);
+
+        }
+
+    }
+
+
+    /* ==========================================
+       7. INITIALISATION DES FILTRES
+       ========================================== */
+
+    if (listeMenus) {
+
+        // Charger les menus depuis Symfony
+        chargerMenus();
+
+
+        /* FILTRES SELECT */
+
+        filtreTheme?.addEventListener(
+            "change",
+            afficherMenus
+        );
+
+        filtreRegime?.addEventListener(
+            "change",
+            afficherMenus
+        );
+
+
+        /* FILTRES NUMÉRIQUES */
+
+        filtrePrixMin?.addEventListener(
+            "input",
+            afficherMenus
+        );
+
+        filtrePrixMax?.addEventListener(
+            "input",
+            afficherMenus
+        );
+
+        filtrePersonnes?.addEventListener(
+            "input",
+            afficherMenus
+        );
+
+
+        /* RÉINITIALISATION */
+
+        resetFiltres?.addEventListener("click", () => {
+
+            if (filtreTheme) {
+                filtreTheme.value = "tous";
+            }
+
+            if (filtreRegime) {
+                filtreRegime.value = "tous";
+            }
+
+            if (filtrePrixMin) {
+                filtrePrixMin.value = "";
+            }
+
+            if (filtrePrixMax) {
+                filtrePrixMax.value = "";
+            }
+
+            if (filtrePersonnes) {
+                filtrePersonnes.value = "";
+            }
+
+            afficherMenus();
+
+        });
+
+    }
+
+
+    /* ==========================================
+       8. GALERIE DES 11 PHOTOGRAPHIES
+       ========================================== */
+
+    const photosGalerie = [
+
+        {
+            image: "/images/imagesGaleries/photo1.jpg",
+            titre: "Tartelettes aux fruits"
+        },
+
+        {
+            image: "/images/imagesGaleries/photo2.jpg",
+            titre: "Dessert aux fraises"
+        },
+
+        {
+            image: "/images/imagesGaleries/photo3.jpg",
+            titre: "Notre chef pâtissier"
+        },
+
+        {
+            image: "/images/imagesGaleries/photo4.jpg",
+            titre: "Bouchées apéritives"
+        },
+
+        {
+            image: "/images/imagesGaleries/photo5.jpg",
+            titre: "Saumon gastronomique"
+        },
+
+        {
+            image: "/images/imagesGaleries/photo6.jpg",
+            titre: "Dessert raffiné"
+        },
+
+        {
+            image: "/images/imagesGaleries/photo7.jpg",
+            titre: "Cuisine généreuse"
+        },
+
+        {
+            image: "/images/imagesGaleries/photo8.jpg",
+            titre: "Réception gastronomique"
+        },
+
+        {
+            image: "/images/imagesGaleries/photo9.jpg",
+            titre: "Nos créations culinaires"
+        },
+
+        {
+            image: "/images/imagesGaleries/photo10.jpg",
+            titre: "Dressage gastronomique"
+        },
+
+        {
+            image: "/images/imagesGaleries/photo11.jpg",
+            titre: "Viande gastronomique"
+        }
+
+    ];
+
+
+    /* ==========================================
+       9. AFFICHAGE DE LA GALERIE
+       ========================================== */
+
+    function afficherGalerie() {
+
+        if (!galerieMenus) return;
+
+        const fragment = document.createDocumentFragment();
+
+        photosGalerie.forEach((photo) => {
+
+            const figure = document.createElement("figure");
+            figure.className = "menusGalerieItem";
+
+
+            /* IMAGE */
+
+            const image = document.createElement("img");
+
+            image.src = photo.image;
+            image.alt = photo.titre;
+
+            image.loading = "lazy";
+            image.decoding = "async";
+
+
+            /* LÉGENDE */
+
+            const legende = document.createElement("figcaption");
+            legende.textContent = photo.titre;
+
+
+            /* ASSEMBLAGE */
+
+            figure.append(image, legende);
+            fragment.appendChild(figure);
+
+        });
+
+        galerieMenus.replaceChildren(fragment);
+
+    }
+
+
+    /* ==========================================
+       10. INITIALISATION DE LA GALERIE
+       ========================================== */
+
+    afficherGalerie();
+
+})();

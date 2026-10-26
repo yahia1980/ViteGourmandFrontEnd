@@ -1,23 +1,39 @@
 
 
-/*==========================
-Mobile
-=============================*/
+/* TABLETTE ET ORDINATEUR */
+
+@media (min-width: 768px) {
+    .headingPres {
+        min-height: 300px;
+        padding: 35px;
+    }
+}
+
+@media (min-width: 980px) {
+    .headingPres {
+        min-height: 360px;
+    }
+}
 
 
-/* bannière */
+
+/* ==========================================
+   1. BANNIÈRE - GALERIE ORIGINALE
+========================================== */
+
 .banniereContainer {
     width: 90%;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, minmax(50px,auto));
+    grid-template-rows: repeat(8, minmax(50px, auto));
     margin: 40px auto;
 }
+
 .banniere {
-   display: block;
-   width: 100%;
-   height: 100%;
-   object-fit: cover;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .banniereImage1 {
@@ -25,278 +41,429 @@ Mobile
     grid-row: 2 / 6;
     z-index: 14;
 }
+
 .banniereImage2 {
     grid-column: 4 / 10;
     grid-row: 3 / 9;
     z-index: 12;
 }
+
 .banniereImage3 {
     grid-column: 1 / 6;
     grid-row: 5 / 8;
     z-index: 8;
 }
+
 .banniereImage4 {
     grid-column: 1 / 6;
     grid-row: 2 / 5;
     z-index: 13;
 }
+
 .banniereImage5 {
     grid-column: 5 / 11;
     grid-row: 3 / 5;
     z-index: 15;
 }
+
 .banniereImage6 {
     grid-column: 3 / 12;
     grid-row: 1 / 4;
     z-index: 10;
 }
-/* présentation */
 
-.headingPres {
-    margin: auto;
-    width: 90%;
-    height: 50px;
-    padding: 10px;
-    background-color: var(--bleue);
-    margin-block: 45px;
-}
-.headingPres h2 {
-    color: var(--white);
-    text-align: center;
-    font-size: 1.3rem;
-    font-weight: 600;
-    font-style: italic;
-}
 
-.textCont h2 {
-    color: var(--bleue);
-    text-align: center;
-    margin-bottom: 20px;
-    text-decoration: underline;
-    text-underline-offset: 10px;
-}
+/* ==========================================
+   2. PRÉSENTATION
+========================================== */
 
-.textCont p, .avisContainer p {
-    padding-bottom: 20px;
-    width: 90%;
-    margin: 10px auto;
-    color: var(--bleue);
-    font-size: 0.9rem;
-    font-style: italic;
-    font-weight: 300;
-}
-.textCont a {
-width: 100%;
-display: inline-flex;
-justify-content: center;
-margin-bottom: 20px;
-}
-/* avis clients */
+.presentation {
+    width: min(92%, 1200px);
+    margin: 60px auto;
 
-.avisContainer {
-    width: 90%;
-    margin: 15px auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 25px;
     align-items: center;
 }
 
-.avisContainer h2 {
-    color: var(--bleue);
-    margin-bottom: 10px;
+.headingPres {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 130px;
+    padding: 25px;
+    box-sizing: border-box;
+
+    background-color: var(--bleue);
+    border-radius: 12px;
 }
+
+.headingPres h1,
+.headingPres h2 {
+    margin: 0;
+    color: var(--white);
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.textCont {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 0;
+}
+
+.textCont h2 {
+    margin: 0 0 25px;
+    color: var(--bleue);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    text-align: left;
+    text-decoration: none;
+}
+
+.textCont h2::after {
+    content: "";
+    display: block;
+    width: 65px;
+    height: 3px;
+    margin-top: 10px;
+    background-color: var(--bleue);
+}
+
+.textCont p {
+    width: 100%;
+    margin: 0 0 18px;
+    padding: 0;
+
+    color: var(--bleue);
+    font-size: 1rem;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.8;
+}
+
+.textCont a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: auto;
+    max-width: 100%;
+    margin: 15px 0 0;
+    padding: 13px 25px;
+    box-sizing: border-box;
+
+    border: 2px solid var(--bleue);
+    border-radius: 8px;
+
+    color: var(--bleue);
+    font-weight: 600;
+    text-decoration: none;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.textCont a:hover {
+    background-color: var(--bleue);
+    color: var(--white);
+}
+
+.textCont a:focus-visible {
+    outline: 3px solid var(--bleue);
+    outline-offset: 4px;
+}
+
+
+/* ==========================================
+   3. AVIS CLIENTS
+========================================== */
+
+.avisContainer {
+    width: min(92%, 1000px);
+    margin: 60px auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.avisContainer h2 {
+    margin: 0 0 10px;
+    color: var(--bleue);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    text-align: center;
+}
+
 .avisPersonne {
     width: 100%;
-    border-top: 2px solid var(--bleue);
-    border-bottom: 2px solid var(--bleue);
-    margin: 0 auto;
-    padding: 20px 0;
-    transition: var(--transition);
+    min-width: 0;
+    padding: 30px 25px;
+    box-sizing: border-box;
+
+    border: 1px solid var(--bleue);
+    border-radius: 14px;
+    background-color: var(--white);
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
 }
+
+.avisPersonne p {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    color: var(--bleue);
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.8;
+    text-align: center;
+}
+
 .avisPersonne span {
-   display: inline-flex;
-   color: var(--bleue);
-   width: 100%;
-   padding: 5px 0;
-   align-items: center;
-   justify-content: center;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding: 0;
+
+    color: var(--bleue);
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
 }
-.avisPersonne2, .avisPersonne3 {
+
+/* Un seul avis visible au départ */
+
+.avisPersonne2,
+.avisPersonne3 {
     display: none;
 }
 
+
+/* ==========================================
+   4. INDICATEURS DU CARROUSEL
+========================================== */
+
 .avisRatio {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    margin-top: -9px;
-}
-.ratio {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    border: 1px solid var(--bleue);
-    background-color: var(--white);
-}
+    gap: 12px;
 
-
-/* ==========================================================================
-   2. TABLETTES (À partir de 768px)
-   ========================================================================== */
-@media (min-width: 768px) {
- .banniereContainer {
-    height: 650px;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, minmax(20px,1fr));
-  
-}
-.banniereImage1 {
-    grid-column: 1 / 5;
-    grid-row: 1 / 6;
-    z-index: 14;
-}
-.banniereImage2 {
-    grid-column: 3 /9;
-    grid-row: 6 / 9;
-    z-index: 12;
-}
-.banniereImage3 {
-    grid-column: 1 / 9;
-    grid-row: 5 / 9;
-    z-index: 8;
-}
-.banniereImage4 {
-    grid-column: 5 / 9;
-    grid-row: 1 / 3;
-    z-index: 13;
-}
-.banniereImage5 {
-    grid-column: 7 / 9;
-    grid-row: 3 / 7;
-    z-index: 15;
-}
-.banniereImage6 {
-    grid-column: 3 / 9;
-    grid-row: 1 / 9;
-    z-index: 10;
-}
-.headingPres h2, .avisContainer h2 {
-    font-size: 1.5rem;
-}
-
-.textCont h3 {
- font-size: 1.3rem;
-}
-
-.textCont p, .avisContainer p {
- font-size: 1.1rem;
-}
-.textCont a {
-font-size: 1.2rem;
-}
-.avisRatio {
     width: 100%;
-    margin-top: -12px;
+    margin: 5px 0 0;
 }
+
 .ratio {
-    width: 20px;
-    height: 20px;
-}
+    display: block;
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    flex-shrink: 0;
+
+    border: 2px solid var(--bleue);
+    border-radius: 50%;
+    background-color: var(--white);
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
 }
 
-/* ==========================================================================
-   2. TABLETTES (À partir de 980px)
-   ========================================================================== */
+.ratio:hover {
+    transform: scale(1.15);
+}
+
+.ratio[aria-pressed="true"] {
+    background-color: var(--bleue);
+}
+
+.ratio:focus-visible {
+    outline: 2px solid var(--bleue);
+    outline-offset: 4px;
+}
+
+
+/* ==========================================
+   5. TABLETTE - À PARTIR DE 768px
+========================================== */
+
+@media (min-width: 768px) {
+
+    /* GALERIE ORIGINALE */
+
+    .banniereContainer {
+        height: 650px;
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(8, minmax(20px, 1fr));
+    }
+
+    .banniereImage1 {
+        grid-column: 1 / 5;
+        grid-row: 1 / 6;
+        z-index: 14;
+    }
+
+    .banniereImage2 {
+        grid-column: 3 / 9;
+        grid-row: 6 / 9;
+        z-index: 12;
+    }
+
+    .banniereImage3 {
+        grid-column: 1 / 9;
+        grid-row: 5 / 9;
+        z-index: 8;
+    }
+
+    .banniereImage4 {
+        grid-column: 5 / 9;
+        grid-row: 1 / 3;
+        z-index: 13;
+    }
+
+    .banniereImage5 {
+        grid-column: 7 / 9;
+        grid-row: 3 / 7;
+        z-index: 15;
+    }
+
+    .banniereImage6 {
+        grid-column: 3 / 9;
+        grid-row: 1 / 9;
+        z-index: 10;
+    }
+
+    /* PRÉSENTATION */
+
+    .presentation {
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1.4fr);
+
+        gap: 35px;
+        margin: 80px auto;
+    }
+
+    .headingPres {
+        min-height: 300px;
+        padding: 35px;
+    }
+
+    .textCont {
+        padding: 20px 0;
+    }
+
+    .textCont p {
+        font-size: 1.05rem;
+    }
+
+    /* AVIS */
+
+    .avisContainer {
+        margin: 80px auto;
+    }
+
+    .avisPersonne {
+        width: 85%;
+        padding: 35px 45px;
+    }
+
+    .avisPersonne p {
+        font-size: 1.1rem;
+    }
+
+    .ratio {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+
+/* ==========================================
+   6. ORDINATEUR - À PARTIR DE 980px
+========================================== */
+
 @media (min-width: 980px) {
- .banniereContainer {
-    width: 80%;
-    height: 650px;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: repeat(12, minmax(20px,1fr));
-  
-}
-.banniereImage1 {
-    grid-column: 2 / 5;
-    grid-row: 2 / 9;
 
-}
-.banniereImage2 {
-    grid-column: 8 /12;
-    grid-row: 2 / 9;
-   
-}
-.banniereImage3 {
-    grid-column: 1 / 11;
-    grid-row: 1 / 11;
+    /* GALERIE ORIGINALE */
 
-}
-.banniereImage4 {
-    grid-column: 7 / 13;
-    grid-row: 1 / 4;
+    .banniereContainer {
+        width: 80%;
+        height: 650px;
 
-}
-.banniereImage5 {
-    grid-column: 5 / 8;
-    grid-row: 7 / 12;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(12, minmax(20px, 1fr));
+    }
 
-}
-.banniereImage6 {
-    grid-column: 3 / 9;
-    grid-row: 1 / 9;
-  
-}
-.presentation {
-    margin: 0 auto;
-    width: 95%;
-    height: 400px;
-    display: flex;
-    align-items: center;
-}
-.headingPres  {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 450px;
-    height: 250px;
-    margin-right: -35px;
-}
-.headingPres h2 {
-    font-size: 2.2rem;
+    .banniereImage1 {
+        grid-column: 2 / 5;
+        grid-row: 2 / 9;
+    }
+
+    .banniereImage2 {
+        grid-column: 8 / 12;
+        grid-row: 2 / 9;
+    }
+
+    .banniereImage3 {
+        grid-column: 1 / 11;
+        grid-row: 1 / 11;
+    }
+
+    .banniereImage4 {
+        grid-column: 7 / 13;
+        grid-row: 1 / 4;
+    }
+
+    .banniereImage5 {
+        grid-column: 5 / 8;
+        grid-row: 7 / 12;
+    }
+
+    .banniereImage6 {
+        grid-column: 3 / 9;
+        grid-row: 1 / 9;
+    }
+
+    /* PRÉSENTATION */
+
+    .presentation {
+        grid-template-columns:
+            minmax(0, 0.9fr)
+            minmax(0, 1.5fr);
+
+        gap: 60px;
+    }
+
+    .headingPres {
+        min-height: 360px;
+    }
+
+    .textCont p {
+        font-size: 1.05rem;
+    }
+
+    /* AVIS */
+
+    .avisPersonne {
+        width: 75%;
+        padding: 40px 55px;
+    }
+
+    .avisPersonne span {
+        font-size: 1.1rem;
+    }
 }
 
-.textCont h2 {
- font-size: 1.5rem;
-}
-
-.textCont p{
- width:80%;
-}
-.avisContainer {
-    width: 80%;
-    margin: 0 auto;
-}
-
-.avisContainer h2 {
-   font-size: 1.8rem;
-}
-.avisPersonne {
-    width: 80%;
-    border-top: 2px solid var(--bleue);
-    border-bottom: 2px solid var(--bleue);
-    margin: 10px auto;
-}
-.avisPersonne p {
-   width: 70%;
-   font-size: 1.1rem;
-   margin: 0 auto;
-}
-.avisPersonne span {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-.avisRatio {
-    margin-top: -21px;
-}
-}

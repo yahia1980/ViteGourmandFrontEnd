@@ -1,67 +1,145 @@
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite&Gourmand</title>
+
+    <meta name="description"
+          content="Vite & Gourmand, service traiteur à Bordeaux. Découvrez nos menus pour vos événements.">
+
+    <title>Vite & Gourmand | Service traiteur</title>
+
+    <!-- CSS GLOBAL -->
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/header.css">
     <link rel="stylesheet" href="/src/css/footer.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css"
-        integrity="sha512-x9WwyMYBnlXMNQ6kQ/Lyzu1NqIhLQKL5Oq6xByfXuRj7s9CskyCbLv/1IjqzJmXwFXWr0ov6jBV7Qbc0hh9nHg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css"
+          integrity="sha512-x9WwyMYBnlXMNQ6kQ/Lyzu1NqIhLQKL5Oq6xByfXuRj7s9CskyCbLv/1IjqzJmXwFXWr0ov6jBV7Qbc0hh9nHg=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
 </head>
+
 <body>
+
     <div class="container">
+
+        <!-- =========================
+             HEADER
+        ========================= -->
+
         <header>
+
             <div class="containerHeader">
+
+                <!-- LOGO -->
                 <div class="logo">
-                    Vite<span class="logo_vG">&</span><br>Gourmand
+                    Vite<span class="logo_vG">&amp;</span><br>
+                    Gourmand
                 </div>
-                <button type="button" id="hamburger" class="hamburger" aria-label="Ouvrir le menu">
+
+                <!-- MENU HAMBURGER -->
+                <button
+                    type="button"
+                    id="hamburger"
+                    class="hamburger"
+                    aria-label="Ouvrir le menu"
+                    aria-controls="navbar"
+                    aria-expanded="false">
+
                     <span class="topLine"></span>
                     <span class="mediumLine"></span>
                     <span class="bottomLine"></span>
+
                 </button>
+
             </div>
-            <nav id="navbar" class="navbar">
+
+            <!-- NAVIGATION -->
+            <nav id="navbar"
+                 class="navbar"
+                 aria-label="Navigation principale">
+
                 <ul>
                     <li>
                         <a href="/">Accueil</a>
                     </li>
+
                     <li>
                         <a href="/menus">Menus</a>
                     </li>
+
                     <li>
                         <a href="/contact">Contact</a>
                     </li>
+
                     <li>
                         <a href="/reserver">Réservation</a>
                     </li>
+
                     <li>
-                        <a href="/connexion" id="authLink">Connexion</a>
+                        <a href="/connexion" id="authLink">
+                            Connexion
+                        </a>
                     </li>
                 </ul>
+
             </nav>
+
         </header>
-        <h1>Service traiteur</h1>
+
+        <!-- =========================
+             CONTENU PRINCIPAL SPA
+        ========================= -->
+
         <main id="main-page"></main>
+
+        <!-- =========================
+             FOOTER
+        ========================= -->
+
         <footer>
+
             <div class="containerFooter full_width">
+
+                <!-- HORAIRES -->
                 <div class="horaire center flexColumn">
-                    <h4>Horaires</h4>
-                    <p>Du Lundi au Dimanche.</p>
-                    <p>horaires libres</p>
+
+                    <h2>Horaires</h2>
+
+                    <p>Du lundi au dimanche</p>
+                    <p>Horaires libres</p>
+
                 </div>
+
+                <!-- INFORMATIONS -->
                 <div class="information center flexColumn">
-                    <h4>Informations</h4>
-                    <a href="/mention-legale">Mentions légales</a>
-                    <a href="/cgv">CGV</a>
+
+                    <h2>Informations</h2>
+
+                    <a href="/mention-legale">
+                        Mentions légales
+                    </a>
+
+                    <a href="/cgv">
+                        Conditions générales de vente
+                    </a>
+
                 </div>
+
             </div>
+
         </footer>
+
     </div>
-     <script type="module" src="/Router/router.js"></script>
+
+    <!-- ROUTEUR SPA -->
+    <script type="module" src="/Router/router.js"></script>
+    <script type="module" src="/src/js/valide-form.js"></script>
+
 </body>
 </html>

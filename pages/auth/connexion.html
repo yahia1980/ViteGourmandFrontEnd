@@ -1,30 +1,101 @@
-<div class="formConnexion">
-  <div class="imageConnexion">
-    <h2 class="bigTitleConnexion">Connexion</h2>
-    <img
-      src="/images/imagesBanniere/chef-traiteur.jpg"
-      alt="Un plat préparé par Vite&Gourmand"
-    />
-  </div>
-  <div class="connexionGrid">
-    <form  form id="formConnexion">
-      <div class="formConnexionMail">
-        <label for="email"><i class="fa-solid fa-at"></i> Email </label>
-        <input type="email" id="email" name="email" required />
-      </div>
-      <div class="passwordFormConnexion">
-        <label for="password"
-          ><i class="fa-solid fa-lock"></i> Mot de passe
-        </label>
-        <input type="password" id="password" name="mdp" required />
-      </div>
-      <div class="btnConnexion">
-        <button type="submit" class="btnCon connexionBtn">Connexion</button>
-        <div class="lienConnexion">
-          <a href="/mdp_oublie">Mot de passe oublié</a>
-          <a href="/inscription">S'inscrire</a>
-        </div>
-      </div>
-    </form>
-  </div>
+
+<section class="formConnexion">
+
+    <!-- IMAGE ET TITRE -->
+    <div class="imageConnexion">
+
+        <h1 class="bigTitleConnexion">Connexion</h1>
+
+        <img
+            src="/images/imagesBanniere/chef-traiteur.jpg"
+            alt="Présentation du service traiteur Vite & Gourmand"
+        />
+
+    </div>
+
+    <!-- FORMULAIRE DE CONNEXION -->
+    <div class="connexionGrid">
+
+        <form id="formConnexion" method="post">
+
+            <!-- EMAIL -->
+            <div class="formConnexionMail">
+
+                <label for="email">
+                    <i class="fa-solid fa-at" aria-hidden="true"></i>
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    autocomplete="email"
+                    placeholder="Votre adresse email"
+                    required
+                />
+
+            </div>
+
+            <!-- MOT DE PASSE -->
+            <!-- MOT DE PASSE -->
+<div class="passwordFormConnexion">
+
+    <label for="password">
+        <i class="fa-solid fa-lock" aria-hidden="true"></i>
+        Mot de passe
+    </label>
+
+    <div class="passwordField">
+
+        <input
+            type="password"
+            id="password"
+            name="mdp"
+            autocomplete="current-password"
+            placeholder="Votre mot de passe"
+            required
+        />
+
+        <button
+            type="button"
+            class="togglePassword"
+            aria-label="Afficher le mot de passe"
+            aria-pressed="false"
+            aria-controls="password"
+        >
+            <i class="fa-solid fa-eye" aria-hidden="true"></i>
+        </button>
+
+    </div>
+
 </div>
+
+            <!-- BOUTON ET LIENS -->
+            <div class="btnConnexion">
+
+                <button
+                    type="submit"
+                    class="btnCon connexionBtn">
+                    Se connecter
+                </button>
+
+                <div class="lienConnexion">
+
+                    <a href="/mdp_oublie">
+                        Mot de passe oublié ?
+                    </a>
+
+                    <a href="/inscription">
+                        S'inscrire
+                    </a>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>

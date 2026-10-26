@@ -1,110 +1,291 @@
 
-/* ==========================================================================
-    Mobile 
-   ========================================================================== */
+/* ==========================================
+   PAGE RÉSERVATION - MOBILE FIRST
+========================================== */
 
 .reserverForm {
     width: 95%;
-    margin: 0 auto;
-    min-height: 700px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    max-width: 1250px;
+    margin: 30px auto 70px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "image"
+        "form";
+
+    gap: 30px;
+    align-items: start;
 }
 
-
-.reserverGrid {
-    width: 90%;
-    margin-inline: auto;
-    order: 2;
-}
-
+/* ==========================================
+   IMAGE ET TITRE
+========================================== */
 
 .imageReserver {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    height: 200px;
+    grid-area: image;
+
     position: relative;
-    order: 1;
+    width: 100%;
+    height: 220px;
+    min-width: 0;
+
+    overflow: hidden;
+    border-radius: 12px;
 }
 
 .imageReserver img {
+    display: block;
     width: 100%;
     height: 100%;
+
     object-fit: cover;
     object-position: center;
-    filter: brightness(0.4);
+    filter: brightness(0.45);
 }
 
 .bigTitleResever {
     position: absolute;
-    text-align: center;
-    z-index: 100;
     top: 50%;
     left: 50%;
+    z-index: 1;
+
+    width: 90%;
+    margin: 0;
+
     transform: translate(-50%, -50%);
+
     color: var(--white);
-    font-size: 2rem;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
+/* ==========================================
+   CONTENEUR DU FORMULAIRE
+========================================== */
+
+.reserverGrid {
+    grid-area: form;
+
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+}
+
+.reserverGrid .titleForm {
+    margin: 0 0 30px;
+
+    color: var(--bleue);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    text-align: center;
+}
+
+/* ==========================================
+   FORMULAIRE PRINCIPAL
+========================================== */
+
+#formReserver {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 30px;
+}
+
+/* ==========================================
+   SECTIONS DU FORMULAIRE
+========================================== */
+
+.reserverSection {
+    min-width: 0;
+    margin: 0;
+    padding: 25px 18px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+
+    border: 1px solid var(--bleue);
+    border-radius: 10px;
+}
+
+.reserverSection legend {
+    padding: 0 10px;
+
+    color: var(--bleue);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* ==========================================
+   GROUPES DE CHAMPS
+========================================== */
+
+.reserverSection > div {
+    min-width: 0;
+    margin: 0;
+}
 
 .reserverGrid label {
-    margin-top: 10px;
-    font-size: 1.1rem;
-    font-weight: 500;
+    display: block;
+    margin: 0 0 8px;
+
+    color: var(--bleue);
+    font-size: 1rem;
+    font-weight: 700;
 }
 
+/* ==========================================
+   INPUT, SELECT ET TEXTAREA
+========================================== */
+
+.reserverGrid input,
+.reserverGrid select,
+.reserverGrid textarea {
+    display: block;
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 12px;
+
+    box-sizing: border-box;
+
+    color: var(--black);
+    background-color: var(--white);
+
+    border: 1px solid var(--bleue);
+    border-radius: 6px;
+
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+}
 
 .reserverGrid select {
+    cursor: pointer;
+}
+
+.reserverGrid textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.reserverGrid input:focus,
+.reserverGrid select:focus,
+.reserverGrid textarea:focus {
+    outline: 2px solid var(--bleue);
+    outline-offset: 2px;
+}
+
+.reserverGrid input::placeholder,
+.reserverGrid textarea::placeholder {
+    color: #777;
+}
+
+.reserverGrid small {
+    display: block;
+    margin-top: 8px;
+
+    color: var(--bleue);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   OPTIONS SUPPLÉMENTAIRES
+========================================== */
+
+.reserverGrid .form-group {
     width: 100%;
-    margin-top: 5px;
-    background-color: var(--bleue);
-    padding: 10px;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    color: var(--white);
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+}
+
+.reserverGrid .form-group > div {
+    min-width: 0;
+}
+
+/* ==========================================
+   RÉCAPITULATIF DE COMMANDE
+========================================== */
+
+.recapitulatifCommande {
+    width: 100%;
+    min-width: 0;
+    padding: 25px 20px;
+
     box-sizing: border-box;
+
+    background-color: #f8fafc;
+    border: 1px solid var(--bleue);
+    border-radius: 10px;
 }
 
-.reserverGrid option {
-    background-color: var(--white);
+.recapitulatifCommande h3 {
+    margin: 0 0 25px;
+
     color: var(--bleue);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
 }
 
+.recapitulatifCommande p {
+    margin: 0;
+    padding: 12px 0;
 
-.btnConnexion {
-    margin-block: 25px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 15px;
+
+    color: var(--black);
+    font-size: 0.95rem;
+    line-height: 1.5;
+
+    border-bottom: 1px solid #d5dce3;
 }
 
-
-.lienConnexion {
-    margin-block: 35px;
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.lienConnexion a {
+.recapitulatifCommande strong {
     color: var(--bleue);
-    transition: opacity var(--transition);
+    font-weight: 700;
+    text-align: right;
 }
 
-.lienConnexion a:hover {
-    opacity: 0.7;
-    text-decoration: underline;
-    text-underline-offset: 10px;
+.recapitulatifCommande .totalCommande {
+    margin-top: 15px;
+    padding-top: 20px;
+
+    color: var(--bleue);
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    border-top: 2px solid var(--bleue);
+    border-bottom: none;
 }
 
+.recapitulatifCommande #messageCommande {
+    display: block;
+    padding: 0;
+    margin-top: 15px;
+
+    color: var(--bleue);
+    text-align: center;
+    border: none;
+}
+
+/* ==========================================
+   BOUTONS
+========================================== */
 
 .formReserverEnvoi {
-    margin-block: 20px;
     width: 100%;
+    margin: 0;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -112,77 +293,181 @@
     gap: 15px;
 }
 
-.btnStyleCom {
-    width: 200px;
+.reserverGrid .btnStyleCom {
+    width: 100%;
+    max-width: 320px;
+    min-height: 46px;
+    padding: 12px 20px;
+
     box-sizing: border-box;
+
     background-color: var(--bleue);
-    padding: 10px 20px;
     color: var(--white);
-    font-weight: 900;
-    border-radius: 10px;
-    transition: var(--transition);
+
+    border: 1px solid var(--bleue);
+    border-radius: 8px;
+
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
-.btnStyleCom:hover {
+.reserverGrid .submitForm:hover:not(:disabled) {
+    background-color: #16803c;
+    color: var(--white);
+}
+
+.reserverGrid .restForm {
     background-color: var(--white);
     color: var(--bleue);
 }
 
-.fa-solid {
-    font-size: 1.2rem;
-    color: var(--bleue);
-    margin-right: 3px;
+.reserverGrid .restForm:hover {
+    background-color: #eef2f6;
 }
 
-/* ==========================================================================
-   À partir de 768px
-   ========================================================================== */
+.reserverGrid .submitForm:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
+.reserverGrid .btnStyleCom:focus-visible {
+    outline: 2px solid var(--bleue);
+    outline-offset: 4px;
+}
+
+/* ==========================================
+   TABLETTE - 768px
+========================================== */
 
 @media (min-width: 768px) {
 
-
-    .reserverGrid form {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
+    .reserverForm {
+        width: 90%;
+        margin: 60px auto 90px;
+        gap: 40px;
     }
 
-    .prenomForm,
-    .nomForm,
-    .formReserverAllergie,
-    .formNbrDeconvi {
-        flex: 1 1 calc(50% - 20px);
-        min-width: 0;
+    .imageReserver {
+        height: 300px;
     }
 
-   
-    .reserverGrid form > div:not(.form-group) {
-        display: flex;
-        flex-direction: column;
+    .reserverSection {
+        padding: 30px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 25px;
+        row-gap: 22px;
     }
 
-   
+    /* Champs sur toute la largeur */
+
+    .reserverSection .formReserverAdresse,
+    .reserverSection .formReserverLieu,
+    .reserverSection .formReserverMenu,
+    .reserverSection .formReserverAllergie,
+    .reserverSection .form-group {
+        grid-column: 1 / -1;
+    }
+
+    /* Options en trois colonnes */
+
     .reserverGrid .form-group {
-        display: flex;
-        flex: 1 1 100%;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 20px;
     }
 
-    .form-group > div {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .reserverGrid input,
-    .reserverGrid select {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
+    /* Boutons côte à côte */
 
     .formReserverEnvoi {
-        flex: 1 1 100%;
-        gap: 15px;
+        flex-direction: row;
+        gap: 20px;
     }
+
+    .reserverGrid .btnStyleCom {
+        width: 220px;
+    }
+}
+
+/* ==========================================
+   ORDINATEUR - 1100px
+========================================== */
+
+@media (min-width: 1100px) {
+
+    .reserverForm {
+        width: 85%;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 45px;
+    }
+
+    .imageReserver {
+        height: 350px;
+    }
+
+    .reserverGrid {
+        max-width: 1050px;
+        margin: 0 auto;
+    }
+
+    .reserverSection {
+        padding: 35px;
+        column-gap: 35px;
+    }
+
+    .recapitulatifCommande {
+        padding: 35px 40px;
+    }
+}
+
+/* ==========================================
+   ACCESSIBILITÉ
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .reserverGrid .btnStyleCom {
+        transition: none;
+    }
+}
+/* ==========================================
+   CORRECTION PRÉNOM, NOM ET EMAIL
+========================================== */
+
+.reserverGrid .formrReserverPrenom,
+.reserverGrid .formReserverNom,
+.reserverGrid .formReserverMail {
+    display: flex;
+    flex-direction: column;
+
+    grid-area: auto;
+    grid-column: auto;
+    grid-row: auto;
+
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+
+    position: static;
+    visibility: visible;
+    opacity: 1;
+}
+
+.reserverGrid .formrReserverPrenom label,
+.reserverGrid .formReserverNom label,
+.reserverGrid .formReserverMail label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.reserverGrid .formrReserverPrenom input,
+.reserverGrid .formReserverNom input,
+.reserverGrid .formReserverMail input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }

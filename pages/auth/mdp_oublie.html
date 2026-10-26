@@ -1,24 +1,41 @@
-<div class="formMdpOublie">
-  <h2 class="titleForm">Changement de mot de passe</h2>
+<section class="formMdpOublie">
+  <h1 class="titleForm">Mot de passe oublié ?</h1>
+
+  <p class="descriptionMdpOublie">
+    Saisissez votre adresse email pour recevoir un lien de réinitialisation de
+    votre mot de passe.
+  </p>
+
   <div class="mdpoublieGrid">
-    <form>
+    <form id="formMdpOublie" method="post">
+      <!-- EMAIL -->
       <div class="formMdpOublieMail">
-        <label for="email"><i class="fa-solid fa-at"></i> Email </label>
-        <input type="email" id="email" name="email" required />
-      </div>
-      <div class="passwordFormMdpOublie">
-        <label for="password"
-          ><i class="fa-solid fa-lock"></i>Noveau mot de passe
+        <label for="email">
+          <i class="fa-solid fa-at" aria-hidden="true"></i>
+          Email
         </label>
-        <input type="password" id="password" name="mdp" required />
+
+        <input
+          type="email"
+          id="email"
+          name="email"
+          autocomplete="email"
+          placeholder="Votre adresse email"
+          required
+        />
       </div>
+      <div id="messageMdpOublie" role="status" aria-live="polite"></div>
+
+      <!-- BOUTON ET LIENS -->
       <div class="btnMdpOublie">
-        <button type="submit" class="btnStyleCh">Changer le mot de passe</button>
+        <button type="submit" class="btnStyleCh">
+          Recevoir le lien de réinitialisation
+        </button>
+
         <div class="lienCompte">
-           <a href="/compte">Retour à mon compte</a>
+          <a href="/connexion"> Retour à la connexion </a>
         </div>
-       
       </div>
     </form>
   </div>
-</div>
+</section>

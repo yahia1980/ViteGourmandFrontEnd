@@ -1,107 +1,194 @@
-<div class="inscriptionForm">
-        <div class="inscriptionGrid">
-            <h3 class="titleForm">Inscrivez-vous</h3>
-    <form>
+
+<section class="inscriptionForm">
+
+    <!-- FORMULAIRE D'INSCRIPTION -->
+    <div class="inscriptionGrid">
+
+        <h2 class="titleForm">Inscrivez-vous</h2>
+
+        <form id="formInscription" method="post">
+
+            <!-- PRÉNOM -->
             <div class="prenomForm formInscriptionPrenom">
-                <label for="prenom">
-                Prénom
-                </label>
+                <label for="prenom">Prénom</label>
                 <input
-                type="text"
-                id="prenom"
-                name="prenom"
-                required>
+                    type="text"
+                    id="prenom"
+                    name="prenom"
+                    autocomplete="given-name"
+                    required
+                >
             </div>
+
+            <!-- NOM -->
             <div class="nomForm formInscriptionNom">
-                <label for="nom">
-                Nom
-                </label>
+                <label for="nom">Nom</label>
                 <input
-                type="text"
-                id="nom"
-                name="nom"
-                required>
+                    type="text"
+                    id="nom"
+                    name="nom"
+                    autocomplete="family-name"
+                    required
+                >
             </div>
+
+            <!-- EMAIL -->
             <div class="mailForm formInscriptionMail">
-                <label for="email">
-                Email
-                </label>
+                <label for="email">Email</label>
                 <input
-                type="email"
-                id="email"
-                name="email"
-                required >
-            </div>         
+                    type="email"
+                    id="email"
+                    name="email"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <!-- TÉLÉPHONE -->
             <div class="telForm">
-                <label for="tel">
-                Téléphone
-                </label>
+                <label for="tel">Téléphone</label>
                 <input
-                type="tel"
-                id="tel"
-                name="tel"
-                required>
-            </div>                 
+                    type="tel"
+                    id="tel"
+                    name="tel"
+                    autocomplete="tel"
+                    required
+                >
+            </div>
+
+            <!-- ADRESSE -->
             <div class="addressForm">
-                <label for="address">
-                Adresse
-                </label>
+                <label for="address">Adresse</label>
                 <input
-                type="text"
-                id="address"
-                name="address"
-                required>
-            </div>         
+                    type="text"
+                    id="address"
+                    name="address"
+                    autocomplete="street-address"
+                    required
+                >
+            </div>
+
+            <!-- VILLE -->
             <div class="villeForm">
-                <label for="ville">
-                Ville
-                </label>
+                <label for="ville">Ville</label>
                 <input
-                type="text"
-                id="ville"
-                name="ville"
-                required>
+                    type="text"
+                    id="ville"
+                    name="ville"
+                    autocomplete="address-level2"
+                    required
+                >
             </div>
-               <div class="postaleForm">
-                <label for="postale">
-                Code postale
-                </label>
+
+            <!-- CODE POSTAL -->
+            <div class="postaleForm">
+                <label for="postale">Code postal</label>
                 <input
-                type="text"
-                id="postale"
-                name="postale"
-                inputmode="numeric"
-                required>
-            </div>         
-            <div class="passwordForm">
-                <label for="password">
-                Mot de passe
-                </label>
-                <input type="password"
-                id="password"
-                name="mdp"
-                required>
-            </div>  
-             <div class="confirmPasswordForm">
-                <label for="confirmPassword">
-                Confirmer le mot de passe
-                </label>
-                <input type="password"
-                id="confirmPassword"
-                name="confirmMdp"
-                required>
-            </div>                
+                    type="text"
+                    id="postale"
+                    name="postale"
+                    inputmode="numeric"
+                    autocomplete="postal-code"
+                    pattern="[0-9]{5}"
+                    maxlength="5"
+                    title="Saisissez un code postal à 5 chiffres"
+                    required
+                >
+            </div>
+
+            <!-- MOT DE PASSE -->
+<div class="passwordForm">
+
+    <label for="password">Mot de passe</label>
+
+    <div class="passwordField">
+
+        <input
+            type="password"
+            id="password"
+            name="mdp"
+            autocomplete="new-password"
+            data-validate-password
+            minlength="12"
+            required
+        >
+
+        <button
+            type="button"
+            class="togglePassword"
+            aria-label="Afficher le mot de passe"
+            aria-pressed="false"
+            aria-controls="password"
+        >
+            <i class="fa-solid fa-eye" aria-hidden="true"></i>
+        </button>
+
+    </div>
+
+</div>
+
+<!-- CONFIRMATION DU MOT DE PASSE -->
+<div class="confirmPasswordForm">
+
+    <label for="confirmPassword">
+        Confirmer le mot de passe
+    </label>
+
+    <div class="passwordField">
+
+        <input
+            type="password"
+            id="confirmPassword"
+            name="confirmMdp"
+            autocomplete="new-password"
+            data-confirm-password="password"
+            minlength="12"
+            required
+        >
+
+        <button
+            type="button"
+            class="togglePassword"
+            aria-label="Afficher la confirmation du mot de passe"
+            aria-pressed="false"
+            aria-controls="confirmPassword"
+        >
+            <i class="fa-solid fa-eye" aria-hidden="true"></i>
+        </button>
+
+    </div>
+
+</div>
+<div
+    id="messageInscription"
+    role="status"
+    aria-live="polite">
+</div>
+            <!-- BOUTON D'INSCRIPTION -->
             <div class="InscriptionEnvoi">
-                <button type="submit" id="submitForm" class="btnStyleCom">S'inscrire</button>
+                <button
+                    type="submit"
+                    id="submitForm"
+                    class="btnStyleCom">
+                    S'inscrire
+                </button>
             </div>
-               </form>
-        </div>      
- 
-<div class="imageInscription">
-    <h2 class="bigTitleInscription">Inscription</h2>
-    <img
-        src="/images/imagesBanniere/imageInscription.jpg"
-        alt="Un plat préparé par Vite&Gourmand"
-    >
-</div>
-</div>
+
+        </form>
+
+    </div>
+
+    <!-- IMAGE ET TITRE PRINCIPAL -->
+    <div class="imageInscription">
+
+        <h1 class="bigTitleInscription">Inscription</h1>
+
+        <img
+            src="/images/imagesBanniere/imageInscription.jpg"
+            alt="Présentation du service traiteur Vite & Gourmand"
+        >
+
+    </div>
+
+</section>
+

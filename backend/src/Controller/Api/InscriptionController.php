@@ -90,6 +90,16 @@ final class InscriptionController extends AbstractController
                 'message' => 'Le mot de passe doit contenir au moins 12 caractères.'
             ], 400);
         }
+        if (
+            !preg_match('/[A-Z]/', $data['password']) ||
+            !preg_match('/[a-z]/', $data['password']) ||
+            !preg_match('/[0-9]/', $data['password']) ||
+            !preg_match('/[^A-Za-z0-9]/', $data['password'])
+        ) {
+            return $this->json([
+                'message' => 'Le mot de passe doit contenir une majuscule, une minuscule, un chiffre et un caractère spécial.'
+            ], 400);
+        }
 
         // Vérifier les longueurs des champs
         $longueurs = [

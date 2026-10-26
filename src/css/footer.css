@@ -1,26 +1,124 @@
+
+/* ==========================================
+   FOOTER - MOBILE FIRST
+========================================== */
+
 .containerFooter {
-display: flex;
-justify-content: space-around;
-align-items: center;
-min-height: 150px;
-margin-top: 105px;
-border-top: 1px solid var(--bleue);
-box-shadow: 0 0 3px var(--black);
+    width: 100%;
+    min-height: 180px;
+    margin-top: 60px;
+    padding: 35px 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+
+    background-color: #f8fafc;
+    border-top: 1px solid var(--bleue);
+    box-sizing: border-box;
 }
+
+/* ==========================================
+   BLOCS DU FOOTER
+========================================== */
 
 .horaire,
-.information { gap: 10px; }
-.horaire h4,
-.information h4 { font-size: 1.2rem; }
-.horaire p,
-.information p,
-.information a { color: var(--bleue); }
-
-@media (max-width: 600px) {
-.containerFooter { flex-direction: column; gap: 24px; padding: 24px 12px; text-align: center; }
-.horaire h4,
-.information h4 { font-size: 1rem; }
-.horaire p,
-.information p,
-.information a { font-size: 0.8rem; }
+.information {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
 }
+
+/* ==========================================
+   TITRES
+========================================== */
+
+.horaire h2,
+.information h2 {
+    margin: 0 0 8px;
+
+    color: var(--bleue);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* ==========================================
+   TEXTES ET LIENS
+========================================== */
+
+.horaire p,
+.information p,
+.information a {
+    margin: 0;
+
+    color: var(--bleue);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.information a {
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.information a:hover {
+    color: #16803c;
+    text-decoration: underline;
+}
+
+.information a:focus-visible {
+    outline: 2px solid var(--bleue);
+    outline-offset: 4px;
+}
+
+/* ==========================================
+   TABLETTE - 768px
+========================================== */
+
+@media (min-width: 768px) {
+
+    .containerFooter {
+        min-height: 180px;
+        margin-top: 80px;
+        padding: 35px 40px;
+
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: flex-start;
+        gap: 40px;
+    }
+
+    .horaire,
+    .information {
+        flex: 1;
+        max-width: 350px;
+    }
+
+    .horaire h2,
+    .information h2 {
+        font-size: 1.35rem;
+    }
+
+    .horaire p,
+    .information p,
+    .information a {
+        font-size: 1rem;
+    }
+}
+
+/* ==========================================
+   ORDINATEUR - 1100px
+========================================== */
+
+@media (min-width: 1100px) {
+
+    .containerFooter {
+        padding: 45px 60px;
+        gap: 80px;
+    }
+}
+

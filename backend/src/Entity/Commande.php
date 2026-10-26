@@ -67,11 +67,13 @@ class Commande
     private Collection $avis;
 
     public function __construct()
-    {
-        $this->historiqueStatutCommandes = new ArrayCollection();
-        $this->avis = new ArrayCollection();
-    }
+{
+    $this->historiqueStatutCommandes = new ArrayCollection();
+    $this->avis = new ArrayCollection();
 
+    $this->dateCommande = new \DateTimeImmutable();
+    $this->statut = 'en_attente';
+}
     public function getId(): ?int
     {
         return $this->id;

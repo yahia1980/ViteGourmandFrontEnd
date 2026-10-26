@@ -21,7 +21,11 @@ if (formConnexion) {
                     email,
                     password
                 })
+
             });
+                console.log("URL appelée :", response.url);
+                console.log("Statut HTTP :", response.status);
+                console.log("Redirection HTTP :", response.redirected);
 
             console.log("Statut connexion :", response.status);
 

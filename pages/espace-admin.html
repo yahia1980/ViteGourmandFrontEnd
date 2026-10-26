@@ -1,29 +1,341 @@
-<div>
-        <h2>Tableau de bord administrateur</h2>
 
-        <section id="statistiques">
-            <h3>Statistiques</h3>
-            <p>Nombre de commandes : <span id="nombre-commandes">—</span></p>
-            <p>Chiffre d'affaires : <span id="chiffre-affaires">—</span></p>
+<section class="espaceAdmin">
+
+    <!-- BANNIÈRE -->
+    <div class="adminBanniere">
+        <img
+            src="/images/imagesBanniere/admin.jpg"
+            alt="Équipe de cuisine Vite & Gourmand"
+        >
+
+        <div class="adminBanniereTexte">
+            <span>VITE & GOURMAND · DIRECTION</span>
+            <h1>Espace administrateur</h1>
+            <p>
+                Supervisez l'activité, les équipes
+                et les performances de l'entreprise.
+            </p>
+        </div>
+    </div>
+
+    <div class="adminContenu">
+
+        <!-- EN-TÊTE -->
+        <div class="adminEntete">
+            <div>
+                <p class="adminSurTitre">VUE D'ENSEMBLE</p>
+                <h2>Tableau de bord</h2>
+                <p>Votre espace de pilotage et d'administration.</p>
+            </div>
+
+            <span class="adminRole">
+                <i class="fa-solid fa-shield-halved"
+                   aria-hidden="true"></i>
+                Administrateur
+            </span>
+        </div>
+
+        <!-- INDICATEURS -->
+        <div class="adminStats">
+
+            <article class="adminStat">
+                <div class="adminStatIcone">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                </div>
+                <span>Commandes</span>
+                <strong id="adminTotalCommandes">—</strong>
+            </article>
+
+            <article class="adminStat">
+                <div class="adminStatIcone">
+                    <i class="fa-solid fa-euro-sign"></i>
+                </div>
+                <span>Chiffre d'affaires</span>
+                <strong id="adminChiffreAffaires">—</strong>
+            </article>
+
+            <article class="adminStat">
+                <div class="adminStatIcone">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <span>Employés actifs</span>
+                <strong id="adminTotalEmployes">—</strong>
+            </article>
+
+            <article class="adminStat">
+                <div class="adminStatIcone">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <span>Menus disponibles</span>
+                <strong id="adminTotalMenus">—</strong>
+            </article>
+
+        </div>
+
+        <!-- NAVIGATION -->
+        <section class="adminSection">
+
+            <div class="adminSectionEntete">
+                <h2>Gestion de l'entreprise</h2>
+                <p>Accédez aux fonctionnalités de votre espace.</p>
+            </div>
+
+            <div class="adminActions">
+
+                <article class="adminCarte">
+                    <div class="adminIcone">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <h3>Comptes employés</h3>
+                    <p>Créer et désactiver les comptes du personnel.</p>
+                    <a href="#adminEmployes">
+                        Gérer les employés
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </article>
+
+                <article class="adminCarte">
+                    <div class="adminIcone">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <h3>Statistiques</h3>
+                    <p>Comparer les commandes et le chiffre d'affaires.</p>
+                    <a href="#adminStatistiques">
+                        Voir les statistiques
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </article>
+
+                <article class="adminCarte">
+                    <div class="adminIcone">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                    </div>
+                    <h3>Commandes</h3>
+                    <p>Accéder au suivi opérationnel des commandes.</p>
+                    <a href="/espace-employe#employeCommandes">
+                        Gérer les commandes
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </article>
+
+                <article class="adminCarte">
+                    <div class="adminIcone">
+                        <i class="fa-solid fa-kitchen-set"></i>
+                    </div>
+                    <h3>Gestion quotidienne</h3>
+                    <p>Gérer les menus, plats, horaires et avis.</p>
+                    <a href="/espace-employe">
+                        Ouvrir l'espace employé
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </article>
+
+            </div>
         </section>
 
-        <section id="utilisateurs">
-            <h3>Gestion des utilisateurs</h3>
-            <div id="liste-utilisateurs"></div>
+        <!-- COMPTES EMPLOYÉS -->
+        <section class="adminPanel" id="adminEmployes">
+
+            <div class="adminSectionEntete">
+                <h2>Gestion des employés</h2>
+                <p>
+                    Créez les comptes employés et désactivez
+                    ceux qui ne doivent plus accéder à l'application.
+                </p>
+            </div>
+
+            <form id="formCreationEmploye" class="adminForm">
+
+                <div>
+                    <label for="nouvelEmployeEmail">
+                        Email professionnel
+                    </label>
+                    <input
+                        type="email"
+                        id="nouvelEmployeEmail"
+                        name="email"
+                        autocomplete="off"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label for="nouvelEmployePassword">
+                        Mot de passe initial
+                    </label>
+                    <input
+                        type="password"
+                        id="nouvelEmployePassword"
+                        name="password"
+                        autocomplete="new-password"
+                        minlength="12"
+                        required
+                    >
+                </div>
+
+                <div class="adminChampLarge">
+                    <button type="submit" class="adminBouton">
+                        <i class="fa-solid fa-user-plus"
+                           aria-hidden="true"></i>
+                        Créer le compte employé
+                    </button>
+                </div>
+
+                <div class="adminChampLarge">
+                    <p class="adminInformation">
+                        L'employé recevra un email l'informant
+                        de la création de son compte.
+                        Le mot de passe ne sera pas communiqué
+                        dans cet email.
+                    </p>
+                    <p id="messageCreationEmploye" role="status"></p>
+                </div>
+
+            </form>
+
+            <div class="adminSousSection">
+                <h3>Liste des comptes employés</h3>
+
+                <div class="adminTableWrapper">
+                    <table class="adminTable">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Statut</th>
+                                <th>Date de création</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="listeEmployesAdmin">
+                            <tr>
+                                <td colspan="4" class="adminVide">
+                                    Aucun compte chargé.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="adminInformation">
+                    Les actions d'activation ou de désactivation
+                    seront disponibles après chargement des comptes.
+                    Aucun compte administrateur ne peut être créé ici.
+                </p>
+            </div>
         </section>
 
-        <section id="commandes">
-            <h3>Toutes les commandes</h3>
-            <div id="liste-commandes"></div>
+        <!-- STATISTIQUES -->
+        <section class="adminPanel" id="adminStatistiques">
+
+            <div class="adminSectionEntete">
+                <h2>Statistiques des ventes</h2>
+                <p>
+                    Analysez les commandes par menu et
+                    le chiffre d'affaires sur une période.
+                </p>
+            </div>
+
+            <form id="formFiltresStatistiques" class="adminForm">
+
+                <div>
+                    <label for="adminDateDebut">
+                        Date de début
+                    </label>
+                    <input
+                        type="date"
+                        id="adminDateDebut"
+                        name="dateDebut"
+                    >
+                </div>
+
+                <div>
+                    <label for="adminDateFin">
+                        Date de fin
+                    </label>
+                    <input
+                        type="date"
+                        id="adminDateFin"
+                        name="dateFin"
+                    >
+                </div>
+
+                <div>
+                    <label for="adminFiltreMenu">
+                        Menu
+                    </label>
+                    <select
+                        id="adminFiltreMenu"
+                        name="menuId"
+                    >
+                        <option value="">
+                            Tous les menus
+                        </option>
+                        <!-- Menus depuis la base -->
+                    </select>
+                </div>
+
+                <div class="adminFormAction">
+                    <button type="submit" class="adminBouton">
+                        Appliquer les filtres
+                    </button>
+                </div>
+
+            </form>
+
+            <div class="adminGraphiques">
+
+                <article class="adminGraphique">
+                    <h3>Nombre de commandes par menu</h3>
+                    <div
+                        id="adminGraphiqueCommandes"
+                        class="adminGraphiqueContenu"
+                    >
+                        <i class="fa-solid fa-chart-column"
+                           aria-hidden="true"></i>
+                        <p>Graphique à charger depuis la base NoSQL.</p>
+                    </div>
+                </article>
+
+                <article class="adminGraphique">
+                    <h3>Chiffre d'affaires par menu</h3>
+                    <div
+                        id="adminGraphiqueCA"
+                        class="adminGraphiqueContenu"
+                    >
+                        <i class="fa-solid fa-chart-line"
+                           aria-hidden="true"></i>
+                        <p>Statistiques financières à charger.</p>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="adminSousSection">
+                <h3>Détail par menu</h3>
+
+                <div class="adminTableWrapper">
+                    <table class="adminTable">
+                        <thead>
+                            <tr>
+                                <th>Menu</th>
+                                <th>Commandes</th>
+                                <th>Chiffre d'affaires</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="adminTableStatistiques">
+                            <tr>
+                                <td colspan="3" class="adminVide">
+                                    Aucune statistique chargée.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </section>
 
-        <section id="gestion-menus">
-            <h3>Gestion des menus</h3>
-            <div id="liste-menus"></div>
-        </section>
-
-        <section id="validation-avis">
-            <h3>Validation des avis</h3>
-            <div id="liste-avis"></div>
-        </section>
-</div>
+    </div>
+</section>

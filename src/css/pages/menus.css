@@ -1,10 +1,12 @@
+/* ==========================================================
+   VITE & GOURMAND — PAGE MENUS
+   Mobile first | Styles propres à la page .menus
+   ========================================================== */
 
-/* ======================================================
-   PAGE MENUS - VITE & GOURMAND
-   ====================================================== */
-
+/* 01 — Base */
 .menus {
     width: 100%;
+    min-width: 0;
     color: var(--black);
     font-family: var(--content);
 }
@@ -15,24 +17,21 @@
     box-sizing: border-box;
 }
 
-/* BANNIÈRE */
-
+/* 02 — Bannière */
 .menusHero {
-    min-height: 380px;
     display: flex;
     align-items: center;
+    min-height: 280px;
     padding: 45px 5%;
+    margin-top: 25px;
     background:
-        linear-gradient(
-            90deg,
-            rgba(13, 18, 30, .88),
-            rgba(13, 18, 30, .38)
-        ),
-        url("/images/image4_banniere.jpg") center / cover no-repeat;
+        linear-gradient(90deg, rgba(13, 18, 30, .88), rgba(13, 18, 30, .38)),
+        url('/images/imagesBanniere/image4_banniere.jpg') center / cover no-repeat;
     color: #fff;
 }
 
 .menusHeroContenu {
+    width: 100%;
     max-width: 650px;
 }
 
@@ -48,7 +47,7 @@
 }
 
 .menusHero .menusSurTitre {
-    color: #f0dbac;
+    color: #e0d5ff;
 }
 
 .menusHero h1 {
@@ -80,7 +79,7 @@
     color: var(--bleue);
     font-weight: 700;
     text-decoration: none;
-    transition: background-color .2s, transform .2s;
+    transition: background-color .2s ease, transform .2s ease;
 }
 
 .menusHeroBtn:hover,
@@ -89,8 +88,7 @@
     transform: translateY(-2px);
 }
 
-/* CATALOGUE */
-
+/* 03 — Catalogue */
 .menusCatalogue {
     width: min(92%, 1200px);
     margin: 65px auto;
@@ -102,7 +100,8 @@
     margin-bottom: 35px;
 }
 
-.menusIntroduction h2 {
+.menusIntroduction h2,
+.menusGalerieTitre h2 {
     margin: 12px 0;
     color: var(--bleue);
     font-family: var(--heading);
@@ -110,29 +109,34 @@
     font-weight: 500;
 }
 
-.menusIntroduction p {
+.menusIntroduction p,
+.menusGalerieTitre p {
     color: #666;
     line-height: 1.8;
 }
 
-/* FILTRES */
-
+/* 04 — Filtres : 1 colonne mobile */
 .menusFiltres {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
+    grid-template-columns: minmax(0, 1fr);
     align-items: end;
-    padding: 22px;
+    gap: 18px;
     margin-bottom: 18px;
-    background: #f5f5fa;
+    padding: 22px;
     border: 1px solid #e8e8f0;
     border-radius: 14px;
+    background: #f5f5fa;
+}
+
+.menusFiltres > * {
+    min-width: 0;
 }
 
 .menusFiltre {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    min-width: 0;
 }
 
 .menusFiltre label {
@@ -140,12 +144,15 @@
     align-items: center;
     gap: 8px;
     color: var(--bleue);
-    font-weight: 700;
     font-size: .9rem;
+    font-weight: 700;
 }
 
-.menusFiltre select {
+.menusFiltre select,
+.menusFiltre input[type='number'] {
+    display: block;
     width: 100%;
+    min-width: 0;
     min-height: 46px;
     padding: 10px 14px;
     border: 1px solid #d6d6e4;
@@ -153,9 +160,16 @@
     background: #fff;
     color: #333;
     font: inherit;
+    transition: border-color .2s ease;
+}
+
+.menusFiltre select:hover,
+.menusFiltre input[type='number']:hover {
+    border-color: var(--bleue);
 }
 
 .menusReset {
+    width: 100%;
     min-height: 46px;
     padding: 12px 18px;
     border: 1px solid var(--bleue);
@@ -165,6 +179,7 @@
     font: inherit;
     font-weight: 700;
     cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
 }
 
 .menusReset:hover {
@@ -178,31 +193,28 @@
     font-size: .9rem;
 }
 
-/* GRILLE DES MENUS */
-
+/* 05 — Grille et cartes */
 .gridMenus {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 25px;
 }
 
-/* CARTE */
-
 .carte-menu {
     display: flex;
     flex-direction: column;
     min-width: 0;
     overflow: hidden;
-    background: var(--white);
     border: 1px solid #e8e8ee;
     border-radius: 16px;
-    box-shadow: 0 6px 22px rgba(0,0,0,.06);
-    transition: transform .25s, box-shadow .25s;
+    background: var(--white);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, .06);
+    transition: transform .25s ease, box-shadow .25s ease;
 }
 
 .carte-menu:hover {
     transform: translateY(-5px);
-    box-shadow: 0 14px 30px rgba(0,0,0,.12);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, .12);
 }
 
 .menuImageWrapper {
@@ -216,7 +228,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform .4s;
+    transition: transform .4s ease;
 }
 
 .carte-menu:hover .image-menu {
@@ -228,8 +240,8 @@
     top: 15px;
     left: 15px;
     padding: 8px 12px;
-    background: #fff;
     border-radius: 30px;
+    background: #fff;
     color: var(--bleue);
     font-size: .75rem;
     font-weight: 700;
@@ -237,8 +249,8 @@
 
 .menuCarteContenu {
     display: flex;
-    flex-direction: column;
     flex: 1;
+    flex-direction: column;
     padding: 25px;
 }
 
@@ -298,7 +310,7 @@
 .btnMenu {
     min-height: 44px;
     padding: 11px 18px;
-    border: none;
+    border: 0;
     border-radius: 8px;
     background: var(--bleue);
     color: #fff;
@@ -306,51 +318,70 @@
     font-size: .9rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color .2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: background-color .2s ease;
 }
 
 .btnMenu:hover {
-    background: #24246b;
+    background: var(--bleue);
+    color: var(--white);
 }
 
-/* DÉTAILS */
-
-.detailsContainer:empty {
-    display: none;
+/* 07 — Galerie gastronomique */
+.menusGalerie {
+    width: min(92%, 1200px);
+    margin: 80px auto;
 }
 
-.detailMenu {
-    margin-top: 40px;
-    padding: 25px;
-    background: #f7f7fc;
-    border: 1px solid #e7e7f1;
-    border-radius: 16px;
+.menusGalerieTitre {
+    max-width: 650px;
+    margin: 0 auto 40px;
+    text-align: center;
 }
 
-.detailMenu h2 {
-    margin: 20px 0 12px;
-    color: var(--bleue);
-    font-family: var(--heading);
-    font-size: 2rem;
+.menusGalerieGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
 }
 
-.detailMenu p {
-    margin-bottom: 12px;
-    color: #555;
-    line-height: 1.7;
+.menusGalerieItem {
+    position: relative;
+    height: 300px;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #eee;
 }
 
-.detailMenu .image-menu {
-    max-height: 350px;
-    border-radius: 12px;
+.menusGalerieItem img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
 }
 
-.detailMenu .btnMenu {
-    margin-top: 15px;
+.menusGalerieItem:hover img {
+    transform: scale(1.06);
 }
 
-/* SECTION CONTACT */
+.menusGalerieItem figcaption {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 35px 18px 18px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, .75));
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+}
 
+/* 08 — Contact */
 .menusContact {
     display: flex;
     flex-direction: column;
@@ -377,24 +408,47 @@
     line-height: 1.8;
 }
 
-/* ACCESSIBILITÉ */
-
+/* 09 — Accessibilité */
 .menus button:focus-visible,
 .menus a:focus-visible,
-.menus select:focus-visible {
+.menus select:focus-visible,
+.menus input:focus-visible {
     outline: 3px solid #c5a96a;
     outline-offset: 3px;
 }
 
-/* TABLETTE */
+/* 10 — Petits mobiles */
+@media (max-width: 480px) {
+    .menusHero {
+        padding: 35px 20px;
+    }
 
+    .menuCarteBas {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .btnMenu {
+        width: 100%;
+    }
+
+}
+
+/* 11 — Galerie : deux colonnes */
+@media (min-width: 600px) {
+    .menusGalerieGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* 12 — Tablette */
 @media (min-width: 700px) {
     .gridMenus {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .menusFiltres {
-        grid-template-columns: 1fr 1fr auto;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .menusContact {
@@ -409,126 +463,7 @@
     }
 }
 
-/* ORDINATEUR */
-
-@media (min-width: 1100px) {
-    .gridMenus {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .menusHero {
-        min-height: 470px;
-        padding-left: max(5%, calc((100% - 1200px) / 2));
-    }
-}
-
-/* PETITS MOBILES */
-
-@media (max-width: 480px) {
-    .menuCarteBas {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-    .btnMenu {
-        width: 100%;
-    }
-
-    .menusHero {
-        padding: 35px 20px;
-    }
-
-    .detailMenu {
-        padding: 18px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .menus *,
-    .menus *::before,
-    .menus *::after {
-        transition: none !important;
-    }
-}
-
-/* ==========================================
-   GALERIE GASTRONOMIQUE
-   ========================================== */
-
-.menusGalerie {
-    width: min(92%, 1200px);
-    margin: 80px auto;
-}
-
-.menusGalerieTitre {
-    text-align: center;
-    max-width: 650px;
-    margin: 0 auto 40px;
-}
-
-.menusGalerieTitre h2 {
-    margin: 12px 0;
-    color: var(--bleue);
-    font-family: var(--heading);
-    font-size: clamp(1.9rem, 4vw, 2.7rem);
-}
-
-.menusGalerieTitre p {
-    color: #666;
-    line-height: 1.8;
-}
-
-.menusGalerieGrid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
-}
-
-.menusGalerieItem {
-    position: relative;
-    margin: 0;
-    min-width: 0;
-    height: 300px;
-    overflow: hidden;
-    border-radius: 14px;
-    background: #eee;
-}
-
-.menusGalerieItem img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-.menusGalerieItem:hover img {
-    transform: scale(1.06);
-}
-
-.menusGalerieItem figcaption {
-    position: absolute;
-    inset: auto 0 0;
-    padding: 35px 18px 18px;
-    background: linear-gradient(
-        transparent,
-        rgba(0, 0, 0, 0.75)
-    );
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-/* TABLETTE */
-
-@media (min-width: 600px) {
-    .menusGalerieGrid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-/* ORDINATEUR */
-
+/* 13 — Galerie : trois colonnes */
 @media (min-width: 1000px) {
     .menusGalerieGrid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -540,9 +475,37 @@
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .menusGalerieItem img {
-        transition: none;
+/* 14 — Ordinateur */
+@media (min-width: 1100px) {
+    .gridMenus {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .menusFiltres {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .menusHero {
+        min-height: 470px;
+        padding-left: max(5%, calc((100% - 1200px) / 2));
     }
 }
 
+/* 15 — Réduction des animations */
+@media (prefers-reduced-motion: reduce) {
+    .menus *,
+    .menus *::before,
+    .menus *::after {
+        transition: none !important;
+    }
+}
+/* Hero derrière la navigation */
+.menus {
+    position: relative;
+    z-index: 0;
+}
+
+.menusHero {
+    position: relative;
+    z-index: 0;
+}

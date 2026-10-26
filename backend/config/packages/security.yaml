@@ -30,8 +30,10 @@ security:
                 enable_csrf: false
 
     access_control:
-        - { path: ^/api/connexion$, roles: PUBLIC_ACCESS }
-        - { path: ^/api/inscription$, roles: PUBLIC_ACCESS }
+    - { path: ^/api/connexion$, roles: PUBLIC_ACCESS }
+    - { path: ^/api/inscription$, roles: PUBLIC_ACCESS }
+
+    - { path: ^/api/commandes(?:/|$), roles: ROLE_USER }
 
 when@test:
     security:

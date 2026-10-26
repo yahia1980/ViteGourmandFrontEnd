@@ -1,184 +1,354 @@
-/*=============================
-Mobile
-===============================*/
-/* formulaire */
+
+/* ==========================================
+   FORMULAIRE ACCUEIL - MOBILE FIRST
+========================================== */
+
+/* CONTENEUR PRINCIPAL */
 
 .containerForm {
-    height: 680px;
-    display: grid;
     width: 95%;
-    margin: 0 auto;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    max-width: 1200px;
+    margin: 50px auto;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-        "img img"
-        "form form";
+        "img"
+        "form";
+
+    gap: 25px;
+    align-items: start;
 }
+
+/* ==========================================
+   IMAGE
+========================================== */
 
 .imageForm {
     grid-area: img;
-}
-
-.formContainer {
-    grid-area: form;
+    width: 100%;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
 }
 
 .imageForm img {
     display: block;
     width: 100%;
-    margin: 35px auto;
-    height: 200px;
+    height: 220px;
+    margin: 0;
+
     object-fit: cover;
-    filter: brightness(0.5);
-    box-shadow: 3px 3px 10px var(--black);
-    position: relative;
+    object-position: center;
+
+    filter: brightness(0.65);
 }
+
+/* TITRE SUR L'IMAGE, SI UTILISÉ */
+
 .bigTitle {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2rem;
+
+    width: 90%;
+    margin: 0;
+
     color: var(--white);
-    z-index: 10;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 700;
     text-align: center;
+
+    z-index: 2;
+}
+
+/* ==========================================
+   CONTENEUR DU FORMULAIRE
+========================================== */
+
+.formContainer {
+    grid-area: form;
+    width: 100%;
+    min-width: 0;
 }
 
 .titleForm {
-    padding-block: 20px;
-    font-size: 1.2rem;
+    margin: 0 0 25px;
+    padding: 0;
+
     color: var(--bleue);
+    font-size: 1.5rem;
+    font-weight: 700;
     text-align: center;
     text-transform: uppercase;
 }
 
+/* ==========================================
+   GRID DU FORMULAIRE
+========================================== */
+
 .formGrid {
-    width: 90%;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-}
-
-label {
-    display: block;
-    color: var(--bleue);
-    padding-bottom: 5px;
-    font-weight: 500;
-}
-
-input,
-textarea {
     width: 100%;
-    color: rgba(18, 18, 21, 0.573);
-    font-size: 1rem;
-    border-bottom: 1px solid var(--bleue);
-    padding: 10px 0;
-    font-weight: 700;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "prenom"
+        "nom"
+        "mail"
+        "txt"
+        "btn";
+
+    gap: 18px;
+    align-items: start;
 }
 
-input[type="submit"] {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: var(--transition);
+/* POSITION DES CHAMPS */
+
+.prenomForm {
+    grid-area: prenom;
 }
 
-input[type="submit"]:hover {
-    letter-spacing: 1px;
-    font-style: italic;
+.nomForm {
+    grid-area: nom;
 }
 
-textarea {
-    resize: none;
+.mailForm {
+    grid-area: mail;
 }
 
-form .btnCon {
-    width: 300px;
-    padding: 10px 0;
-    background-color: var(--bleue);
-    border-radius: 8px;
-    color: var(--white);
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition:all var(--transition);
-    margin: 20px auto;
+.areaForm {
+    grid-area: txt;
 }
 
-form .btnCon:hover {
-    background-color: rgba(60, 207, 73, 0.836);
+.btnForm {
+    grid-area: btn;
+}
+
+/* ÉVITER LES DÉBORDEMENTS */
+
+.formGrid > div {
+    min-width: 0;
+}
+
+/* ==========================================
+   LABELS
+========================================== */
+
+.formGrid label {
+    display: block;
+    margin-bottom: 8px;
+    padding: 0;
+
     color: var(--bleue);
+    font-size: 1rem;
+    font-weight: 600;
 }
 
+/* ==========================================
+   INPUT ET TEXTAREA
+========================================== */
 
-/* ==========================================================================
-   2. TABLETTES (À partir de 768px)
-   ========================================================================== */
+.formGrid input,
+.formGrid textarea {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+
+    padding: 12px 14px;
+    box-sizing: border-box;
+
+    color: var(--bleue);
+    background-color: var(--white);
+
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+
+    border: 1px solid var(--bleue);
+    border-radius: 8px;
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.formGrid input:focus,
+.formGrid textarea:focus {
+    border-color: var(--bleue);
+    box-shadow: 0 0 0 3px rgba(25, 70, 110, 0.15);
+}
+
+/* MESSAGE */
+
+.formGrid textarea {
+    min-height: 140px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   BOUTON ENVOYER
+========================================== */
+
+.btnForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 5px 0 0;
+}
+
+.formGrid .btnCon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    max-width: 300px;
+    min-height: 48px;
+
+    margin: 0;
+    padding: 12px 24px;
+    box-sizing: border-box;
+
+    background-color: var(--bleue);
+    color: var(--white);
+
+    border: 2px solid var(--bleue);
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: normal;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.formGrid .btnCon:hover {
+    background-color: var(--white);
+    color: var(--bleue);
+    letter-spacing: normal;
+}
+
+.formGrid .btnCon:focus-visible {
+    outline: 3px solid var(--bleue);
+    outline-offset: 3px;
+}
+
+/* ==========================================
+   TABLETTE - À PARTIR DE 768px
+========================================== */
+
 @media (min-width: 768px) {
 
     .containerForm {
-        width: 80%;
-        margin-inline: auto;
-        margin-top: 100px;
-        height: 600px;
-        grid-template-areas:
-            "form img"
-            "form img";
+        width: 90%;
+        margin: 70px auto;
+
+        grid-template-columns:
+            minmax(0, 1.2fr)
+            minmax(0, 1fr);
+
+        grid-template-areas: "form img";
+
+        gap: 35px;
+        align-items: stretch;
+    }
+
+    .formContainer {
+        align-self: center;
+    }
+
+    .imageForm {
+        height: 100%;
+        min-height: 420px;
     }
 
     .imageForm img {
-        width: 70%;
-        height: 83%;
+        width: 100%;
+        height: 100%;
+        min-height: 420px;
     }
 
+    .titleForm {
+        font-size: 1.8rem;
+        text-align: left;
+    }
 
     .formGrid {
-        width: 100%;
-        height: 500px;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(4, 1fr);
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+
         grid-template-areas:
             "prenom nom"
             "mail mail"
             "txt txt"
             "btn btn";
+
+        gap: 20px;
     }
 
-    .prenomForm {
-        grid-area: prenom;
-    }
-
-    .nomForm {
-        grid-area: nom;
-    }
-
-    .mailForm {
-        grid-area: mail;
-        grid-column: 1 / span 2;
-    }
-
-    .areaForm {
-        grid-area: txt;
-        grid-column: 1 / span 2;
-    }
-    .prenomForm, .nomForm,.mailForm,.areaForm {
-        width: 95%;
-        margin: 0 auto;
+    .formGrid label {
+        font-size: 1.05rem;
     }
 
     .btnForm {
-        grid-area: btn;
-        grid-column: 1 / span 2;
-        margin-inline: auto;
+        justify-content: flex-start;
     }
-    label {
-        font-size: 1.3rem;
-        font-weight: 700;
+}
+
+/* ==========================================
+   ORDINATEUR - À PARTIR DE 980px
+========================================== */
+
+@media (min-width: 980px) {
+
+    .containerForm {
+        width: 85%;
+        margin: 90px auto;
+
+        grid-template-columns:
+            minmax(0, 1.2fr)
+            minmax(0, 1fr);
+
+        gap: 60px;
     }
+
     .titleForm {
-    margin-top: 35px;
-    font-size: 2rem;
-   
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    .formGrid {
+        gap: 22px;
+    }
+
+    .formGrid input,
+    .formGrid textarea {
+        padding: 14px 16px;
+    }
+
+    .formGrid textarea {
+        min-height: 170px;
+    }
+
+    .imageForm {
+        min-height: 500px;
+    }
+
+    .imageForm img {
+        min-height: 500px;
+    }
 }
-  
-}
+
+

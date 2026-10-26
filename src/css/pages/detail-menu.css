@@ -1,0 +1,386 @@
+/* ==========================================
+   VITE & GOURMAND - DÉTAIL D'UN MENU
+   ========================================== */
+
+.detailPage {
+    width: 100%;
+    min-width: 0;
+    color: var(--black);
+    font-family: var(--content);
+}
+
+/* BANNIÈRE */
+
+.detailHero {
+    margin-top: 35px;
+    min-height: 100px;
+    background-color: #242446;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.detailHeroOverlay {
+    display: flex;
+    align-items: flex-end;
+    min-height: 420px;
+    padding: 45px 5%;
+    background: linear-gradient(
+        90deg,
+        rgba(10, 12, 28, 0.9),
+        rgba(10, 12, 28, 0.35)
+    );
+}
+
+.detailHeroContent {
+    width: 100%;
+    max-width: 850px;
+    color: white;
+}
+
+.detailRetour {
+    display: inline-block;
+    margin-bottom: 35px;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.detailRetour:hover {
+    text-decoration: underline;
+}
+
+.detailTheme {
+    display: table;
+    margin-bottom: 15px;
+    padding: 8px 15px;
+    border-radius: 30px;
+    background: #f1dfb6;
+    color: #242446;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.detailHero h1 {
+    margin: 0 0 20px;
+    color: white;
+    font-family: var(--heading);
+    font-size: clamp(2.4rem, 6vw, 4.8rem);
+    line-height: 1.1;
+}
+
+.detailHero p {
+    max-width: 650px;
+    color: #f1f1f1;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+/* DISPOSITION PRINCIPALE */
+
+.detailLayout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 35px;
+    width: min(92%, 1250px);
+    margin: 55px auto 90px;
+    align-items: start;
+}
+
+.detailContenu {
+    min-width: 0;
+}
+
+/* STATISTIQUES */
+
+.detailStatistiques {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 55px;
+}
+
+.detailStat {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px;
+    background: #f5f5fa;
+    border: 1px solid #e7e7f0;
+    border-radius: 14px;
+}
+
+.detailStat span {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.detailStat strong {
+    color: var(--bleue);
+    font-size: 1.25rem;
+}
+
+/* SECTIONS */
+
+.detailBloc {
+    margin-bottom: 65px;
+}
+
+.detailSurTitre {
+    display: block;
+    margin-bottom: 12px;
+    color: #a77d3e;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.detailBloc h2 {
+    margin: 0 0 22px;
+    color: var(--bleue);
+    font-family: var(--heading);
+    font-size: clamp(1.9rem, 4vw, 2.7rem);
+    font-weight: 500;
+}
+
+.detailBloc > p {
+    margin-bottom: 25px;
+    color: #666;
+    line-height: 1.8;
+}
+
+/* GALERIE */
+
+.detailPhotos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.detailPhotos img {
+    display: block;
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+/* PLATS */
+
+.detailPlats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.detailPlat {
+    min-width: 0;
+    padding: 25px;
+    background: #f8f8fc;
+    border: 1px solid #e8e8f0;
+    border-radius: 14px;
+}
+
+.detailPlat h3 {
+    margin: 0 0 18px;
+    color: var(--bleue);
+    font-family: var(--heading);
+    font-size: 1.4rem;
+}
+
+.detailPlat ul,
+.detailInfo ul {
+    padding-left: 20px;
+    list-style: disc;
+}
+
+.detailPlat li,
+.detailInfo li {
+    margin-bottom: 12px;
+    color: #555;
+    line-height: 1.7;
+    list-style: disc;
+}
+
+/* INFORMATIONS */
+
+.detailInformations {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.detailInfo {
+    padding: 25px;
+    background: #fff8e9;
+    border-left: 4px solid #c5a96a;
+    border-radius: 12px;
+}
+
+.detailInfo h3 {
+    margin: 0 0 15px;
+    color: var(--bleue);
+    font-size: 1.2rem;
+}
+
+.detailInfo p {
+    color: #555;
+    line-height: 1.8;
+}
+
+/* CARTE DE COMMANDE */
+
+.detailCommande {
+    min-width: 0;
+}
+
+.detailCommandeCarte {
+    padding: 30px;
+    background: white;
+    border: 1px solid #e7e7ef;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+.detailCommandeCarte > span {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.detailPrix {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin: 12px 0;
+    color: var(--bleue);
+}
+
+.detailPrix strong {
+    font-size: 2.8rem;
+    font-weight: 800;
+}
+
+.detailPrix span {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.detailPrixInfo {
+    color: #777;
+    font-size: 0.85rem;
+}
+
+.detailSeparateur {
+    height: 1px;
+    margin: 25px 0;
+    background: #e7e7ef;
+}
+
+.detailCommandeCarte > p {
+    margin-bottom: 20px;
+    color: #666;
+    line-height: 1.7;
+}
+
+.detailCommanderBtn {
+    width: 100%;
+    min-height: 52px;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: var(--bleue);
+    color: white;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.detailCommanderBtn:hover:not(:disabled) {
+    background: #24246b;
+}
+
+.detailCommanderBtn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.detailCommandeCarte .detailIndisponible {
+    margin: 15px 0 0;
+    color: #777;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* TABLETTE */
+
+@media (min-width: 700px) {
+    .detailStatistiques {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .detailPhotos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .detailPlats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ORDINATEUR */
+
+@media (min-width: 1050px) {
+    .detailLayout {
+        grid-template-columns: minmax(0, 1fr) 330px;
+        gap: 45px;
+    }
+
+    .detailCommandeCarte {
+        position: sticky;
+        top: 25px;
+    }
+
+    .detailHero,
+    .detailHeroOverlay {
+        min-height: 500px;
+    }
+}
+
+/* PETITS MOBILES */
+
+@media (max-width: 480px) {
+    .detailHero,
+    .detailHeroOverlay {
+        min-height: 370px;
+    }
+
+    .detailHeroOverlay {
+        padding: 35px 20px;
+    }
+
+    .detailLayout {
+        margin-top: 35px;
+    }
+
+    .detailCommandeCarte {
+        padding: 22px;
+    }
+}
+
+/* ACCESSIBILITÉ */
+
+.detailPage a:focus-visible,
+.detailPage button:focus-visible {
+    outline: 3px solid #c5a96a;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detailPage *,
+    .detailPage *::before,
+    .detailPage *::after {
+        scroll-behavior: auto;
+        transition: none !important;
+    }
+}
