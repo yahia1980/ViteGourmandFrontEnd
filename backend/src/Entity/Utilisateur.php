@@ -50,6 +50,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 100)]
     private ?string $ville = null;
+    #[ORM\Column(options: ['default' => true])]
+    private bool $actif = true;
+
+    #[ORM\Column]
+    private \DateTimeImmutable $dateCreation;
 
     /**
      * @var Collection<int, Commande>
@@ -64,10 +69,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $avis;
 
     public function __construct()
-    {
-        $this->commandes = new ArrayCollection();
-        $this->avis = new ArrayCollection();
-    }
+{
+    $this->commandes = new ArrayCollection();
+    $this->avis = new ArrayCollection();
+    $this->dateCreation = new \DateTimeImmutable();
+}
 
     public function getId(): ?int
     {
@@ -140,7 +146,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $data = (array) $this;
         $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
-        
+
         return $data;
     }
 
@@ -221,6 +227,29 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public function isActif(): bool
+{
+    return $this->actif;
+}
+
+public function setActif(bool $actif): static
+{
+    $this->actif = $actif;
+
+    return $this;
+}
+
+public function getDateCreation(): \DateTimeImmutable
+{
+    return $this->dateCreation;
+}
+
+public function setDateCreation(\DateTimeImmutable $dateCreation): static
+{
+    $this->dateCreation = $dateCreation;
+
+    return $this;
+}
 
     /**
      * @return Collection<int, Commande>

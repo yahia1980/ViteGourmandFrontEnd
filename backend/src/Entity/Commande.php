@@ -33,6 +33,11 @@ class Commande
 
     #[ORM\Column(length: 100)]
     private ?string $villeLivraison = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $allergies = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $precisionLivraison = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $montantTotal = null;
@@ -67,13 +72,13 @@ class Commande
     private Collection $avis;
 
     public function __construct()
-{
-    $this->historiqueStatutCommandes = new ArrayCollection();
-    $this->avis = new ArrayCollection();
+    {
+        $this->historiqueStatutCommandes = new ArrayCollection();
+        $this->avis = new ArrayCollection();
 
-    $this->dateCommande = new \DateTimeImmutable();
-    $this->statut = 'en_attente';
-}
+        $this->dateCommande = new \DateTimeImmutable();
+        $this->statut = 'en_attente';
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -150,6 +155,37 @@ class Commande
 
         return $this;
     }
+    // ==========================================
+// ALLERGIES ALIMENTAIRES
+// ==========================================
+
+public function getAllergies(): ?string
+{
+    return $this->allergies;
+}
+
+public function setAllergies(?string $allergies): static
+{
+    $this->allergies = $allergies;
+
+    return $this;
+}
+
+// ==========================================
+// PRÉCISIONS DE LIVRAISON
+// ==========================================
+
+public function getPrecisionLivraison(): ?string
+{
+    return $this->precisionLivraison;
+}
+
+public function setPrecisionLivraison(?string $precisionLivraison): static
+{
+    $this->precisionLivraison = $precisionLivraison;
+
+    return $this;
+}
 
     public function getMontantTotal(): ?string
     {
