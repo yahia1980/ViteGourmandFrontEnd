@@ -1,7 +1,7 @@
 
 /* ==========================================================
 
-   Mobile 
+   Mobile
    ========================================================== */
 .monCompte {
     width: 92%;
@@ -453,51 +453,208 @@
 }
 
 /* ==========================================================
-   ACCESSIBILITÉ
+   MES COMMANDES - MOBILE FIRST
    ========================================================== */
 
-.monCompte a:focus-visible {
-    outline: 3px solid var(--bleue);
-    outline-offset: 4px;
+.mesCommandes {
+    width: 100%;
+    min-width: 0;
+    margin: 45px auto 0;
+    padding: 24px 18px;
+    box-sizing: border-box;
+    background-color: var(--white);
+    border: 1px solid #e8e8f0;
+    border-radius: 16px;
+}
+
+.mesCommandes h2 {
+    margin: 0 0 20px;
+    color: var(--bleue);
+    font-family: var(--heading);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    text-align: center;
+}
+
+#messageReservations {
+    margin: 12px 0;
+    text-align: center;
+    line-height: 1.5;
+}
+
+#messageReservations:empty {
+    display: none;
+}
+
+#listeCommandes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.carteReservation {
+    width: 100%;
+    min-width: 0;
+    padding: 22px;
+    box-sizing: border-box;
+    background-color: #f8fafc;
+    border: 1px solid var(--bleue);
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.carteReservation h3 {
+    margin: 0 0 18px;
+    color: var(--bleue);
+    font-family: var(--heading);
+    font-size: 1.3rem;
+}
+
+.carteReservation p {
+    margin: 10px 0;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+/* Bouton et panneau des détails */
+
+.btnDetailsCommande {
+    display: block;
+    width: 100%;
+    min-height: 46px;
+    margin-top: 20px;
+    padding: 12px 18px;
+    box-sizing: border-box;
+    background-color: var(--bleue);
+    color: var(--white);
+    border: 1px solid var(--bleue);
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.btnDetailsCommande:hover {
+    opacity: 0.9;
+}
+
+.btnDetailsCommande:focus-visible {
+    outline: 2px solid var(--bleue);
+    outline-offset: 3px;
+}
+
+.detailsCommande {
+    min-width: 0;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.detailsCommande[hidden] {
+    display: none;
+}
+
+.detailsCommande p {
+    margin: 10px 0;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* Navigation vers la section depuis le tableau de bord */
+#mesCommandes {
+    scroll-margin-top: 90px;
+}
+
+@media (min-width: 768px) {
+    .mesCommandes {
+        padding: 30px;
+    }
+}
+
+@media (min-width: 1100px) {
+    .mesCommandes {
+        padding: 36px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-
-    .compteCard,
-    .compteCardLien,
-    .compteCardLien i,
-    .compteBienvenueBtn,
-    .compteAssistanceLien {
+    .btnDetailsCommande {
         transition: none;
     }
-
-    .compteCard:hover,
-    .compteBienvenueBtn:hover,
-    .compteAssistanceLien:hover {
-        transform: none;
-    }
 }
-.menusGalerieGrid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-}
+/* ==========================================
+   ANNULATION DES COMMANDES
+========================================== */
 
-.menusGalerieItem img {
-    display: block;
+.btnAnnulerCommande {
     width: 100%;
-    height: 280px;
-    object-fit: cover;
+    display: inline-block;
+    padding: 12px 20px;
+    margin-top: 15px;
+    background-color: #b42318;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
-@media (max-width: 768px) {
-    .menusGalerieGrid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+.btnAnnulerCommande:hover {
+    background-color: #912018;
 }
 
-@media (max-width: 480px) {
-    .menusGalerieGrid {
-        grid-template-columns: 1fr;
-    }
+.btnAnnulerCommande:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+/* ==========================================
+   BADGES DES STATUTS DE COMMANDES
+========================================== */
+
+.commandeStatut {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.badgeStatut {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.statut-en_attente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.statut-acceptee {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+
+.statut-en_preparation {
+    background-color: #ede9fe;
+    color: #6d28d9;
+}
+
+.statut-en_livraison {
+    background-color: #cffafe;
+    color: #155e75;
+}
+
+.statut-livree {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.statut-annulee {
+    background-color: #fee2e2;
+    color: #991b1b;
 }

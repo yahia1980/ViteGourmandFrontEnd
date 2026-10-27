@@ -10,6 +10,7 @@ export const allRoutes = [
         "Accueil",
         "/pages/Accueil.html",
         ["/src/js/main.js",
+        "/src/js/contact.js",
         ],
         ["/src/css/pages/accueil.css",
          "/src/css/pages/form.css"
@@ -44,7 +45,9 @@ export const allRoutes = [
         "/contact",
         "Contact",
         "/pages/contact.html",
-        ["/src/js/main.js"],
+        ["/src/js/main.js",
+         "/src/js/contact.js"
+        ],
         ["/src/css/pages/contact.css",
          "/src/css/pages/form.css"
         ]
@@ -93,11 +96,24 @@ export const allRoutes = [
          "/src/css/pages/form.css"
         ]
     ),
+    new Route (
+        "/modifier-profil",
+        "Modifier profil",
+        "/pages/auth/modifier-profil.html",
+        ["/src/js/main.js",
+         "/src/js/modifier-profil.js"
+        ],
+        ["/src/css/pages/modifier-profil.css",
+         "/src/css/pages/form.css"
+        ]
+    ),
      new Route (
         "/reserver",
         "Reservation",
         "/pages/reserver.html",
-        ["/src/js/main.js"],
+        ["/src/js/main.js",
+        "/src/js/reserver.js"
+        ],
         ["/src/css/pages/reserver.css",
          "/src/css/pages/form.css"
         ]
@@ -106,14 +122,22 @@ export const allRoutes = [
         "/espace-employe",
         "Espace employe",
         "/pages/espace-employe.html",
-        "/src/js/main.js",
+        ["/src/js/main.js",
+         "/src/js/compte.js",
+         "/src/js/connexion.js",
+         "/src/js/espace-employe.js"
+        ],
         "/src/css/pages/espace_employe.css"
     ),
     new Route (
         "/espace-admin",
         "Espace admin",
         "/pages/espace-admin.html",
-        "/src/js/main.js",
+        ["/src/js/main.js",
+         "/src/js/compte.js",
+         "/src/js/connexion.js",
+         "/src/js/espace-admin.js"
+        ],
         "/src/css/pages/espace_admin.css"
     ),
     new Route (

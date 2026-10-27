@@ -1,7 +1,6 @@
 
 <div class="monCompte">
 
-
     <!-- ==========================
          BANDEAU DE BIENVENUE
     =========================== -->
@@ -40,6 +39,7 @@
     <section class="compteTableauBord">
 
         <div class="compteTitreSection">
+
             <span class="compteSousTitre">
                 VITE & GOURMAND
             </span>
@@ -49,6 +49,7 @@
             <p>
                 Tous vos services accessibles en quelques clics.
             </p>
+
         </div>
 
         <div class="compteGrid">
@@ -61,6 +62,7 @@
                 </div>
 
                 <div class="compteCardContenu">
+
                     <h3>Mes commandes</h3>
 
                     <p>
@@ -68,34 +70,37 @@
                         consultez leurs détails et
                         suivez leur statut.
                     </p>
+
                 </div>
 
-                <a href="/mes-commandes" class="compteCardLien">
+                <a href="#mesCommandes" class="compteCardLien">
                     Voir mes commandes
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
 
             </article>
 
-            <!-- MES RÉSERVATIONS -->
+            <!-- COMMANDER UN MENU -->
             <article class="compteCard">
 
                 <div class="compteCardIcon">
-                    <i class="fa-solid fa-calendar-check"></i>
+                    <i class="fa-solid fa-utensils"></i>
                 </div>
 
                 <div class="compteCardContenu">
-                    <h3>Mes réservations</h3>
+
+                    <h3>Commander un menu</h3>
 
                     <p>
-                        Consultez vos réservations
-                        et retrouvez toutes les
-                        informations de vos événements.
+                        Découvrez nos menus et organisez
+                        votre prochain événement avec
+                        Vite & Gourmand.
                     </p>
+
                 </div>
 
-                <a href="/mes-reservations" class="compteCardLien">
-                    Voir mes réservations
+                <a href="/reserver" class="compteCardLien">
+                    Commander un menu
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
 
@@ -109,6 +114,7 @@
                 </div>
 
                 <div class="compteCardContenu">
+
                     <h3>Mes informations</h3>
 
                     <p>
@@ -116,6 +122,7 @@
                         vos coordonnées et vos
                         informations personnelles.
                     </p>
+
                 </div>
 
                 <a href="/modifier-profil" class="compteCardLien">
@@ -133,6 +140,7 @@
                 </div>
 
                 <div class="compteCardContenu">
+
                     <h3>Sécurité du compte</h3>
 
                     <p>
@@ -140,6 +148,7 @@
                         modifiez votre mot de passe
                         en toute sécurité.
                     </p>
+
                 </div>
 
                 <a href="/mdp_oublie" class="compteCardLien">
@@ -180,8 +189,18 @@
         </a>
 
     </section>
-    <section class="mesCommandes">
-    <h2>Mes commandes</h2>
-    <div id="listeCommandes"></div>
-</section>
+
+    <!-- ==========================
+         HISTORIQUE DES COMMANDES
+    =========================== -->
+    <section class="mesCommandes" id="mesCommandes">
+
+        <h2>Mes commandes</h2>
+
+        <p id="messageReservations" role="status"></p>
+
+        <div id="listeCommandes"></div>
+
+    </section>
+
 </div>

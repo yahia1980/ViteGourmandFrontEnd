@@ -6,6 +6,8 @@ use App\Entity\Commande;
 use App\Entity\Menu;
 use App\Repository\CommandeRepository;
 use App\Repository\MenuRepository;
+use App\Service\StatistiquesMongoDBService;
+use Psr\Log\LoggerInterface;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,35 +18,37 @@ use Symfony\Component\Routing\Attribute\Route;
 class CommandeController extends AbstractController
 {
     /* ==========================================
-       CRÉATION D'UNE COMMANDE
+       CRÃ‰ATION D'UNE COMMANDE
     ========================================== */
 
     #[Route('/api/commandes', name: 'api_commande_creer', methods: ['POST'])]
     public function creer(
         Request $request,
         MenuRepository $menuRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        StatistiquesMongoDBService $statistiquesMongoDBService,
+        LoggerInterface $logger
     ): JsonResponse {
 
-        // 1. Vérifier que l'utilisateur est connecté
+        // 1. VÃ©rifier que l'utilisateur est connectÃ©
         $utilisateur = $this->getUser();
 
         if (!$utilisateur) {
             return $this->json([
-                'message' => 'Vous devez être connecté pour commander.'
+                'message' => 'Vous devez Ãªtre connectÃ© pour commander.'
             ], 401);
         }
 
-        // 2. Récupérer les données du frontend
+        // 2. RÃ©cupÃ©rer les donnÃ©es du frontend
         $data = json_decode($request->getContent(), true);
 
         if (!is_array($data) || !isset($data['menuId'])) {
             return $this->json([
-                'message' => 'Veuillez sélectionner un menu.'
+                'message' => 'Veuillez sÃ©lectionner un menu.'
             ], 400);
         }
 
-        // 3. Vérifier l'identifiant du menu
+        // 3. VÃ©rifier l'identifiant du menu
         $menuId = filter_var(
             $data['menuId'],
             FILTER_VALIDATE_INT
@@ -65,7 +69,7 @@ class CommandeController extends AbstractController
             ], 404);
         }
 
-        // 5. Vérifier le nombre de personnes
+        // 5. VÃ©rifier le nombre de personnes
         $nombrePersonnes = filter_var(
             $data['nombrePersonnes'] ?? null,
             FILTER_VALIDATE_INT
@@ -82,7 +86,7 @@ class CommandeController extends AbstractController
             ], 400);
         }
 
-        // 6. Vérifier l'adresse de livraison
+        // 6. VÃ©rifier l'adresse de livraison
         $adresseLivraison = $data['adresseLivraison'] ?? null;
         $codePostalLivraison = $data['codePostalLivraison'] ?? null;
         $villeLivraison = $data['villeLivraison'] ?? null;
@@ -111,7 +115,7 @@ class CommandeController extends AbstractController
             ], 400);
         }
 
-        // 7. Vérifier la date de prestation
+        // 7. VÃ©rifier la date de prestation
         $datePrestation = $data['datePrestation'] ?? null;
 
         if (
@@ -135,11 +139,11 @@ class CommandeController extends AbstractController
 
         if ($datePrestationObjet <= new \DateTimeImmutable()) {
             return $this->json([
-                'message' => 'La date de prestation doit être dans le futur.'
+                'message' => 'La date de prestation doit Ãªtre dans le futur.'
             ], 400);
         }
 
-        // 8. Vérifier les informations complémentaires
+        // 8. VÃ©rifier les informations complÃ©mentaires
         $allergies = $data['allergies'] ?? null;
         $precisionLivraison = $data['precisionLivraison'] ?? null;
 
@@ -148,7 +152,7 @@ class CommandeController extends AbstractController
             ($precisionLivraison !== null && !is_string($precisionLivraison))
         ) {
             return $this->json([
-                'message' => 'Informations complémentaires invalides.'
+                'message' => 'Informations complÃ©mentaires invalides.'
             ], 400);
         }
 
@@ -157,12 +161,12 @@ class CommandeController extends AbstractController
             mb_strlen($precisionLivraison ?? '') > 2000
         ) {
             return $this->json([
-                'message' => 'Les informations complémentaires sont trop longues.'
+                'message' => 'Les informations complÃ©mentaires sont trop longues.'
             ], 400);
         }
 
         // ==========================================
-        // TRANSACTION SÉCURISÉE
+        // TRANSACTION SÃ‰CURISÃ‰E
         // ==========================================
 
         $connexion = $entityManager->getConnection();
@@ -185,7 +189,7 @@ class CommandeController extends AbstractController
                 );
             }
 
-            // 10. Vérifier la disponibilité réelle
+            // 10. VÃ©rifier la disponibilitÃ© rÃ©elle
             if (
                 !$menuVerrouille ||
                 $menuVerrouille->getStockDisponible() <= 0
@@ -193,16 +197,16 @@ class CommandeController extends AbstractController
                 $connexion->rollBack();
 
                 return $this->json([
-                    'message' => 'Ce menu est actuellement épuisé.'
+                    'message' => 'Ce menu est actuellement Ã©puisÃ©.'
                 ], 409);
             }
 
-            // 11. Calculer le prix à partir du menu verrouillé
+            // 11. Calculer le prix Ã  partir du menu verrouillÃ©
             $prixParPersonne = (float) $menuVerrouille->getPrix();
 
             $sousTotal = $prixParPersonne * $nombrePersonnes;
 
-            // 12. Réduction de 10 %
+            // 12. RÃ©duction de 10 %
             $montantReduction = 0;
 
             if (
@@ -227,7 +231,7 @@ class CommandeController extends AbstractController
             // 14. Montant total
             $montantTotal = $totalHorsLivraison + $fraisLivraison;
 
-            // 15. Créer la commande
+            // 15. CrÃ©er la commande
             $commande = new Commande();
 
             $commande->setUtilisateur($utilisateur);
@@ -284,9 +288,16 @@ class CommandeController extends AbstractController
             throw $e;
         }
 
-        // 19. Réponse JSON au frontend
+        // Synchroniser MongoDB uniquement après validation de MySQL.
+        $this->synchroniserStatistiques(
+            $commande,
+            $statistiquesMongoDBService,
+            $logger
+        );
+
+        // 19. RÃ©ponse JSON au frontend
         return $this->json([
-            'message' => 'Commande enregistrée avec succès.',
+            'message' => 'Commande enregistrÃ©e avec succÃ¨s.',
             'commandeId' => $commande->getId(),
             'statut' => $commande->getStatut(),
             'menu' => $menuVerrouille->getTitre(),
@@ -322,7 +333,7 @@ class CommandeController extends AbstractController
 
         if (!$utilisateur) {
             return $this->json([
-                'message' => 'Vous devez être connecté.'
+                'message' => 'Vous devez Ãªtre connectÃ©.'
             ], 401);
         }
 
@@ -378,15 +389,17 @@ class CommandeController extends AbstractController
     public function annuler(
         int $id,
         CommandeRepository $commandeRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        StatistiquesMongoDBService $statistiquesMongoDBService,
+        LoggerInterface $logger
     ): JsonResponse {
 
-        // 1. Vérifier que l'utilisateur est connecté
+        // 1. VÃ©rifier que l'utilisateur est connectÃ©
         $utilisateur = $this->getUser();
 
         if (!$utilisateur) {
             return $this->json([
-                'message' => 'Vous devez être connecté pour annuler une commande.'
+                'message' => 'Vous devez Ãªtre connectÃ© pour annuler une commande.'
             ], 401);
         }
 
@@ -417,7 +430,7 @@ class CommandeController extends AbstractController
                 ], 404);
             }
 
-            // 3. Vérifier le propriétaire
+            // 3. VÃ©rifier le propriÃ©taire
             if (
                 $commande->getUtilisateur()->getId()
                 !== $utilisateur->getId()
@@ -429,16 +442,16 @@ class CommandeController extends AbstractController
                 ], 404);
             }
 
-            // 4. Vérifier le statut
+            // 4. VÃ©rifier le statut
             if ($commande->getStatut() !== 'en_attente') {
                 $connexion->rollBack();
 
                 return $this->json([
-                    'message' => 'Cette commande ne peut plus être annulée.'
+                    'message' => 'Cette commande ne peut plus Ãªtre annulÃ©e.'
                 ], 409);
             }
 
-            // 5. Verrouiller le menu concerné
+            // 5. Verrouiller le menu concernÃ©
             $menu = $commande->getMenu();
 
             $entityManager->refresh(
@@ -449,7 +462,7 @@ class CommandeController extends AbstractController
             // 6. Annuler la commande
             $commande->setStatut('annulee');
 
-            // 7. Restituer une unité de stock
+            // 7. Restituer une unitÃ© de stock
             $menu->setStockDisponible(
                 $menu->getStockDisponible() + 1
             );
@@ -467,11 +480,39 @@ class CommandeController extends AbstractController
             throw $e;
         }
 
+        // Mettre à jour le statut dans MongoDB après validation de MySQL.
+        $this->synchroniserStatistiques(
+            $commande,
+            $statistiquesMongoDBService,
+            $logger
+        );
+
         return $this->json([
-            'message' => 'Votre commande a été annulée avec succès.',
+            'message' => 'Votre commande a Ã©tÃ© annulÃ©e avec succÃ¨s.',
             'commandeId' => $commande->getId(),
             'statut' => $commande->getStatut(),
             'stockRestant' => $menu->getStockDisponible()
         ]);
     }
+
+    /**
+     * La base MySQL reste la source de vérité.
+     * Une panne MongoDB ne doit pas faire échouer une commande déjà validée.
+     * La commande app:sync-statistiques permet une resynchronisation.
+     */
+    private function synchroniserStatistiques(
+        Commande $commande,
+        StatistiquesMongoDBService $statistiquesMongoDBService,
+        LoggerInterface $logger
+    ): void {
+        try {
+            $statistiquesMongoDBService->enregistrerCommande($commande);
+        } catch (\Throwable $e) {
+            $logger->error('Synchronisation MongoDB impossible pour une commande.', [
+                'commandeId' => $commande->getId(),
+                'exception' => $e,
+            ]);
+        }
+    }
+
 }

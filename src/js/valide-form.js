@@ -556,9 +556,15 @@
      */
 
     document.addEventListener("submit", event => {
-        const form = event.target;
+    const form = event.target;
 
-        if (!(form instanceof HTMLFormElement)) return;
+    if (!(form instanceof HTMLFormElement)) return;
+
+    // Les horaires sont validés et enregistrés par espace-employe.js
+    if (form.id === "formHorairesEmploye") {
+        return;
+    }
+
 
         // Supprimer les anciennes erreurs.
         form.querySelectorAll(FIELD_SELECTOR).forEach(clearError);

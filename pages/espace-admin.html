@@ -29,8 +29,7 @@
             </div>
 
             <span class="adminRole">
-                <i class="fa-solid fa-shield-halved"
-                   aria-hidden="true"></i>
+                <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
                 Administrateur
             </span>
         </div>
@@ -133,7 +132,239 @@
             </div>
         </section>
 
-        <!-- COMPTES EMPLOYÉS -->
+<!-- GESTION DES MENUS -->
+<section class="adminPanel" id="adminMenus">
+
+    <div class="adminSectionEntete">
+        <h2>Gestion des menus</h2>
+        <p>Ajoutez, modifiez et supprimez les menus du catalogue.</p>
+    </div>
+
+    <!-- AJOUT D'UN MENU -->
+    <div class="adminSousSection">
+        <h3>Ajouter un menu</h3>
+
+        <form id="formAjoutMenu" class="adminForm"
+              enctype="multipart/form-data">
+
+            <div>
+                <label for="ajoutTitre">Nom du menu</label>
+                <input type="text" id="ajoutTitre"
+                       name="titre" maxlength="150" required>
+            </div>
+
+            <div>
+                <label for="ajoutTheme">Thème</label>
+                <select id="ajoutTheme" name="themeId" required>
+                    <option value="">Choisir un thème</option>
+                    <option value="1">Pâques</option>
+                    <option value="2">Noël</option>
+                    <option value="3">Classique</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="ajoutRegime">Régime alimentaire</label>
+                <select id="ajoutRegime" name="regimeId" required>
+                    <option value="">Choisir un régime</option>
+                    <option value="1">Classique</option>
+                    <option value="2">Pescétarien</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="ajoutPersonnes">Nombre minimum de personnes</label>
+                <input type="number" id="ajoutPersonnes"
+                       name="personnesMin" min="1" required>
+            </div>
+
+            <div>
+                <label for="ajoutPrix">Prix (€)</label>
+                <input type="number" id="ajoutPrix"
+                       name="prix" min="0.01" step="0.01" required>
+            </div>
+
+            <div>
+                <label for="ajoutStock">Stock disponible</label>
+                <input type="number" id="ajoutStock"
+                       name="stock" min="0" required>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="ajoutDescription">Description</label>
+                <textarea id="ajoutDescription"
+                          name="description" rows="4" required></textarea>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="ajoutConditions">Conditions de commande</label>
+                <textarea id="ajoutConditions"
+                          name="conditions" rows="3" required></textarea>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="ajoutImages">Images du menu</label>
+                <input type="file" id="ajoutImages"
+                       name="images[]"
+                       accept="image/jpeg,image/png,image/webp"
+                       multiple>
+                <small>Maximum 10 images de 5 Mo chacune.</small>
+            </div>
+
+            <div class="adminChampLarge">
+                <button type="submit" class="adminBouton">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                    Ajouter le menu
+                </button>
+            </div>
+
+            <p id="messageAjoutMenu" class="adminChampLarge"
+               role="status" aria-live="polite"></p>
+
+        </form>
+    </div>
+
+    <!-- LISTE ET SUPPRESSION -->
+    <div class="adminSousSection">
+        <h3>Menus existants</h3>
+
+        <div class="adminTableWrapper">
+            <table class="adminTable">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Nom</th>
+                        <th>Thème</th>
+                        <th>Prix</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="listeMenusAdmin">
+                    <tr>
+                        <td colspan="6" class="adminVide">
+                            Chargement des menus...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODIFICATION -->
+    <div class="adminSousSection" id="sectionModificationMenu" hidden>
+        <h3>Modifier un menu</h3>
+
+        <form id="formModificationMenu" class="adminForm"
+              enctype="multipart/form-data">
+
+            <input type="hidden" id="modifMenuId" name="id">
+
+            <div>
+                <label for="modifTitre">Nom du menu</label>
+                <input type="text" id="modifTitre"
+                       name="titre" maxlength="150" required>
+            </div>
+
+            <div>
+                <label for="modifTheme">Thème</label>
+                <select id="modifTheme" name="themeId" required>
+                    <option value="">Choisir un thème</option>
+                    <option value="1">Pâques</option>
+                    <option value="2">Noël</option>
+                    <option value="3">Classique</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="modifRegime">Régime alimentaire</label>
+                <select id="modifRegime" name="regimeId" required>
+                    <option value="">Choisir un régime</option>
+                    <option value="1">Classique</option>
+                    <option value="2">Pescétarien</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="modifPersonnes">Nombre minimum de personnes</label>
+                <input type="number" id="modifPersonnes"
+                       name="personnesMin" min="1" required>
+            </div>
+
+            <div>
+                <label for="modifPrix">Prix (€)</label>
+                <input type="number" id="modifPrix"
+                       name="prix" min="0.01" step="0.01" required>
+            </div>
+
+            <div>
+                <label for="modifStock">Stock disponible</label>
+                <input type="number" id="modifStock"
+                       name="stock" min="0" required>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="modifDescription">Description</label>
+                <textarea id="modifDescription"
+                          name="description" rows="4" required></textarea>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="modifConditions">Conditions de commande</label>
+                <textarea id="modifConditions"
+                          name="conditions" rows="3" required></textarea>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="modifImages">Ajouter de nouvelles images</label>
+                <input type="file" id="modifImages"
+                       name="images[]"
+                       accept="image/jpeg,image/png,image/webp"
+                       multiple>
+            </div>
+
+            <div class="adminChampLarge">
+                <button type="submit" class="adminBouton">
+                    Enregistrer les modifications
+                </button>
+
+                <button type="button" id="annulerModificationMenu">
+                    Annuler
+                </button>
+            </div>
+
+            <p id="messageModificationMenu" class="adminChampLarge"
+               role="status" aria-live="polite"></p>
+
+        </form>
+    </div>
+
+    <!-- CONFIRMATION DE SUPPRESSION -->
+    <dialog id="dialogSuppressionMenu">
+        <h3>Supprimer un menu</h3>
+        <p>
+            Voulez-vous supprimer définitivement
+            <strong id="nomMenuSuppression"></strong> ?
+        </p>
+
+        <button type="button" id="annulerSuppressionMenu">
+            Annuler
+        </button>
+
+        <button type="button" id="confirmerSuppressionMenu"
+                class="adminBouton">
+            Confirmer la suppression
+        </button>
+    </dialog>
+
+    <p id="messageGestionMenus"
+       role="status" aria-live="polite"></p>
+
+</section>
+
+
+        <!-- GESTION DES EMPLOYÉS -->
         <section class="adminPanel" id="adminEmployes">
 
             <div class="adminSectionEntete">
@@ -147,6 +378,30 @@
             <form id="formCreationEmploye" class="adminForm">
 
                 <div>
+                    <label for="nouvelEmployeNom">Nom</label>
+                    <input
+                        type="text"
+                        id="nouvelEmployeNom"
+                        name="nom"
+                        maxlength="255"
+                        autocomplete="off"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label for="nouvelEmployePrenom">Prénom</label>
+                    <input
+                        type="text"
+                        id="nouvelEmployePrenom"
+                        name="prenom"
+                        maxlength="255"
+                        autocomplete="off"
+                        required
+                    >
+                </div>
+
+                <div>
                     <label for="nouvelEmployeEmail">
                         Email professionnel
                     </label>
@@ -154,41 +409,122 @@
                         type="email"
                         id="nouvelEmployeEmail"
                         name="email"
+                        maxlength="180"
                         autocomplete="off"
                         required
                     >
                 </div>
 
                 <div>
-                    <label for="nouvelEmployePassword">
-                        Mot de passe initial
+                    <label for="nouvelEmployeTelephone">
+                        Téléphone
                     </label>
                     <input
-                        type="password"
-                        id="nouvelEmployePassword"
-                        name="password"
-                        autocomplete="new-password"
-                        minlength="12"
+                        type="tel"
+                        id="nouvelEmployeTelephone"
+                        name="telephone"
+                        maxlength="20"
+                        autocomplete="off"
                         required
                     >
                 </div>
 
+                <div>
+                    <label for="nouvelEmployeAdresse">
+                        Adresse
+                    </label>
+                    <input
+                        type="text"
+                        id="nouvelEmployeAdresse"
+                        name="adresse"
+                        maxlength="255"
+                        autocomplete="off"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label for="nouvelEmployeCodePostal">
+                        Code postal
+                    </label>
+                    <input
+                        type="text"
+                        id="nouvelEmployeCodePostal"
+                        name="codePostal"
+                        maxlength="10"
+                        autocomplete="off"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label for="nouvelEmployeVille">
+                        Ville
+                    </label>
+                    <input
+                        type="text"
+                        id="nouvelEmployeVille"
+                        name="ville"
+                        maxlength="100"
+                        autocomplete="off"
+                        required
+                    >
+                </div>
+
+                <!-- MOT DE PASSE AVEC ŒIL -->
+                <div>
+                    <label for="nouvelEmployePassword">
+                        Mot de passe initial
+                    </label>
+
+                    <div class="passwordField">
+                        <input
+                            type="password"
+                            id="nouvelEmployePassword"
+                            name="password"
+                            autocomplete="new-password"
+                            minlength="12"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="togglePassword"
+                            aria-label="Afficher le mot de passe"
+                            aria-pressed="false"
+                        >
+                            <i
+                                class="fa-solid fa-eye"
+                                aria-hidden="true"
+                            ></i>
+                        </button>
+                    </div>
+                </div>
+
                 <div class="adminChampLarge">
                     <button type="submit" class="adminBouton">
-                        <i class="fa-solid fa-user-plus"
-                           aria-hidden="true"></i>
+                        <i
+                            class="fa-solid fa-user-plus"
+                            aria-hidden="true"
+                        ></i>
                         Créer le compte employé
                     </button>
                 </div>
 
                 <div class="adminChampLarge">
                     <p class="adminInformation">
-                        L'employé recevra un email l'informant
-                        de la création de son compte.
-                        Le mot de passe ne sera pas communiqué
-                        dans cet email.
+                        Un email de notification est envoyé
+                        à l'employé lors de la création de son compte.
+                        Le mot de passe n'est jamais communiqué par email.
+                        L'employé doit se rapprocher de l'administrateur
+                        pour l'obtenir.
                     </p>
-                    <p id="messageCreationEmploye" role="status"></p>
+
+                    <p
+                        id="messageCreationEmploye"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
                 </div>
 
             </form>
@@ -218,8 +554,8 @@
                 </div>
 
                 <p class="adminInformation">
-                    Les actions d'activation ou de désactivation
-                    seront disponibles après chargement des comptes.
+                    Seuls les comptes employés peuvent être activés
+                    ou désactivés depuis cette interface.
                     Aucun compte administrateur ne peut être créé ici.
                 </p>
             </div>
@@ -271,7 +607,6 @@
                         <option value="">
                             Tous les menus
                         </option>
-                        <!-- Menus depuis la base -->
                     </select>
                 </div>
 
@@ -287,24 +622,30 @@
 
                 <article class="adminGraphique">
                     <h3>Nombre de commandes par menu</h3>
+
                     <div
                         id="adminGraphiqueCommandes"
                         class="adminGraphiqueContenu"
                     >
-                        <i class="fa-solid fa-chart-column"
-                           aria-hidden="true"></i>
+                        <i
+                            class="fa-solid fa-chart-column"
+                            aria-hidden="true"
+                        ></i>
                         <p>Graphique à charger depuis la base NoSQL.</p>
                     </div>
                 </article>
 
                 <article class="adminGraphique">
                     <h3>Chiffre d'affaires par menu</h3>
+
                     <div
                         id="adminGraphiqueCA"
                         class="adminGraphiqueContenu"
                     >
-                        <i class="fa-solid fa-chart-line"
-                           aria-hidden="true"></i>
+                        <i
+                            class="fa-solid fa-chart-line"
+                            aria-hidden="true"
+                        ></i>
                         <p>Statistiques financières à charger.</p>
                     </div>
                 </article>
@@ -339,3 +680,5 @@
 
     </div>
 </section>
+
+

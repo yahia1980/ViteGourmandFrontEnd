@@ -1,0 +1,208 @@
+
+<!-- ==========================================
+     PAGE MODIFIER MON PROFIL
+========================================== -->
+
+<div class="modifierProfil">
+
+    <!-- BANDEAU DE LA PAGE -->
+    <section class="modifierProfilBienvenue">
+
+        <div class="modifierProfilBienvenueContenu">
+
+            <span class="modifierProfilLabel">
+                <i class="fa-solid fa-user-pen"></i>
+                MON ESPACE PERSONNEL
+            </span>
+
+            <h1>Modifier mon profil</h1>
+
+            <p>
+                Consultez et mettez à jour vos informations
+                personnelles pour profiter pleinement
+                des services Vite & Gourmand.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- FORMULAIRE DE MODIFICATION -->
+    <section class="modifierProfilSection">
+
+        <div class="modifierProfilTitre">
+
+            <span class="modifierProfilSousTitre">
+                MES INFORMATIONS
+            </span>
+
+            <h2>Informations personnelles</h2>
+
+            <p>
+                Vérifiez vos coordonnées et modifiez
+                les informations nécessaires.
+            </p>
+
+        </div>
+
+        <form id="formModifierProfil" class="modifierProfilForm">
+
+            <!-- PRÉNOM -->
+            <div class="modifierProfilChamp">
+
+                <label for="profilPrenom">
+                    Prénom
+                    <span aria-hidden="true">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="profilPrenom"
+                    name="prenom"
+                    autocomplete="given-name"
+                    maxlength="100"
+                    required
+                >
+
+            </div>
+
+            <!-- NOM -->
+            <div class="modifierProfilChamp">
+
+                <label for="profilNom">
+                    Nom
+                    <span aria-hidden="true">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="profilNom"
+                    name="nom"
+                    autocomplete="family-name"
+                    maxlength="100"
+                    required
+                >
+
+            </div>
+
+            <!-- EMAIL -->
+            <div class="modifierProfilChamp">
+
+                <label for="profilEmail">
+                    Adresse e-mail
+                    <span aria-hidden="true">*</span>
+                </label>
+
+                <input
+                    type="email"
+                    id="profilEmail"
+                    name="email"
+                    autocomplete="email"
+                    maxlength="180"
+                    required
+                >
+
+            </div>
+
+            <!-- TÉLÉPHONE -->
+            <div class="modifierProfilChamp">
+
+                <label for="profilTelephone">
+                    Numéro de téléphone
+                </label>
+
+                <input
+                    type="tel"
+                    id="profilTelephone"
+                    name="telephone"
+                    autocomplete="tel"
+                    maxlength="30"
+                >
+
+            </div>
+
+            <!-- ADRESSE -->
+            <div class="modifierProfilChamp modifierProfilChampLarge">
+
+                <label for="profilAdresse">
+                    Adresse postale
+                </label>
+
+                <input
+                    type="text"
+                    id="profilAdresse"
+                    name="adresse"
+                    autocomplete="street-address"
+                    maxlength="255"
+                >
+
+            </div>
+
+            <!-- CODE POSTAL -->
+            <div class="modifierProfilChamp">
+
+                <label for="profilCodePostal">
+                    Code postal
+                </label>
+
+                <input
+                    type="text"
+                    id="profilCodePostal"
+                    name="codePostal"
+                    autocomplete="postal-code"
+                    inputmode="numeric"
+                    maxlength="10"
+                >
+
+            </div>
+
+            <!-- VILLE -->
+            <div class="modifierProfilChamp">
+
+                <label for="profilVille">
+                    Ville
+                </label>
+
+                <input
+                    type="text"
+                    id="profilVille"
+                    name="ville"
+                    autocomplete="address-level2"
+                    maxlength="100"
+                >
+
+            </div>
+
+            <!-- MESSAGE DE CONFIRMATION -->
+            <div class="modifierProfilMessage">
+                <p
+                    id="messageModifierProfil"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+            </div>
+
+            <!-- BOUTONS -->
+            <div class="modifierProfilActions">
+
+                <button
+                    type="submit"
+                    id="btnEnregistrerProfil"
+                    class="btnEnregistrerProfil"
+                >
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Enregistrer les modifications
+                </button>
+
+                <a href="/compte" class="btnRetourCompte">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Retour à mon compte
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>

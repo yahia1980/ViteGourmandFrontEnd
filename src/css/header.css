@@ -317,3 +317,15 @@ header {
 .hamburger {
     z-index: 1002;
 }
+/* Mon compte : utilisateur non connecté */
+.navbar .lienCompte.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Mon compte : utilisateur connecté */
+.navbar .lienCompte:not(.disabled) {
+    opacity: 1;
+    cursor: pointer;
+}

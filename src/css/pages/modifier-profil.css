@@ -1,0 +1,435 @@
+
+/* ==========================================
+   VITE & GOURMAND
+   PAGE MODIFIER MON PROFIL
+========================================== */
+
+.modifierProfil {
+    width: 92%;
+    max-width: 1200px;
+    margin: 40px auto 80px;
+    box-sizing: border-box;
+}
+
+/* ==========================================
+   BANDEAU AVEC IMAGE DE LA GALERIE
+========================================== */
+
+.modifierProfilBienvenue {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 320px;
+    padding: 50px 40px;
+    overflow: hidden;
+    border-radius: 18px;
+    box-sizing: border-box;
+
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.78) 0%,
+            rgba(0, 0, 0, 0.48) 65%,
+            rgba(0, 0, 0, 0.25) 100%
+        ),
+        url("/images/imagesGaleries/photo9.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.modifierProfilBienvenueContenu {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+}
+
+.modifierProfilLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    color: var(--white, #fff);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.modifierProfilLabel i {
+    font-size: 1.2rem;
+}
+
+.modifierProfilBienvenue h1 {
+    margin: 0 0 18px;
+    color: var(--white, #fff);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.2;
+}
+
+.modifierProfilBienvenue p {
+    max-width: 600px;
+    margin: 0;
+    color: var(--white, #fff);
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* ==========================================
+   SECTION DU FORMULAIRE
+========================================== */
+
+.modifierProfilSection {
+    width: 100%;
+    margin-top: 45px;
+    padding: 40px;
+    background-color: var(--white, #fff);
+    border: 1px solid #e5e5e5;
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+}
+
+.modifierProfilTitre {
+    margin-bottom: 35px;
+}
+
+.modifierProfilSousTitre {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--bleue, #345b79);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.modifierProfilTitre h2 {
+    margin: 0 0 12px;
+    color: var(--heading, #222);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.modifierProfilTitre p {
+    margin: 0;
+    color: var(--content, #555);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* ==========================================
+   FORMULAIRE
+========================================== */
+
+.modifierProfilForm {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+    width: 100%;
+}
+
+.modifierProfilChamp {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+.modifierProfilChampLarge {
+    grid-column: 1 / -1;
+}
+
+/* ==========================================
+   LABELS
+========================================== */
+
+.modifierProfilChamp label {
+    color: var(--heading, #222);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.modifierProfilChamp label span {
+    color: #b42318;
+}
+
+/* ==========================================
+   CHAMPS DE SAISIE
+========================================== */
+
+.modifierProfilChamp input {
+    width: 100%;
+    min-width: 0;
+    height: 50px;
+    padding: 12px 15px;
+
+    background-color: var(--white, #fff);
+    color: var(--black, #222);
+
+    border: 1px solid #d6d6d6;
+    border-radius: 8px;
+    outline: none;
+
+    font: inherit;
+    font-size: 1rem;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.modifierProfilChamp input:hover {
+    border-color: var(--bleue, #345b79);
+}
+
+.modifierProfilChamp input:focus {
+    border-color: var(--bleue, #345b79);
+    box-shadow: 0 0 0 3px rgba(70, 100, 130, 0.12);
+}
+
+.modifierProfilChamp input:disabled {
+    background-color: #f1f1f1;
+    color: #777;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   MESSAGE DE CONFIRMATION
+========================================== */
+
+.modifierProfilMessage {
+    grid-column: 1 / -1;
+}
+
+#messageModifierProfil {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+#messageModifierProfil:empty {
+    display: none;
+}
+
+#messageModifierProfil.succes {
+    padding: 14px 18px;
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+}
+
+#messageModifierProfil.erreur {
+    padding: 14px 18px;
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+}
+
+/* ==========================================
+   ACTIONS DU FORMULAIRE
+========================================== */
+
+.modifierProfilActions {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* ==========================================
+   BOUTONS COMMUNS
+========================================== */
+
+.btnEnregistrerProfil,
+.btnRetourCompte {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    min-height: 50px;
+    padding: 12px 22px;
+
+    border-radius: 8px;
+
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+/* ==========================================
+   BOUTON ENREGISTRER
+========================================== */
+
+.btnEnregistrerProfil {
+    background-color: var(--bleue, #345b79);
+    color: var(--white, #fff);
+    border: 2px solid var(--bleue, #345b79);
+    cursor: pointer;
+}
+
+.btnEnregistrerProfil:hover {
+    background-color: var(--heading, #222);
+    border-color: var(--heading, #222);
+    color: var(--white, #fff);
+}
+
+.btnEnregistrerProfil:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   BOUTON RETOUR
+========================================== */
+
+.btnRetourCompte {
+    background-color: var(--white, #fff);
+    color: var(--bleue, #345b79);
+    border: 2px solid var(--bleue, #345b79);
+}
+
+.btnRetourCompte:hover {
+    background-color: var(--bleue, #345b79);
+    color: var(--white, #fff);
+}
+
+/* ==========================================
+   ACCESSIBILITÉ
+========================================== */
+
+.btnEnregistrerProfil:focus-visible,
+.btnRetourCompte:focus-visible {
+    outline: 3px solid var(--bleue, #345b79);
+    outline-offset: 3px;
+}
+
+/* ==========================================
+   RESPONSIVE TABLETTE
+========================================== */
+
+@media screen and (max-width: 991px) {
+
+    .modifierProfil {
+        width: 94%;
+        margin-top: 30px;
+    }
+
+    .modifierProfilBienvenue {
+        min-height: 280px;
+        padding: 40px 30px;
+    }
+
+    .modifierProfilSection {
+        padding: 30px;
+    }
+
+    .modifierProfilForm {
+        gap: 20px;
+    }
+}
+
+/* ==========================================
+   RESPONSIVE MOBILE
+========================================== */
+
+@media screen and (max-width: 767px) {
+
+    .modifierProfil {
+        width: 94%;
+        margin: 20px auto 50px;
+    }
+
+    .modifierProfilBienvenue {
+        min-height: 260px;
+        padding: 30px 20px;
+        border-radius: 12px;
+        background-position: center;
+    }
+
+    .modifierProfilBienvenue h1 {
+        font-size: 1.8rem;
+    }
+
+    .modifierProfilBienvenue p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .modifierProfilSection {
+        margin-top: 25px;
+        padding: 25px 18px;
+        border-radius: 12px;
+    }
+
+    .modifierProfilTitre {
+        margin-bottom: 25px;
+    }
+
+    .modifierProfilForm {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    .modifierProfilChampLarge,
+    .modifierProfilMessage,
+    .modifierProfilActions {
+        grid-column: 1;
+    }
+
+    .modifierProfilChamp input {
+        height: 48px;
+    }
+
+    .modifierProfilActions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btnEnregistrerProfil,
+    .btnRetourCompte {
+        width: 100%;
+    }
+}
+
+/* ==========================================
+   PETITS ÉCRANS
+========================================== */
+
+@media screen and (max-width: 380px) {
+
+    .modifierProfilBienvenue {
+        padding: 25px 15px;
+    }
+
+    .modifierProfilSection {
+        padding: 20px 14px;
+    }
+
+    .modifierProfilLabel {
+        font-size: 0.72rem;
+        letter-spacing: 1px;
+    }
+
+    .modifierProfilBienvenue h1 {
+        font-size: 1.6rem;
+    }
+}

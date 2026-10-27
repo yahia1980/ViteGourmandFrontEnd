@@ -2,10 +2,18 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Menu;
+use App\Entity\MenuImage;
 use App\Repository\MenuRepository;
+use App\Repository\ThemeRepository;
+use App\Repository\RegimeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class MenuController extends AbstractController
 {
@@ -13,25 +21,14 @@ final class MenuController extends AbstractController
     public function index(MenuRepository $menuRepository): JsonResponse
     {
         $menus = $menuRepository->findAll();
-
         $resultats = [];
 
         foreach ($menus as $menu) {
-
-            /* =====================================
-               1. IMAGES DU MENU
-               ===================================== */
-
             $images = [];
 
             foreach ($menu->getMenuImages() as $menuImage) {
                 $images[] = $menuImage->getChemin();
             }
-
-
-            /* =====================================
-               2. PLATS DU MENU
-               ===================================== */
 
             $plats = [
                 'entrees' => [],
@@ -39,18 +36,12 @@ final class MenuController extends AbstractController
                 'desserts' => [],
             ];
 
-            /* =====================================
-               3. ALLERGÈNES DU MENU
-               ===================================== */
-
             $allergenes = [];
 
             foreach ($menu->getPlats() as $plat) {
-
                 $categorie = strtolower(trim($plat->getCategorie() ?? ''));
 
                 switch ($categorie) {
-
                     case 'entree':
                     case 'entrée':
                         $plats['entrees'][] = $plat->getNom();
@@ -76,11 +67,6 @@ final class MenuController extends AbstractController
                 }
             }
 
-
-            /* =====================================
-               4. CONSTRUCTION DE LA RÉPONSE JSON
-               ===================================== */
-
             $resultats[] = [
                 'id' => $menu->getId(),
                 'titre' => $menu->getTitre(),
@@ -88,17 +74,13 @@ final class MenuController extends AbstractController
                 'personnesMin' => $menu->getNombrePersonnesMin(),
                 'prix' => (float) $menu->getPrix(),
                 'stock' => $menu->getStockDisponible(),
-
                 'conditions' => $menu->getConditions()
                     ? [$menu->getConditions()]
                     : [],
-
                 'theme' => $menu->getTheme()?->getNom(),
                 'regime' => $menu->getRegime()?->getNom(),
-
                 'image' => $images[0] ?? null,
                 'galerie' => $images,
-
                 'plats' => $plats,
                 'allergenes' => $allergenes,
             ];
@@ -106,4 +88,495 @@ final class MenuController extends AbstractController
 
         return $this->json($resultats);
     }
+
+    #[Route('/api/menus', name: 'api_menus_creation', methods: ['POST'])]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function creer(
+        Request $request,
+        ThemeRepository $themeRepository,
+        RegimeRepository $regimeRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        /*
+         * JSON : création sans images.
+         * multipart/form-data : création avec images.
+         */
+        $contentType = $request->headers->get('Content-Type', '');
+
+        if (str_contains($contentType, 'multipart/form-data')) {
+            $donnees = $request->request->all();
+        } else {
+            $donnees = json_decode($request->getContent(), true);
+        }
+
+        if (!is_array($donnees)) {
+            return $this->json([
+                'erreur' => 'Données invalides.'
+            ], 400);
+        }
+
+        $titre = trim((string) ($donnees['titre'] ?? ''));
+        $description = trim((string) ($donnees['description'] ?? ''));
+        $conditions = trim((string) ($donnees['conditions'] ?? ''));
+
+        $personnesMin = filter_var(
+            $donnees['personnesMin'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+
+        $stock = filter_var(
+            $donnees['stock'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+
+        $prixBrut = $donnees['prix'] ?? null;
+
+        $prix = is_int($prixBrut)
+            || is_float($prixBrut)
+            || is_string($prixBrut)
+            ? trim((string) $prixBrut)
+            : '';
+
+        $themeId = filter_var(
+            $donnees['themeId'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+
+        $regimeId = filter_var(
+            $donnees['regimeId'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+
+        if ($titre === '' || mb_strlen($titre) > 150) {
+            return $this->json([
+                'erreur' => 'Le titre est obligatoire et doit contenir au maximum 150 caractères.'
+            ], 400);
+        }
+
+        if ($description === '' || $conditions === '') {
+            return $this->json([
+                'erreur' => 'La description et les conditions sont obligatoires.'
+            ], 400);
+        }
+
+        if ($personnesMin === false || $personnesMin < 1) {
+            return $this->json([
+                'erreur' => 'Le nombre minimum de personnes doit être supérieur à zéro.'
+            ], 400);
+        }
+
+        if ($stock === false || $stock < 0) {
+            return $this->json([
+                'erreur' => 'Le stock doit être un entier positif ou nul.'
+            ], 400);
+        }
+
+        if (
+            !preg_match('/^\d{1,8}(?:\.\d{1,2})?$/', $prix)
+            || (float) $prix <= 0
+        ) {
+            return $this->json([
+                'erreur' => 'Le prix doit être positif, avec au maximum deux décimales.'
+            ], 400);
+        }
+
+        if ($themeId === false || $regimeId === false) {
+            return $this->json([
+                'erreur' => 'Un thème et un régime valides sont obligatoires.'
+            ], 400);
+        }
+
+        $theme = $themeRepository->find($themeId);
+        $regime = $regimeRepository->find($regimeId);
+
+        if ($theme === null || $regime === null) {
+            return $this->json([
+                'erreur' => 'Le thème ou le régime sélectionné est introuvable.'
+            ], 404);
+        }
+
+        /*
+         * Récupération des images envoyées.
+         * Le formulaire devra utiliser le nom images[].
+         */
+        $images = $request->files->all('images', []);
+
+        if (!is_array($images)) {
+            $images = [$images];
+        }
+
+        $images = array_values(array_filter(
+            $images,
+            fn($image) => $image !== null
+        ));
+
+        if (count($images) > 10) {
+            return $this->json([
+                'erreur' => 'Maximum 10 images par menu.'
+            ], 400);
+        }
+
+        $extensionsAutorisees = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+        ];
+
+        foreach ($images as $image) {
+            if (!$image instanceof UploadedFile || !$image->isValid()) {
+                return $this->json([
+                    'erreur' => 'Un fichier image est invalide.'
+                ], 400);
+            }
+
+            if ($image->getSize() > 5 * 1024 * 1024) {
+                return $this->json([
+                    'erreur' => 'Chaque image doit faire 5 Mo maximum.'
+                ], 400);
+            }
+
+            $mimeType = $image->getMimeType();
+
+            if (!isset($extensionsAutorisees[$mimeType])) {
+                return $this->json([
+                    'erreur' => 'Seuls les formats JPEG, PNG et WebP sont autorisés.'
+                ], 400);
+            }
+        }
+
+        /*
+         * Le dossier public de Vite se trouve
+         * au même niveau que le dossier backend.
+         */
+        $dossierImages = dirname(
+            $this->getParameter('kernel.project_dir')
+        ) . '/public/images/uploads/imagesMenus';
+
+        if (!is_dir($dossierImages)) {
+            if (!mkdir($dossierImages, 0775, true) && !is_dir($dossierImages)) {
+                return $this->json([
+                    'erreur' => 'Impossible de créer le dossier des images.'
+                ], 500);
+            }
+        }
+
+        $menu = new Menu();
+
+        $menu->setTitre($titre);
+        $menu->setDescription($description);
+        $menu->setNombrePersonnesMin($personnesMin);
+        $menu->setPrix($prix);
+        $menu->setStockDisponible($stock);
+        $menu->setConditions($conditions);
+        $menu->setTheme($theme);
+        $menu->setRegime($regime);
+
+        $entityManager->persist($menu);
+
+        $cheminsImages = [];
+        $fichiersEnregistres = [];
+
+        try {
+            foreach ($images as $image) {
+                $mimeType = $image->getMimeType();
+                $extension = $extensionsAutorisees[$mimeType];
+
+                $nomFichier = bin2hex(random_bytes(16))
+                    . '.' . $extension;
+
+                $image->move($dossierImages, $nomFichier);
+
+                $fichiersEnregistres[] = $dossierImages . '/' . $nomFichier;
+
+                $cheminPublic = '/images/uploads/imagesMenus/'
+                    . $nomFichier;
+
+                $menuImage = new MenuImage();
+                $menuImage->setChemin($cheminPublic);
+                $menuImage->setMenu($menu);
+
+                $entityManager->persist($menuImage);
+
+                $cheminsImages[] = $cheminPublic;
+            }
+
+            $entityManager->flush();
+        } catch (\Throwable $exception) {
+            foreach ($fichiersEnregistres as $fichier) {
+                if (is_file($fichier)) {
+                    @unlink($fichier);
+                }
+            }
+
+            return $this->json([
+                'erreur' => 'Impossible d’enregistrer le menu ou ses images.'
+            ], 500);
+        }
+
+        return $this->json([
+            'message' => 'Menu créé avec succès.',
+            'menu' => [
+                'id' => $menu->getId(),
+                'titre' => $menu->getTitre(),
+                'description' => $menu->getDescription(),
+                'personnesMin' => $menu->getNombrePersonnesMin(),
+                'prix' => (float) $menu->getPrix(),
+                'stock' => $menu->getStockDisponible(),
+                'theme' => $theme->getNom(),
+                'regime' => $regime->getNom(),
+                'image' => $cheminsImages[0] ?? null,
+                'galerie' => $cheminsImages,
+            ],
+        ], 201);
+    }
+
+    // =====================================================
+    // MODIFIER UN MENU
+    // =====================================================
+
+    #[Route('/api/menus/{id}/modifier', name: 'api_menus_modifier', methods: ['POST'], requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function modifier(
+        int $id,
+        Request $request,
+        MenuRepository $menuRepository,
+        ThemeRepository $themeRepository,
+        RegimeRepository $regimeRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+
+        $menu = $menuRepository->find($id);
+
+        if (!$menu) {
+            return $this->json(['erreur' => 'Menu introuvable.'], 404);
+        }
+
+        $donnees = $request->request->all();
+
+        $titre = trim((string) ($donnees['titre'] ?? ''));
+        $description = trim((string) ($donnees['description'] ?? ''));
+        $conditions = trim((string) ($donnees['conditions'] ?? ''));
+
+        $personnesMin = filter_var(
+            $donnees['personnesMin'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+
+        $stock = filter_var(
+            $donnees['stock'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+
+        $prix = trim((string) ($donnees['prix'] ?? ''));
+
+        $themeId = filter_var(
+            $donnees['themeId'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+
+        $regimeId = filter_var(
+            $donnees['regimeId'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+
+        if (
+            $titre === '' || mb_strlen($titre) > 150 ||
+            $description === '' || $conditions === ''
+        ) {
+            return $this->json([
+                'erreur' => 'Titre, description ou conditions invalides.'
+            ], 400);
+        }
+
+        if (
+            $personnesMin === false || $personnesMin < 1 ||
+            $stock === false || $stock < 0
+        ) {
+            return $this->json([
+                'erreur' => 'Nombre de personnes ou stock invalide.'
+            ], 400);
+        }
+
+        if (
+            !preg_match('/^\d{1,8}(?:\.\d{1,2})?$/', $prix) ||
+            (float) $prix <= 0
+        ) {
+            return $this->json([
+                'erreur' => 'Prix invalide.'
+            ], 400);
+        }
+
+        if (!$themeId || !$regimeId) {
+            return $this->json([
+                'erreur' => 'Thème ou régime invalide.'
+            ], 400);
+        }
+
+        $theme = $themeRepository->find($themeId);
+        $regime = $regimeRepository->find($regimeId);
+
+        if (!$theme || !$regime) {
+            return $this->json([
+                'erreur' => 'Thème ou régime introuvable.'
+            ], 404);
+        }
+
+        $images = $request->files->all('images');
+
+        if (count($images) > 10) {
+            return $this->json([
+                'erreur' => 'Maximum 10 nouvelles images.'
+            ], 400);
+        }
+
+        $extensions = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp'
+        ];
+
+        foreach ($images as $image) {
+            if (
+                !$image instanceof UploadedFile ||
+                !$image->isValid() ||
+                $image->getSize() > 5 * 1024 * 1024 ||
+                !isset($extensions[$image->getMimeType()])
+            ) {
+                return $this->json([
+                    'erreur' => 'Image invalide (JPG, PNG ou WebP, 5 Mo maximum).'
+                ], 400);
+            }
+        }
+
+        $menu->setTitre($titre);
+        $menu->setDescription($description);
+        $menu->setConditions($conditions);
+        $menu->setNombrePersonnesMin($personnesMin);
+        $menu->setStockDisponible($stock);
+        $menu->setPrix($prix);
+        $menu->setTheme($theme);
+        $menu->setRegime($regime);
+
+        $dossierImages = dirname(
+            $this->getParameter('kernel.project_dir')
+        ) . '/public/images/uploads/imagesMenus';
+
+        $fichiersEnregistres = [];
+
+        try {
+            if (
+                $images && !is_dir($dossierImages) &&
+                !mkdir($dossierImages, 0775, true) &&
+                !is_dir($dossierImages)
+            ) {
+                throw new \RuntimeException('Dossier images inaccessible.');
+            }
+
+            foreach ($images as $image) {
+                $extension = $extensions[$image->getMimeType()];
+                $nomFichier = bin2hex(random_bytes(16)) . '.' . $extension;
+
+                $image->move($dossierImages, $nomFichier);
+
+                $fichiersEnregistres[] = $dossierImages . '/' . $nomFichier;
+
+                $menuImage = new MenuImage();
+                $menuImage->setMenu($menu);
+                $menuImage->setChemin(
+                    '/images/uploads/imagesMenus/' . $nomFichier
+                );
+
+                $entityManager->persist($menuImage);
+            }
+
+            $entityManager->flush();
+
+        } catch (\Throwable $exception) {
+            foreach ($fichiersEnregistres as $fichier) {
+                if (is_file($fichier)) {
+                    @unlink($fichier);
+                }
+            }
+
+            return $this->json([
+                'erreur' => 'Impossible de modifier le menu.'
+            ], 500);
+        }
+
+        return $this->json([
+            'message' => 'Menu modifié avec succès.',
+            'id' => $menu->getId()
+        ]);
+    }
+
+    // =====================================================
+    // SUPPRIMER UN MENU
+    // =====================================================
+
+    #[Route('/api/menus/{id}', name: 'api_menus_supprimer', methods: ['DELETE'], requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function supprimer(
+        int $id,
+        MenuRepository $menuRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+
+        $menu = $menuRepository->find($id);
+
+        if (!$menu) {
+            return $this->json([
+                'erreur' => 'Menu introuvable.'
+            ], 404);
+        }
+
+        // Ne pas supprimer un menu lié à des commandes.
+        if (!$menu->getCommandes()->isEmpty()) {
+            return $this->json([
+                'erreur' => 'Impossible de supprimer un menu associé à des commandes.'
+            ], 409);
+        }
+
+        $images = $menu->getMenuImages()->toArray();
+
+        try {
+            foreach ($images as $image) {
+                $entityManager->remove($image);
+            }
+
+            // Supprimer les associations avec les plats.
+            foreach ($menu->getPlats()->toArray() as $plat) {
+                $menu->removePlat($plat);
+            }
+
+            $entityManager->remove($menu);
+            $entityManager->flush();
+
+        } catch (\Throwable $exception) {
+            return $this->json([
+                'erreur' => 'Suppression impossible : vérifiez les associations du menu.'
+            ], 409);
+        }
+
+        // Supprimer uniquement les fichiers du dossier d'upload.
+        $dossierImages = dirname(
+            $this->getParameter('kernel.project_dir')
+        ) . '/public/images/uploads/imagesMenus';
+
+        foreach ($images as $image) {
+            $chemin = $image->getChemin();
+
+            if (str_starts_with($chemin, '/images/uploads/imagesMenus/')) {
+                $fichier = $dossierImages . '/' . basename($chemin);
+
+                if (is_file($fichier)) {
+                    @unlink($fichier);
+                }
+            }
+        }
+
+        return $this->json([
+            'message' => 'Menu supprimé avec succès.'
+        ]);
+    }
+
 }

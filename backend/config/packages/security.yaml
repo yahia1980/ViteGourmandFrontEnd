@@ -44,6 +44,11 @@ security:
 
         # API employé
         - { path: ^/api/employe(?:/|$), roles: ROLE_EMPLOYE }
+                # Consultation publique des horaires
+        - { path: ^/api/horaires$, roles: PUBLIC_ACCESS, methods: [GET] }
+
+        # Modification réservée aux employés et administrateurs
+        - { path: ^/api/horaires/[0-9]+/modifier$, roles: ROLE_EMPLOYE, methods: [POST] }
 
         # API commandes
         - { path: ^/api/commandes(?:/|$), roles: ROLE_USER }

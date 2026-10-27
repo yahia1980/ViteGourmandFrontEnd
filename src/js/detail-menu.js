@@ -144,5 +144,16 @@
     /* CONDITIONS */
 
     remplirListe("detailConditions", menu.conditions);
+    /* ==========================================
+   COMMANDER LE MENU SÉLECTIONNÉ
+   ========================================== */
+
+const boutonCommander = document.querySelector("#detailCommander");
+
+if (boutonCommander) {
+    boutonCommander.addEventListener("click", () => {
+        window.location.href = "/reserver";
+    });
+}
 
 })();
