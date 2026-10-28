@@ -10,6 +10,16 @@
     --emp-border: #e1e7ee;
     --emp-bleu: var(--bleue, #17456b);
 
+    /* Variables nécessaires à la gestion des menus intégrée à cette page */
+    --adm-texte: #243447;
+    --adm-muted: #667588;
+    --adm-fond: #f5f7fa;
+    --adm-border: #e1e7ee;
+    --adm-bleu: var(--bleue, #17456b);
+    --adm-blanc: #ffffff;
+    --adm-rouge: #dc2626;
+    --adm-violet: #3730a3;
+
     width: 100%;
     min-width: 0;
     padding-bottom: 70px;
@@ -439,3 +449,345 @@
     }
 }
 
+
+/* Variables de la gestion des menus réutilisée depuis l'admin */
+
+.espaceAdmin {
+    --adm-texte: #243447;
+    --adm-muted: #667588;
+    --adm-fond: #f5f7fa;
+    --adm-border: #e1e7ee;
+    --adm-bleu: var(--bleue, #17456b);
+    --adm-blanc: #ffffff;
+    --adm-rouge: #dc2626;
+    --adm-violet: #3730a3;
+}
+.employeBoutonDanger {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #dc3545;
+}
+
+.employeBoutonDanger:hover {
+    background-color: #b02a37;
+    border-color: #b02a37;
+}
+/* Boutons Modifier et Supprimer des plats */
+#listePlatsAdmin button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    padding: 10px 16px;
+}
+/* Version mobile */
+@media screen and (max-width: 767px) {
+    #listePlatsAdmin td:last-child {
+        min-width: 120px;
+    }
+
+    #listePlatsAdmin td:last-child button {
+        display: flex;
+        width: 100%;
+        margin: 0 0 10px 0;
+        padding: 10px;
+        box-sizing: border-box;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #listePlatsAdmin td:last-child button:last-child {
+        margin-bottom: 0;
+    }
+}
+/* Message après l'ajout d'un plat */
+#messageAjoutPlat {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Espacement entre le formulaire et la liste des plats */
+#employeGestionPlats > h3 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/* Évite un espacement excessif avant le premier titre */
+#employeGestionPlats > h3:first-of-type {
+    margin-top: 20px;
+}
+#blocModificationPlat[hidden] {
+    display: none !important;
+}
+/* Fenêtre de confirmation */
+#dialogSuppressionPlat {
+    width: 90%;
+    max-width: 420px;
+    padding: 25px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Fond derrière la fenêtre */
+#dialogSuppressionPlat::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Titre */
+#dialogSuppressionPlat h3 {
+    margin-bottom: 20px;
+}
+
+/* Texte de confirmation */
+#dialogSuppressionPlat p {
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+/* Boutons de confirmation */
+#dialogSuppressionPlat button {
+    min-width: 0;
+    max-width: 100%;
+    margin: 8px 5px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Confirmer la suppression */
+#confirmerSuppressionPlat {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+/* Annuler */
+#annulerSuppressionPlat {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+}
+/* Message après modification ou suppression */
+#messageGestionPlats,
+#messageModificationPlat {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* Espacement du formulaire de modification */
+#blocModificationPlat {
+    margin-top: 30px;
+}
+
+#blocModificationPlat h3 {
+    margin-bottom: 20px;
+}
+
+/* Espacement des boutons du formulaire */
+#formModificationPlat button {
+    width: 100%;
+    margin: 8px 0;
+}
+@media screen and (max-width: 767px) {
+    #dialogSuppressionPlat {
+        padding: 20px 15px;
+    }
+
+    #dialogSuppressionPlat button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+/* Bouton Annuler - Modification d'un plat */
+#annulerModificationPlat {
+    background-color: #6c757d;
+    color: white;
+    border: 1px solid #6c757d;
+    border-radius: 6px;
+    padding: 10px 16px;
+    min-width: 110px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#annulerModificationPlat:hover {
+    background-color: #545b62;
+    border-color: #545b62;
+}
+/* Espacement des boutons de modération des avis */
+
+#listeAvisEmploye td:last-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#listeAvisEmploye td:last-child button {
+    white-space: nowrap;
+}
+#adminMenus,
+#employeGestionPlats,
+#employeHoraires,
+#employeAvis,
+#employeCommandes {
+    scroll-margin-top: 100px;
+}
+
+/* Navigation interne : les ancres ciblent la bonne section,
+   avec un espace pour un éventuel en-tête fixe. */
+.espaceEmploye #employeCommandes,
+.espaceEmploye #adminMenus,
+.espaceEmploye #employeGestionPlats,
+.espaceEmploye #employeHoraires,
+.espaceEmploye #employeAvis {
+    scroll-margin-top: 120px;
+}
+
+/* Le bloc menus utilise les classes de l'administration :
+   garantir une présentation cohérente dans l'espace employé. */
+.espaceEmploye #adminMenus {
+    min-width: 0;
+    margin-top: 42px;
+    padding: 24px 18px;
+    border: 1px solid var(--emp-border);
+    border-radius: 18px;
+    background: #fff;
+}
+
+@media (min-width: 768px) {
+    .espaceEmploye #adminMenus {
+        padding: 32px;
+    }
+}
+
+/* Ne pas laisser les tableaux du catalogue agrandir la page. */
+.espaceEmploye #adminMenus .adminTableWrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* Accessibilité : les cibles de navigation au clavier restent visibles. */
+.espaceEmploye .employeCarte a:focus-visible {
+    outline: 2px solid var(--emp-bleu);
+    outline-offset: 4px;
+    border-radius: 3px;
+}
+
+/* ==========================================
+   TABLEAU COMMANDES EMPLOYÉ
+========================================== */
+
+#employeCommandes {
+    min-width: 0;
+}
+
+#employeCommandes .tableResponsive {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* Tableau */
+#employeCommandes table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+#employeCommandes th,
+#employeCommandes td {
+    padding: 14px 12px;
+    text-align: left;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+#employeCommandes td {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#employeCommandes th {
+    background-color: #f3f6fa;
+    font-weight: 600;
+}
+
+/* Informations client */
+.commandeEmail {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: #64748b;
+    overflow-wrap: anywhere;
+}
+
+/* Statuts */
+.commandeStatut {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.commandeStatut.en_attente {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.commandeStatut.acceptee,
+.commandeStatut.en_preparation {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.commandeStatut.en_livraison {
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+.commandeStatut.livree,
+.commandeStatut.terminee {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.commandeStatut.annulee {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Bouton Modifier */
+.btnModifierCommande {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #1e293b;
+    color: white;
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btnModifierCommande:hover {
+    background: #334155;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #employeCommandes table {
+        min-width: 720px;
+    }
+
+    #employeCommandes th,
+    #employeCommandes td {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+    }
+}

@@ -41,7 +41,7 @@
                 <i class="fa-solid fa-clock" aria-hidden="true"></i>
                 <div>
                     <span>En attente</span>
-                    <strong id="employeAttente">—</strong>
+                    <strong id="compteurEnAttente">—</strong>
                 </div>
             </article>
 
@@ -49,7 +49,7 @@
                 <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
                 <div>
                     <span>Acceptées</span>
-                    <strong id="employeAcceptees">—</strong>
+                    <strong id="compteurAcceptees">—</strong>
                 </div>
             </article>
 
@@ -57,7 +57,7 @@
                 <i class="fa-solid fa-truck-fast" aria-hidden="true"></i>
                 <div>
                     <span>En cours</span>
-                    <strong id="employeEnCours">—</strong>
+                    <strong id="compteurEnCours">—</strong>
                 </div>
             </article>
 
@@ -65,7 +65,7 @@
                 <i class="fa-solid fa-clipboard-check" aria-hidden="true"></i>
                 <div>
                     <span>Terminées</span>
-                    <strong id="employeTerminees">—</strong>
+                    <strong id="compteurTerminees">—</strong>
                 </div>
             </article>
 
@@ -98,7 +98,7 @@
                     </div>
                     <h3>Menus et plats</h3>
                     <p>Modifier ou supprimer les menus et les plats.</p>
-                    <a href="#employeCatalogue">
+                    <a href="#employePanel">
                         Gérer le catalogue
                         <i class="fa-solid fa-arrow-right"></i>
                     </a>
@@ -158,7 +158,7 @@
                     <select id="statutCommandeEmploye">
                         <option value="">Tous les statuts</option>
                         <option value="en_attente">En attente</option>
-                        <option value="accepte">Acceptée</option>
+                        <option value="acceptee">Acceptée</option>
                         <option value="en_preparation">En préparation</option>
                         <option value="en_livraison">En cours de livraison</option>
                         <option value="livre">Livrée</option>
@@ -231,7 +231,7 @@
                         required
                     >
                         <option value="">Choisir un statut</option>
-                        <option value="accepte">Acceptée</option>
+                        <option value="acceptee">Acceptée</option>
                         <option value="en_preparation">En préparation</option>
                         <option value="en_livraison">En cours de livraison</option>
                         <option value="livre">Livrée</option>
@@ -296,49 +296,364 @@
             </p>
         </section>
 
-        <!-- CATALOGUE -->
-        <section class="employePanel" id="employeCatalogue">
+        <!-- GESTION DES MENUS -->
+<section class="adminPanel" id="employePanel">
 
-            <div class="employeSectionTitre">
-                <h2>Gestion des menus et des plats</h2>
-                <p>Consultez les éléments du catalogue.</p>
+    <div class="adminSectionEntete">
+        <h2>Gestion des menus</h2>
+        <p>Ajoutez, modifiez et supprimez les menus du catalogue.</p>
+    </div>
+
+    <!-- AJOUT D'UN MENU -->
+    <div class="adminSousSection">
+        <h3>Ajouter un menu</h3>
+
+        <form id="formAjoutMenu" class="adminForm"
+              enctype="multipart/form-data">
+
+            <div>
+                <label for="ajoutTitre">Nom du menu</label>
+                <input type="text" id="ajoutTitre"
+                       name="titre" maxlength="150" required>
             </div>
 
-            <div class="employeFiltres">
-                <div>
-                    <label for="employeTypeCatalogue">Afficher</label>
-                    <select id="employeTypeCatalogue">
-                        <option value="menus">Menus</option>
-                        <option value="plats">Plats</option>
-                    </select>
-                </div>
+            <div>
+                <label for="ajoutTheme">Thème</label>
+                <select id="ajoutTheme" name="themeId" required>
+                    <option value="">Choisir un thème</option>
+                    <option value="1">Pâques</option>
+                    <option value="2">Noël</option>
+                    <option value="3">Classique</option>
+                </select>
             </div>
 
-            <div class="employeTableWrapper">
-                <table class="employeTable">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Catégorie</th>
-                            <th>Disponibilité</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listeCatalogueEmploye">
-                        <tr>
-                            <td colspan="4" class="employeVide">
-                                Catalogue à charger.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div>
+                <label for="ajoutRegime">Régime alimentaire</label>
+                <select id="ajoutRegime" name="regimeId" required>
+                    <option value="">Choisir un régime</option>
+                    <option value="1">Classique</option>
+                    <option value="2">Pescétarien</option>
+                </select>
             </div>
 
-            <p class="employeInformation">
-                Les formulaires d'édition et les boutons de suppression
-                seront reliés à l'API Symfony.
-            </p>
-        </section>
+            <div>
+                <label for="ajoutPersonnes">Nombre minimum de personnes</label>
+                <input type="number" id="ajoutPersonnes"
+                       name="personnesMin" min="1" required>
+            </div>
+
+            <div>
+                <label for="ajoutPrix">Prix (€)</label>
+                <input type="number" id="ajoutPrix"
+                       name="prix" min="0.01" step="0.01" required>
+            </div>
+
+            <div>
+                <label for="ajoutStock">Stock disponible</label>
+                <input type="number" id="ajoutStock"
+                       name="stock" min="0" required>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="ajoutDescription">Description</label>
+                <textarea id="ajoutDescription"
+                          name="description" rows="4" required></textarea>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="ajoutConditions">Conditions de commande</label>
+                <textarea id="ajoutConditions"
+                          name="conditions" rows="3" required></textarea>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="ajoutImages">Images du menu</label>
+                <input type="file" id="ajoutImages"
+                       name="images[]"
+                       accept="image/jpeg,image/png,image/webp"
+                       multiple>
+                <small>Maximum 10 images de 5 Mo chacune.</small>
+            </div>
+
+            <div class="adminChampLarge">
+                <button type="submit" class="adminBouton">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                    Ajouter le menu
+                </button>
+            </div>
+
+            <p id="messageAjoutMenu" class="adminChampLarge"
+               role="status" aria-live="polite"></p>
+
+        </form>
+    </div>
+
+    <!-- LISTE ET SUPPRESSION -->
+    <div class="adminSousSection">
+        <h3>Menus existants</h3>
+
+        <div class="adminTableWrapper">
+            <table class="adminTable">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Nom</th>
+                        <th>Thème</th>
+                        <th>Prix</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="listeMenusAdmin">
+                    <tr>
+                        <td colspan="6" class="adminVide">
+                            Chargement des menus...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODIFICATION -->
+    <div class="adminSousSection" id="sectionModificationMenu" hidden>
+        <h3>Modifier un menu</h3>
+
+        <form id="formModificationMenu" class="adminForm"
+              enctype="multipart/form-data">
+
+            <input type="hidden" id="modifMenuId" name="id">
+
+            <div>
+                <label for="modifTitre">Nom du menu</label>
+                <input type="text" id="modifTitre"
+                       name="titre" maxlength="150" required>
+            </div>
+
+            <div>
+                <label for="modifTheme">Thème</label>
+                <select id="modifTheme" name="themeId" required>
+                    <option value="">Choisir un thème</option>
+                    <option value="1">Pâques</option>
+                    <option value="2">Noël</option>
+                    <option value="3">Classique</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="modifRegime">Régime alimentaire</label>
+                <select id="modifRegime" name="regimeId" required>
+                    <option value="">Choisir un régime</option>
+                    <option value="1">Classique</option>
+                    <option value="2">Pescétarien</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="modifPersonnes">Nombre minimum de personnes</label>
+                <input type="number" id="modifPersonnes"
+                       name="personnesMin" min="1" required>
+            </div>
+
+            <div>
+                <label for="modifPrix">Prix (€)</label>
+                <input type="number" id="modifPrix"
+                       name="prix" min="0.01" step="0.01" required>
+            </div>
+
+            <div>
+                <label for="modifStock">Stock disponible</label>
+                <input type="number" id="modifStock"
+                       name="stock" min="0" required>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="modifDescription">Description</label>
+                <textarea id="modifDescription"
+                          name="description" rows="4" required></textarea>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="modifConditions">Conditions de commande</label>
+                <textarea id="modifConditions"
+                          name="conditions" rows="3" required></textarea>
+            </div>
+
+            <div class="adminChampLarge">
+                <label for="modifImages">Ajouter de nouvelles images</label>
+                <input type="file" id="modifImages"
+                       name="images[]"
+                       accept="image/jpeg,image/png,image/webp"
+                       multiple>
+            </div>
+
+            <div class="adminChampLarge">
+                <button type="submit" class="adminBouton">
+                    Enregistrer les modifications
+                </button>
+
+                <button type="button" id="annulerModificationMenu">
+                    Annuler
+                </button>
+            </div>
+
+            <p id="messageModificationMenu" class="adminChampLarge"
+               role="status" aria-live="polite"></p>
+
+        </form>
+    </div>
+
+    <!-- CONFIRMATION DE SUPPRESSION -->
+    <dialog id="dialogSuppressionMenu">
+        <h3>Supprimer un menu</h3>
+        <p>
+            Voulez-vous supprimer définitivement
+            <strong id="nomMenuSuppression"></strong> ?
+        </p>
+
+        <button type="button" id="annulerSuppressionMenu">
+            Annuler
+        </button>
+
+        <button type="button" id="confirmerSuppressionMenu"
+                class="adminBouton">
+            Confirmer la suppression
+        </button>
+    </dialog>
+
+    <p id="messageGestionMenus"
+       role="status" aria-live="polite"></p>
+
+</section>
+
+<!-- GESTION DES PLATS -->
+<section class="employePanel" id="employeGestionPlats">
+
+    <div class="employeSectionTitre">
+        <h2>Gestion des plats</h2>
+        <p>Ajoutez, modifiez et supprimez les plats du catalogue.</p>
+    </div>
+
+    <!-- AJOUT -->
+    <h3>Ajouter un plat</h3>
+
+    <form id="formAjoutPlat" class="employeForm">
+
+        <div>
+            <label for="ajoutPlatNom">Nom du plat</label>
+            <input type="text" id="ajoutPlatNom"
+                   name="nom" maxlength="150" required>
+        </div>
+
+        <div>
+            <label for="ajoutPlatCategorie">Catégorie</label>
+            <select id="ajoutPlatCategorie" name="categorie" required>
+                <option value="">Choisir une catégorie</option>
+                <option value="entree">Entrée</option>
+                <option value="principal">Plat principal</option>
+                <option value="dessert">Dessert</option>
+            </select>
+        </div>
+
+        <div class="employeChampLarge">
+            <label for="ajoutPlatDescription">Description</label>
+            <textarea id="ajoutPlatDescription"
+                      name="description" rows="3"></textarea>
+        </div>
+
+        <div class="employeChampLarge">
+            <button type="submit" class="employeBouton">
+                Ajouter le plat
+            </button>
+            <p id="messageAjoutPlat" role="status"></p>
+        </div>
+
+    </form>
+
+    <!-- LISTE -->
+    <h3>Liste des plats</h3>
+
+    <div class="employeTableWrapper">
+        <table class="employeTable">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="listePlatsAdmin">
+                <tr>
+                    <td colspan="4">Chargement des plats...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p id="messageGestionPlats" role="status"></p>
+
+    <!-- MODIFICATION -->
+    <div id="blocModificationPlat" hidden>
+        <h3>Modifier un plat</h3>
+
+        <form id="formModificationPlat" class="employeForm">
+
+            <input type="hidden" id="modifPlatId">
+
+            <div>
+                <label for="modifPlatNom">Nom du plat</label>
+                <input type="text" id="modifPlatNom"
+                       maxlength="150" required>
+            </div>
+
+            <div>
+                <label for="modifPlatCategorie">Catégorie</label>
+                <select id="modifPlatCategorie" required>
+                    <option value="entree">Entrée</option>
+                    <option value="principal">Plat principal</option>
+                    <option value="dessert">Dessert</option>
+                </select>
+            </div>
+
+            <div class="employeChampLarge">
+                <label for="modifPlatDescription">Description</label>
+                <textarea id="modifPlatDescription" rows="3"></textarea>
+            </div>
+
+            <div class="employeChampLarge">
+                <button type="submit" class="employeBouton">
+                    Enregistrer les modifications
+                </button>
+
+                <button type="button" id="annulerModificationPlat">
+                    Annuler
+                </button>
+
+                <p id="messageModificationPlat" role="status"></p>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- SUPPRESSION -->
+    <dialog id="dialogSuppressionPlat">
+        <h3>Supprimer un plat</h3>
+        <p>Confirmez-vous la suppression de ce plat ?</p>
+        <p id="nomPlatASupprimer"></p>
+
+        <button type="button" id="confirmerSuppressionPlat">
+            Supprimer
+        </button>
+
+        <button type="button" id="annulerSuppressionPlat">
+            Annuler
+        </button>
+    </dialog>
+
+</section>
+
 
         <!-- HORAIRES -->
         <section class="employePanel" id="employeHoraires">

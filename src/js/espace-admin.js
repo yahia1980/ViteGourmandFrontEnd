@@ -1,241 +1,49 @@
+
+/* =====================================================
+   ESPACE ADMINISTRATEUR - VITE & GOURMAND
+===================================================== */
+
 const API_EMPLOYES = "/api/admin/employes";
 const API_STATISTIQUES = "/api/admin/statistiques";
+const API_MENUS = "/api/menus";
 
-function initialiserEspaceAdmin() {
-  const formulaire = document.getElementById("formCreationEmploye");
-  const liste = document.getElementById("listeEmployesAdmin");
-  const totalEmployes = document.getElementById("adminTotalEmployes");
-  const message = document.getElementById("messageCreationEmploye");
+/* =====================================================
+   OUTILS COMMUNS
+===================================================== */
 
-  if (!formulaire || !liste || !totalEmployes || !message) {
-    return;
-  }
-
-  // Évite d'installer plusieurs fois les événements
-  // lorsque la page est rechargée dans la SPA.
-  if (formulaire.dataset.initialise === "true") {
-    return;
-  }
-
-  formulaire.dataset.initialise = "true";
-
-  // =====================================================
-  // GESTION DES EMPLOYÉS
-  // =====================================================
-
-  async function chargerEmployes() {
-    liste.innerHTML = `
-            <tr>
-                <td colspan="4">Chargement des employés...</td>
-            </tr>
-        `;
-
-    try {
-      const reponse = await fetch(API_EMPLOYES, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-        },
-      });
-
-      if (!reponse.ok) {
-        throw new Error(
-          reponse.status === 403
-            ? "Accès réservé à l'administrateur."
-            : "Impossible de charger les employés.",
-        );
-      }
-
-      const donnees = await reponse.json();
-
-      totalEmployes.textContent = donnees.totalActifs ?? 0;
-      liste.replaceChildren();
-
-      if (!Array.isArray(donnees.employes) || donnees.employes.length === 0) {
-        const ligne = document.createElement("tr");
-        const cellule = document.createElement("td");
-
-        cellule.colSpan = 4;
-        cellule.textContent = "Aucun employé enregistré.";
-
-        ligne.appendChild(cellule);
-        liste.appendChild(ligne);
-        return;
-      }
-
-      donnees.employes.forEach((employe) => {
-        const ligne = document.createElement("tr");
-
-        const celluleEmail = document.createElement("td");
-        celluleEmail.textContent = employe.email;
-
-        const celluleStatut = document.createElement("td");
-        celluleStatut.textContent = employe.actif ? "Actif" : "Désactivé";
-
-        const celluleDate = document.createElement("td");
-        celluleDate.textContent = employe.dateCreation ?? "—";
-
-        const celluleAction = document.createElement("td");
-        const bouton = document.createElement("button");
-
-        bouton.type = "button";
-        bouton.className = "adminBouton";
-        bouton.textContent = employe.actif ? "Désactiver" : "Activer";
-
-        bouton.addEventListener("click", async () => {
-          const nouveauStatut = !employe.actif;
-
-          bouton.disabled = true;
-
-          try {
-            const reponse = await fetch(
-              `${API_EMPLOYES}/${employe.id}/statut`,
-              {
-                method: "PATCH",
-                credentials: "include",
-                headers: {
-                  "Content-Type": "application/json",
-                  Accept: "application/json",
-                },
-                body: JSON.stringify({
-                  actif: nouveauStatut,
-                }),
-              },
-            );
-
-            const resultat = await reponse.json();
-
-            if (!reponse.ok) {
-              throw new Error(
-                resultat.erreur ?? "Impossible de modifier le statut.",
-              );
-            }
-
-            message.textContent = resultat.message;
-            await chargerEmployes();
-          } catch (erreur) {
-            message.textContent = erreur.message;
-          } finally {
-            bouton.disabled = false;
-          }
-        });
-
-        celluleAction.appendChild(bouton);
-
-        ligne.append(celluleEmail, celluleStatut, celluleDate, celluleAction);
-
-        liste.appendChild(ligne);
-      });
-    } catch (erreur) {
-      liste.replaceChildren();
-
-      const ligne = document.createElement("tr");
-      const cellule = document.createElement("td");
-
-      cellule.colSpan = 4;
-      cellule.textContent = erreur.message;
-
-      ligne.appendChild(cellule);
-      liste.appendChild(ligne);
-
-      totalEmployes.textContent = "—";
-    }
-  }
-
-  formulaire.addEventListener("submit", async (evenement) => {
-    evenement.preventDefault();
-
-    const bouton = formulaire.querySelector('button[type="submit"]');
-
-    const donnees = {
-      email: document.getElementById("nouvelEmployeEmail")?.value.trim(),
-
-      password: document.getElementById("nouvelEmployePassword")?.value,
-
-      nom: document.getElementById("nouvelEmployeNom")?.value.trim(),
-
-      prenom: document.getElementById("nouvelEmployePrenom")?.value.trim(),
-
-      telephone: document
-        .getElementById("nouvelEmployeTelephone")
-        ?.value.trim(),
-
-      adresse: document.getElementById("nouvelEmployeAdresse")?.value.trim(),
-
-      codePostal: document
-        .getElementById("nouvelEmployeCodePostal")
-        ?.value.trim(),
-
-      ville: document.getElementById("nouvelEmployeVille")?.value.trim(),
-    };
-
-    bouton.disabled = true;
-    message.textContent = "Création du compte en cours...";
-
-    try {
-      const reponse = await fetch(API_EMPLOYES, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(donnees),
-      });
-
-      const resultat = await reponse.json();
-
-      if (!reponse.ok) {
-        throw new Error(
-          resultat.erreur ?? "Impossible de créer le compte employé.",
-        );
-      }
-
-      message.textContent = resultat.message;
-      formulaire.reset();
-
-      await chargerEmployes();
-    } catch (erreur) {
-      message.textContent = erreur.message;
-    } finally {
-      bouton.disabled = false;
-    }
-  });
-
-  // =====================================================
-  // STATISTIQUES MONGODB
-  // =====================================================
-
-  const totalCommandes = document.getElementById("adminTotalCommandes");
-
-  const chiffreAffaires = document.getElementById("adminChiffreAffaires");
-
-  const graphiqueCommandes = document.getElementById("adminGraphiqueCommandes");
-
-  const graphiqueCA = document.getElementById("adminGraphiqueCA");
-
-  const tableauStatistiques = document.getElementById("adminTableStatistiques");
-
-  const formulaireFiltres = document.getElementById("formFiltresStatistiques");
-
-  const filtreDateDebut = document.getElementById("adminDateDebut");
-
-  const filtreDateFin = document.getElementById("adminDateFin");
-
-  const filtreMenu = document.getElementById("adminFiltreMenu");
-
-  function formaterEuros(montant) {
+function formaterEurosAdmin(montant) {
     return new Intl.NumberFormat("fr-FR", {
-      style: "currency",
-      currency: "EUR",
+        style: "currency",
+        currency: "EUR"
     }).format(Number(montant) || 0);
-  }
+}
 
-  function afficherMessage(conteneur, texte) {
-    if (!conteneur) {
-      return;
+async function lireReponseAdmin(reponse) {
+    const texte = await reponse.text();
+
+    let donnees = {};
+
+    if (texte) {
+        try {
+            donnees = JSON.parse(texte);
+        } catch {
+            throw new Error("Réponse incorrecte du serveur.");
+        }
     }
+
+    if (!reponse.ok) {
+        throw new Error(
+            donnees.erreur ||
+            donnees.message ||
+            `Erreur HTTP ${reponse.status}`
+        );
+    }
+
+    return donnees;
+}
+
+function afficherMessageAdmin(conteneur, texte) {
+    if (!conteneur) return;
 
     conteneur.replaceChildren();
 
@@ -243,817 +51,1298 @@ function initialiserEspaceAdmin() {
     paragraphe.textContent = texte;
 
     conteneur.appendChild(paragraphe);
-  }
-
-  function creerBarre(valeur, maximum, texteValeur) {
-    const ligne = document.createElement("div");
-    ligne.className = "adminBarreLigne";
-
-    const piste = document.createElement("div");
-    piste.className = "adminBarrePiste";
-
-    const barre = document.createElement("div");
-    barre.className = "adminBarreValeur";
-
-    const pourcentage = maximum > 0 ? (valeur / maximum) * 100 : 0;
-
-    barre.style.width = `${pourcentage}%`;
-
-    piste.appendChild(barre);
-
-    const valeurTexte = document.createElement("strong");
-    valeurTexte.textContent = texteValeur;
-
-    ligne.append(piste, valeurTexte);
-
-    return ligne;
-  }
-
-  function afficherGraphiqueCommandes(statistiques) {
-    if (!graphiqueCommandes) {
-      return;
-    }
-
-    graphiqueCommandes.replaceChildren();
-
-    if (statistiques.length === 0) {
-      afficherMessage(
-        graphiqueCommandes,
-        "Aucune commande pour cette sélection.",
-      );
-      return;
-    }
-
-    const maximum = Math.max(
-      1,
-      ...statistiques.map((stat) => Number(stat.nombreCommandes) || 0),
-    );
-
-    statistiques.forEach((stat) => {
-      const bloc = document.createElement("div");
-      bloc.className = "adminBarreBloc";
-
-      const nom = document.createElement("span");
-      nom.className = "adminBarreNom";
-      nom.textContent = stat.menuNom;
-
-      const barre = creerBarre(
-        Number(stat.nombreCommandes) || 0,
-        maximum,
-        String(stat.nombreCommandes),
-      );
-
-      bloc.append(nom, barre);
-      graphiqueCommandes.appendChild(bloc);
-    });
-  }
-
-  function afficherGraphiqueCA(statistiques) {
-    if (!graphiqueCA) {
-      return;
-    }
-
-    graphiqueCA.replaceChildren();
-
-    if (statistiques.length === 0) {
-      afficherMessage(
-        graphiqueCA,
-        "Aucun chiffre d'affaires pour cette sélection.",
-      );
-      return;
-    }
-
-    const maximum = Math.max(
-      0,
-      ...statistiques.map((stat) => Number(stat.chiffreAffaires) || 0),
-    );
-
-    statistiques.forEach((stat) => {
-      const bloc = document.createElement("div");
-      bloc.className = "adminBarreBloc";
-
-      const nom = document.createElement("span");
-      nom.className = "adminBarreNom";
-      nom.textContent = stat.menuNom;
-
-      const barre = creerBarre(
-        Number(stat.chiffreAffaires) || 0,
-        maximum,
-        formaterEuros(stat.chiffreAffaires),
-      );
-
-      bloc.append(nom, barre);
-      graphiqueCA.appendChild(bloc);
-    });
-  }
-
-  function afficherTableauStatistiques(statistiques) {
-    if (!tableauStatistiques) {
-      return;
-    }
-
-    tableauStatistiques.replaceChildren();
-
-    if (statistiques.length === 0) {
-      const ligne = document.createElement("tr");
-      const cellule = document.createElement("td");
-
-      cellule.colSpan = 3;
-      cellule.className = "adminVide";
-      cellule.textContent = "Aucune statistique disponible.";
-
-      ligne.appendChild(cellule);
-      tableauStatistiques.appendChild(ligne);
-
-      return;
-    }
-
-    statistiques.forEach((stat) => {
-      const ligne = document.createElement("tr");
-
-      const celluleMenu = document.createElement("td");
-      celluleMenu.textContent = stat.menuNom;
-
-      const celluleCommandes = document.createElement("td");
-      celluleCommandes.textContent = stat.nombreCommandes;
-
-      const celluleCA = document.createElement("td");
-      celluleCA.textContent = formaterEuros(stat.chiffreAffaires);
-
-      ligne.append(celluleMenu, celluleCommandes, celluleCA);
-
-      tableauStatistiques.appendChild(ligne);
-    });
-  }
-
-  async function chargerStatistiques() {
-    if (
-      !totalCommandes ||
-      !chiffreAffaires ||
-      !graphiqueCommandes ||
-      !graphiqueCA ||
-      !tableauStatistiques
-    ) {
-      return;
-    }
-
-    const parametres = new URLSearchParams();
-
-    if (filtreDateDebut?.value) {
-      parametres.set("dateDebut", filtreDateDebut.value);
-    }
-
-    if (filtreDateFin?.value) {
-      parametres.set("dateFin", filtreDateFin.value);
-    }
-
-    if (filtreMenu?.value) {
-      parametres.set("menuId", filtreMenu.value);
-    }
-
-    const query = parametres.toString();
-
-    const url = query ? `${API_STATISTIQUES}?${query}` : API_STATISTIQUES;
-
-    afficherMessage(graphiqueCommandes, "Chargement des statistiques...");
-
-    afficherMessage(graphiqueCA, "Chargement des statistiques...");
-
-    try {
-      const reponse = await fetch(url, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-        },
-      });
-
-      const donnees = await reponse.json();
-
-      if (!reponse.ok) {
-        throw new Error(
-          donnees.erreur ?? "Impossible de charger les statistiques.",
-        );
-      }
-
-      const statistiques = Array.isArray(donnees.statistiquesParMenu)
-        ? donnees.statistiquesParMenu
-        : [];
-
-      totalCommandes.textContent = donnees.totalCommandes ?? 0;
-
-      chiffreAffaires.textContent = formaterEuros(donnees.chiffreAffaires);
-
-      afficherGraphiqueCommandes(statistiques);
-      afficherGraphiqueCA(statistiques);
-      afficherTableauStatistiques(statistiques);
-    } catch (erreur) {
-      totalCommandes.textContent = "—";
-      chiffreAffaires.textContent = "—";
-
-      afficherMessage(graphiqueCommandes, erreur.message);
-
-      afficherMessage(graphiqueCA, erreur.message);
-
-      afficherTableauStatistiques([]);
-    }
-  }
-
-  async function chargerMenusFiltres() {
-    if (!filtreMenu) {
-      return;
-    }
-
-    try {
-      // Sans filtres : récupère les menus ayant
-      // au moins une commande dans MongoDB.
-      const reponse = await fetch(API_STATISTIQUES, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-        },
-      });
-
-      if (!reponse.ok) {
-        throw new Error("Impossible de récupérer les menus.");
-      }
-
-      const donnees = await reponse.json();
-
-      const statistiques = Array.isArray(donnees.statistiquesParMenu)
-        ? donnees.statistiquesParMenu
-        : [];
-
-      filtreMenu.replaceChildren();
-
-      const optionTous = document.createElement("option");
-      optionTous.value = "";
-      optionTous.textContent = "Tous les menus";
-
-      filtreMenu.appendChild(optionTous);
-
-      statistiques.forEach((stat) => {
-        const option = document.createElement("option");
-
-        option.value = String(stat.menuId);
-        option.textContent = stat.menuNom;
-
-        filtreMenu.appendChild(option);
-      });
-    } catch (erreur) {
-      console.error("Erreur de chargement des menus :", erreur);
-    }
-  }
-
-  if (formulaireFiltres) {
-    formulaireFiltres.addEventListener("submit", async (evenement) => {
-      evenement.preventDefault();
-
-      if (
-        filtreDateDebut?.value &&
-        filtreDateFin?.value &&
-        filtreDateDebut.value > filtreDateFin.value
-      ) {
-        afficherMessage(
-          graphiqueCommandes,
-          "La date de début doit précéder la date de fin.",
-        );
-
-        afficherMessage(graphiqueCA, "Veuillez corriger les dates.");
-
-        return;
-      }
-
-      await chargerStatistiques();
-    });
-  }
-
-  // =====================================================
-  // CHARGEMENT INITIAL
-  // =====================================================
-
-  chargerEmployes();
-
-  if (
-    totalCommandes &&
-    chiffreAffaires &&
-    graphiqueCommandes &&
-    graphiqueCA &&
-    tableauStatistiques
-  ) {
-    chargerMenusFiltres();
-    chargerStatistiques();
-  }
 }
 
-// Compatible avec le chargement dynamique de la SPA.
-initialiserEspaceAdmin();
-// =====================================================
-// GESTION DES MENUS - ESPACE ADMINISTRATEUR
-// =====================================================
+function creerCelluleAdmin(ligne, valeur) {
+    const cellule = document.createElement("td");
+    cellule.textContent = valeur ?? "—";
+    ligne.appendChild(cellule);
+    return cellule;
+}
 
-function initialiserGestionMenusAdmin() {
-  const API_MENUS = "/api/menus";
+function afficherLigneAdmin(tableau, texte, colonnes) {
+    if (!tableau) return;
 
-  const formulaireAjout = document.getElementById("formAjoutMenu");
-  const listeMenus = document.getElementById("listeMenusAdmin");
-  const totalMenus = document.getElementById("adminTotalMenus");
-  const messageAjout = document.getElementById("messageAjoutMenu");
-  const messageGestion = document.getElementById("messageGestionMenus");
+    tableau.replaceChildren();
 
-  if (!formulaireAjout || !listeMenus) {
-    return;
-  }
+    const ligne = document.createElement("tr");
+    const cellule = document.createElement("td");
 
-  // Évite les événements en double dans la SPA.
-  if (formulaireAjout.dataset.initialise === "true") {
-    return;
-  }
+    cellule.colSpan = colonnes;
+    cellule.textContent = texte;
 
-  formulaireAjout.dataset.initialise = "true";
+    ligne.appendChild(cellule);
+    tableau.appendChild(ligne);
+}
 
-  // =====================================================
-  // AFFICHER LES MENUS
-  // =====================================================
+/* =====================================================
+   COMPTEUR DES MENUS DISPONIBLES
+===================================================== */
 
-  async function chargerMenusAdmin() {
-    listeMenus.replaceChildren();
+async function chargerCompteurMenusAdmin() {
+    const compteur = document.getElementById("adminTotalMenus");
 
-    const ligneChargement = document.createElement("tr");
-    const celluleChargement = document.createElement("td");
-
-    celluleChargement.colSpan = 6;
-    celluleChargement.textContent = "Chargement des menus...";
-
-    ligneChargement.appendChild(celluleChargement);
-    listeMenus.appendChild(ligneChargement);
+    if (!compteur) return;
 
     try {
-      const reponse = await fetch(API_MENUS, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-        },
-      });
+        const reponse = await fetch(API_MENUS, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                Accept: "application/json"
+            }
+        });
 
-      if (!reponse.ok) {
-        throw new Error("Impossible de charger les menus.");
-      }
+        const resultat = await lireReponseAdmin(reponse);
 
-      const resultat = await reponse.json();
+        const menus = Array.isArray(resultat)
+            ? resultat
+            : resultat.menus;
 
-      // Accepte une réponse sous forme de tableau
-      // ou sous forme { menus: [...] }.
-      const menus = Array.isArray(resultat) ? resultat : resultat.menus;
+        if (!Array.isArray(menus)) {
+            throw new Error("Format des menus incorrect.");
+        }
 
-      if (!Array.isArray(menus)) {
-        throw new Error("Format de réponse des menus incorrect.");
-      }
+        const disponibles = menus.filter(menu =>
+            Number(menu.stock) > 0
+        );
 
-      listeMenus.replaceChildren();
+        compteur.textContent = disponibles.length;
 
-      if (totalMenus) {
-        totalMenus.textContent = menus.length;
-      }
+        console.log(
+            "Menus disponibles :",
+            disponibles.length
+        );
 
-      if (menus.length === 0) {
-        const ligne = document.createElement("tr");
-        const cellule = document.createElement("td");
+    } catch (erreur) {
+        compteur.textContent = "—";
+        console.error(
+            "Erreur compteur menus :",
+            erreur
+        );
+    }
+}
 
-        cellule.colSpan = 6;
-        cellule.textContent = "Aucun menu enregistré.";
+/* =====================================================
+   GESTION DES EMPLOYÉS
+===================================================== */
 
-        ligne.appendChild(cellule);
-        listeMenus.appendChild(ligne);
+function initialiserEspaceAdmin() {
+    const formulaire = document.getElementById(
+        "formCreationEmploye"
+    );
 
+    const liste = document.getElementById(
+        "listeEmployesAdmin"
+    );
+
+    const totalEmployes = document.getElementById(
+        "adminTotalEmployes"
+    );
+
+    const message = document.getElementById(
+        "messageCreationEmploye"
+    );
+
+    if (
+        !formulaire ||
+        !liste ||
+        !totalEmployes ||
+        !message
+    ) {
         return;
-      }
+    }
 
-      menus.forEach((menu) => {
-        const ligne = document.createElement("tr");
+    if (formulaire.dataset.initialise === "true") {
+        return;
+    }
 
-        // IMAGE
-        const celluleImage = document.createElement("td");
+    formulaire.dataset.initialise = "true";
 
-        if (menu.image) {
-          const image = document.createElement("img");
+    /* ==========================================
+       CHARGEMENT DES EMPLOYÉS
+    ========================================== */
 
-          image.src = menu.image;
-          image.alt = menu.titre || "Image du menu";
-          image.width = 80;
-          image.height = 60;
-          image.style.objectFit = "cover";
-          image.loading = "lazy";
-
-          celluleImage.appendChild(image);
-        } else {
-          celluleImage.textContent = "Aucune image";
-        }
-
-        // NOM
-        const celluleNom = document.createElement("td");
-        celluleNom.textContent = menu.titre || "Sans titre";
-
-        // THÈME
-        const celluleTheme = document.createElement("td");
-
-        celluleTheme.textContent =
-          typeof menu.theme === "object"
-            ? (menu.theme?.nom ?? "—")
-            : (menu.theme ?? "—");
-
-        // PRIX
-        const cellulePrix = document.createElement("td");
-
-        cellulePrix.textContent = new Intl.NumberFormat("fr-FR", {
-          style: "currency",
-          currency: "EUR",
-        }).format(Number(menu.prix) || 0);
-
-        // STOCK
-        const celluleStock = document.createElement("td");
-        celluleStock.textContent = menu.stock ?? 0;
-
-        // ACTIONS
-        // =====================================================
-        // ACTIONS : MODIFIER ET SUPPRIMER
-        // =====================================================
-
-        const celluleActions = document.createElement("td");
-
-        // BOUTON MODIFIER
-        const boutonModifier = document.createElement("button");
-
-        boutonModifier.type = "button";
-        boutonModifier.className = "adminBouton";
-        boutonModifier.textContent = "Modifier";
-
-        boutonModifier.addEventListener("click", () => {
-          const section = document.getElementById("sectionModificationMenu");
-
-          if (!section) {
-            console.error("Formulaire de modification introuvable.");
-            return;
-          }
-
-          document.getElementById("modifMenuId").value = menu.id;
-          document.getElementById("modifTitre").value = menu.titre ?? "";
-          document.getElementById("modifDescription").value =
-            menu.description ?? "";
-          document.getElementById("modifPersonnes").value =
-            menu.personnesMin ?? 1;
-          document.getElementById("modifPrix").value = menu.prix ?? "";
-          document.getElementById("modifStock").value = menu.stock ?? 0;
-
-          document.getElementById("modifConditions").value = Array.isArray(
-            menu.conditions,
-          )
-            ? menu.conditions.join("\n")
-            : (menu.conditions ?? "");
-
-          const themes = {
-            Pâques: "1",
-            Noël: "2",
-            Classique: "3",
-          };
-
-          const regimes = {
-            Classique: "1",
-            Pescétarien: "2",
-          };
-
-          document.getElementById("modifTheme").value =
-            themes[menu.theme] ?? "";
-
-          document.getElementById("modifRegime").value =
-            regimes[menu.regime] ?? "";
-
-          document.getElementById("modifImages").value = "";
-
-          section.hidden = false;
-
-          section.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        });
-
-        // BOUTON SUPPRIMER
-        const boutonSupprimer = document.createElement("button");
-
-        boutonSupprimer.type = "button";
-        boutonSupprimer.className = "adminBouton";
-        boutonSupprimer.textContent = "Supprimer";
-
-        boutonSupprimer.addEventListener("click", () => {
-          const dialogue = document.getElementById("dialogSuppressionMenu");
-
-          if (!dialogue) {
-            console.error("Fenêtre de confirmation introuvable.");
-            return;
-          }
-
-          document.getElementById("nomMenuSuppression").textContent =
-            menu.titre;
-
-          dialogue.dataset.menuId = menu.id;
-
-          dialogue.showModal();
-        });
-
-        celluleActions.append(boutonModifier, boutonSupprimer);
-
-        ligne.append(
-          celluleImage,
-          celluleNom,
-          celluleTheme,
-          cellulePrix,
-          celluleStock,
-          celluleActions,
+    async function chargerEmployes() {
+        afficherLigneAdmin(
+            liste,
+            "Chargement des employés...",
+            4
         );
 
-        listeMenus.appendChild(ligne);
-      });
-    } catch (erreur) {
-      listeMenus.replaceChildren();
+        try {
+            const reponse = await fetch(API_EMPLOYES, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json"
+                }
+            });
 
-      const ligne = document.createElement("tr");
-      const cellule = document.createElement("td");
+            const donnees = await lireReponseAdmin(reponse);
 
-      cellule.colSpan = 6;
-      cellule.textContent = erreur.message;
+            totalEmployes.textContent =
+                donnees.totalActifs ?? 0;
 
-      ligne.appendChild(cellule);
-      listeMenus.appendChild(ligne);
+            liste.replaceChildren();
 
-      if (totalMenus) {
-        totalMenus.textContent = "—";
-      }
+            const employes = Array.isArray(donnees.employes)
+                ? donnees.employes
+                : [];
 
-      console.error("Erreur menus administrateur :", erreur);
-    }
-  }
+            if (employes.length === 0) {
+                afficherLigneAdmin(
+                    liste,
+                    "Aucun employé enregistré.",
+                    4
+                );
+                return;
+            }
 
-  // =====================================================
-  // AJOUTER UN MENU AVEC SES IMAGES
-  // =====================================================
+            employes.forEach(employe => {
+                const ligne = document.createElement("tr");
 
-  formulaireAjout.addEventListener("submit", async (evenement) => {
-    evenement.preventDefault();
+                creerCelluleAdmin(ligne, employe.email);
 
-    const bouton = formulaireAjout.querySelector('button[type="submit"]');
+                creerCelluleAdmin(
+                    ligne,
+                    employe.actif ? "Actif" : "Désactivé"
+                );
 
-    const donnees = new FormData(formulaireAjout);
+                creerCelluleAdmin(
+                    ligne,
+                    employe.dateCreation ?? "—"
+                );
 
-    const fichiers = document.getElementById("ajoutImages")?.files;
+                const celluleAction = document.createElement(
+                    "td"
+                );
 
-    if (fichiers && fichiers.length > 10) {
-      messageAjout.textContent = "Vous pouvez ajouter au maximum 10 images.";
-      return;
-    }
+                const bouton = document.createElement(
+                    "button"
+                );
 
-    if (fichiers) {
-      for (const fichier of fichiers) {
-        if (fichier.size > 5 * 1024 * 1024) {
-          messageAjout.textContent = "Chaque image doit faire moins de 5 Mo.";
-          return;
+                bouton.type = "button";
+                bouton.className = "adminBouton";
+
+                bouton.textContent = employe.actif
+                    ? "Désactiver"
+                    : "Activer";
+
+                bouton.addEventListener("click", async () => {
+                    const nouveauStatut = !employe.actif;
+
+                    bouton.disabled = true;
+
+                    try {
+                        const reponse = await fetch(
+                            `${API_EMPLOYES}/${encodeURIComponent(employe.id)}/statut`,
+                            {
+                                method: "PATCH",
+                                credentials: "include",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Accept: "application/json"
+                                },
+                                body: JSON.stringify({
+                                    actif: nouveauStatut
+                                })
+                            }
+                        );
+
+                        const resultat =
+                            await lireReponseAdmin(reponse);
+
+                        message.textContent =
+                            resultat.message ||
+                            "Statut modifié avec succès.";
+
+                        await chargerEmployes();
+
+                    } catch (erreur) {
+                        message.textContent = erreur.message;
+                        console.error(erreur);
+
+                    } finally {
+                        bouton.disabled = false;
+                    }
+                });
+
+                celluleAction.appendChild(bouton);
+                ligne.appendChild(celluleAction);
+                liste.appendChild(ligne);
+            });
+
+        } catch (erreur) {
+            afficherLigneAdmin(
+                liste,
+                erreur.message,
+                4
+            );
+
+            totalEmployes.textContent = "—";
+            console.error("Erreur employés :", erreur);
         }
-
-        if (!["image/jpeg", "image/png", "image/webp"].includes(fichier.type)) {
-          messageAjout.textContent = "Format accepté : JPG, PNG ou WEBP.";
-          return;
-        }
-      }
     }
 
-    if (bouton) {
-      bouton.disabled = true;
-    }
+    /* ==========================================
+       CRÉATION D'UN EMPLOYÉ
+    ========================================== */
 
-    if (messageAjout) {
-      messageAjout.textContent = "Création du menu en cours...";
-    }
+    formulaire.addEventListener("submit", async event => {
+        event.preventDefault();
 
-    try {
-      const reponse = await fetch(API_MENUS, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-        },
-        body: donnees,
-      });
-
-      const resultat = await reponse.json();
-
-      if (!reponse.ok) {
-        throw new Error(
-          resultat.erreur || resultat.message || "Impossible de créer le menu.",
-        );
-      }
-
-      if (messageAjout) {
-        messageAjout.textContent =
-          resultat.message || "Menu créé avec succès !";
-      }
-
-      formulaireAjout.reset();
-
-      await chargerMenusAdmin();
-    } catch (erreur) {
-      if (messageAjout) {
-        messageAjout.textContent = erreur.message;
-      }
-
-      console.error("Erreur création du menu :", erreur);
-    } finally {
-      if (bouton) {
-        bouton.disabled = false;
-      }
-    }
-  });
-// =====================================================
-// ENREGISTRER LES MODIFICATIONS D'UN MENU
-// =====================================================
-
-const formulaireModification = document.getElementById(
-    "formModificationMenu"
-);
-
-const sectionModification = document.getElementById(
-    "sectionModificationMenu"
-);
-
-const messageModification = document.getElementById(
-    "messageModificationMenu"
-);
-
-if (formulaireModification) {
-
-    formulaireModification.addEventListener("submit", async (evenement) => {
-
-        evenement.preventDefault();
-
-        const id = document.getElementById("modifMenuId").value;
-        const donnees = new FormData(formulaireModification);
-        const bouton = formulaireModification.querySelector(
+        const bouton = formulaire.querySelector(
             'button[type="submit"]'
         );
 
+        const valeur = id =>
+            document.getElementById(id)?.value.trim() ?? "";
+
+        const donnees = {
+            email: valeur("nouvelEmployeEmail"),
+            password: document.getElementById(
+                "nouvelEmployePassword"
+            )?.value ?? "",
+            nom: valeur("nouvelEmployeNom"),
+            prenom: valeur("nouvelEmployePrenom"),
+            telephone: valeur("nouvelEmployeTelephone"),
+            adresse: valeur("nouvelEmployeAdresse"),
+            codePostal: valeur("nouvelEmployeCodePostal"),
+            ville: valeur("nouvelEmployeVille")
+        };
+
         if (bouton) bouton.disabled = true;
 
-        if (messageModification) {
-            messageModification.textContent =
-                "Modification en cours...";
-        }
+        message.textContent =
+            "Création du compte en cours...";
 
         try {
+            const reponse = await fetch(API_EMPLOYES, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json"
+                },
+                body: JSON.stringify(donnees)
+            });
 
-            const reponse = await fetch(
-                `${API_MENUS}/${encodeURIComponent(id)}/modifier`,
-                {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Accept": "application/json"
-                    },
-                    body: donnees
-                }
-            );
+            const resultat =
+                await lireReponseAdmin(reponse);
 
-            const resultat = await reponse.json();
+            message.textContent =
+                resultat.message ||
+                "Employé créé avec succès !";
 
-            if (!reponse.ok) {
-                throw new Error(
-                    resultat.erreur ||
-                    resultat.message ||
-                    "Impossible de modifier le menu."
-                );
-            }
+            formulaire.reset();
 
-            formulaireModification.reset();
-            sectionModification.hidden = true;
-
-            if (messageGestion) {
-                messageGestion.textContent =
-                    "Menu modifié avec succès !";
-            }
-
-            await chargerMenusAdmin();
+            await chargerEmployes();
 
         } catch (erreur) {
-
-            if (messageModification) {
-                messageModification.textContent = erreur.message;
-            }
-
-            console.error("Erreur modification :", erreur);
+            message.textContent = erreur.message;
+            console.error("Création employé :", erreur);
 
         } finally {
-
             if (bouton) bouton.disabled = false;
         }
     });
+
+    chargerEmployes();
 }
 
-// ANNULER LA MODIFICATION
+/* =====================================================
+   STATISTIQUES ADMINISTRATEUR
+===================================================== */
 
-document.getElementById("annulerModificationMenu")
-    ?.addEventListener("click", () => {
+function initialiserStatistiquesAdmin() {
+    const totalCommandes = document.getElementById(
+        "adminTotalCommandes"
+    );
 
-        formulaireModification?.reset();
+    const chiffreAffaires = document.getElementById(
+        "adminChiffreAffaires"
+    );
 
-        if (sectionModification) {
-            sectionModification.hidden = true;
+    const graphiqueCommandes = document.getElementById(
+        "adminGraphiqueCommandes"
+    );
+
+    const graphiqueCA = document.getElementById(
+        "adminGraphiqueCA"
+    );
+
+    const tableauStatistiques = document.getElementById(
+        "adminTableStatistiques"
+    );
+
+    const formulaireFiltres = document.getElementById(
+        "formFiltresStatistiques"
+    );
+
+    const filtreDateDebut = document.getElementById(
+        "adminDateDebut"
+    );
+
+    const filtreDateFin = document.getElementById(
+        "adminDateFin"
+    );
+
+    const filtreMenu = document.getElementById(
+        "adminFiltreMenu"
+    );
+
+    if (!totalCommandes && !chiffreAffaires) return;
+
+    if (
+        formulaireFiltres &&
+        formulaireFiltres.dataset.initialise === "true"
+    ) {
+        return;
+    }
+
+    if (formulaireFiltres) {
+        formulaireFiltres.dataset.initialise = "true";
+    }
+
+    /* ==========================================
+       CRÉATION DES BARRES
+    ========================================== */
+
+    function creerBarre(valeur, maximum, texteValeur) {
+        const ligne = document.createElement("div");
+        ligne.className = "adminBarreLigne";
+
+        const piste = document.createElement("div");
+        piste.className = "adminBarrePiste";
+
+        const barre = document.createElement("div");
+        barre.className = "adminBarreValeur";
+
+        const pourcentage = maximum > 0
+            ? Math.max(
+                0,
+                Math.min(100, (valeur / maximum) * 100)
+            )
+            : 0;
+
+        barre.style.width = `${pourcentage}%`;
+
+        piste.appendChild(barre);
+
+        const valeurTexte = document.createElement("strong");
+        valeurTexte.textContent = texteValeur;
+
+        ligne.append(piste, valeurTexte);
+
+        return ligne;
+    }
+
+    /* ==========================================
+       GRAPHIQUE DES COMMANDES
+    ========================================== */
+
+    function afficherGraphiqueCommandes(statistiques) {
+        if (!graphiqueCommandes) return;
+
+        graphiqueCommandes.replaceChildren();
+
+        if (statistiques.length === 0) {
+            afficherMessageAdmin(
+                graphiqueCommandes,
+                "Aucune commande pour cette sélection."
+            );
+            return;
         }
-    });
 
-// =====================================================
-// SUPPRIMER UN MENU
-// =====================================================
+        const maximum = Math.max(
+            1,
+            ...statistiques.map(
+                stat => Number(stat.nombreCommandes) || 0
+            )
+        );
 
-const dialogueSuppression = document.getElementById(
-    "dialogSuppressionMenu"
-);
+        statistiques.forEach(stat => {
+            const bloc = document.createElement("div");
+            bloc.className = "adminBarreBloc";
 
-document.getElementById("annulerSuppressionMenu")
-    ?.addEventListener("click", () => {
+            const nom = document.createElement("span");
+            nom.className = "adminBarreNom";
+            nom.textContent = stat.menuNom ?? "Menu";
 
-        dialogueSuppression?.close();
-    });
+            const valeur = Number(stat.nombreCommandes) || 0;
 
-document.getElementById("confirmerSuppressionMenu")
-    ?.addEventListener("click", async (evenement) => {
-
-        const id = dialogueSuppression?.dataset.menuId;
-
-        if (!id) return;
-
-        const bouton = evenement.currentTarget;
-        bouton.disabled = true;
-
-        try {
-
-            const reponse = await fetch(
-                `${API_MENUS}/${encodeURIComponent(id)}`,
-                {
-                    method: "DELETE",
-                    credentials: "include",
-                    headers: {
-                        "Accept": "application/json"
-                    }
-                }
+            const barre = creerBarre(
+                valeur,
+                maximum,
+                String(valeur)
             );
 
-            const resultat = await reponse.json();
+            bloc.append(nom, barre);
+            graphiqueCommandes.appendChild(bloc);
+        });
+    }
 
-            if (!reponse.ok) {
+    /* ==========================================
+       GRAPHIQUE DU CHIFFRE D'AFFAIRES
+    ========================================== */
+
+    function afficherGraphiqueCA(statistiques) {
+        if (!graphiqueCA) return;
+
+        graphiqueCA.replaceChildren();
+
+        if (statistiques.length === 0) {
+            afficherMessageAdmin(
+                graphiqueCA,
+                "Aucun chiffre d'affaires pour cette sélection."
+            );
+            return;
+        }
+
+        const maximum = Math.max(
+            0,
+            ...statistiques.map(
+                stat => Number(stat.chiffreAffaires) || 0
+            )
+        );
+
+        statistiques.forEach(stat => {
+            const bloc = document.createElement("div");
+            bloc.className = "adminBarreBloc";
+
+            const nom = document.createElement("span");
+            nom.className = "adminBarreNom";
+            nom.textContent = stat.menuNom ?? "Menu";
+
+            const valeur = Number(stat.chiffreAffaires) || 0;
+
+            const barre = creerBarre(
+                valeur,
+                maximum,
+                formaterEurosAdmin(valeur)
+            );
+
+            bloc.append(nom, barre);
+            graphiqueCA.appendChild(bloc);
+        });
+    }
+
+    /* ==========================================
+       TABLEAU DES STATISTIQUES
+    ========================================== */
+
+    function afficherTableauStatistiques(statistiques) {
+        if (!tableauStatistiques) return;
+
+        tableauStatistiques.replaceChildren();
+
+        if (statistiques.length === 0) {
+            afficherLigneAdmin(
+                tableauStatistiques,
+                "Aucune statistique disponible.",
+                3
+            );
+            return;
+        }
+
+        statistiques.forEach(stat => {
+            const ligne = document.createElement("tr");
+
+            creerCelluleAdmin(
+                ligne,
+                stat.menuNom ?? "Menu"
+            );
+
+            creerCelluleAdmin(
+                ligne,
+                stat.nombreCommandes ?? 0
+            );
+
+            creerCelluleAdmin(
+                ligne,
+                formaterEurosAdmin(stat.chiffreAffaires)
+            );
+
+            tableauStatistiques.appendChild(ligne);
+        });
+    }
+
+    /* ==========================================
+       CHARGEMENT DES STATISTIQUES
+    ========================================== */
+
+    async function chargerStatistiques() {
+        const parametres = new URLSearchParams();
+
+        if (filtreDateDebut?.value) {
+            parametres.set(
+                "dateDebut",
+                filtreDateDebut.value
+            );
+        }
+
+        if (filtreDateFin?.value) {
+            parametres.set(
+                "dateFin",
+                filtreDateFin.value
+            );
+        }
+
+        if (filtreMenu?.value) {
+            parametres.set(
+                "menuId",
+                filtreMenu.value
+            );
+        }
+
+        const query = parametres.toString();
+
+        const url = query
+            ? `${API_STATISTIQUES}?${query}`
+            : API_STATISTIQUES;
+
+        afficherMessageAdmin(
+            graphiqueCommandes,
+            "Chargement des statistiques..."
+        );
+
+        afficherMessageAdmin(
+            graphiqueCA,
+            "Chargement des statistiques..."
+        );
+
+        try {
+            const reponse = await fetch(url, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json"
+                }
+            });
+
+            const donnees =
+                await lireReponseAdmin(reponse);
+
+            const statistiques = Array.isArray(
+                donnees.statistiquesParMenu
+            )
+                ? donnees.statistiquesParMenu
+                : [];
+
+            if (totalCommandes) {
+                totalCommandes.textContent =
+                    donnees.totalCommandes ?? 0;
+            }
+
+            if (chiffreAffaires) {
+                chiffreAffaires.textContent =
+                    formaterEurosAdmin(
+                        donnees.chiffreAffaires
+                    );
+            }
+
+            afficherGraphiqueCommandes(statistiques);
+            afficherGraphiqueCA(statistiques);
+            afficherTableauStatistiques(statistiques);
+
+            console.log(
+                "Statistiques administrateur :",
+                donnees
+            );
+
+        } catch (erreur) {
+            if (totalCommandes) {
+                totalCommandes.textContent = "—";
+            }
+
+            if (chiffreAffaires) {
+                chiffreAffaires.textContent = "—";
+            }
+
+            afficherMessageAdmin(
+                graphiqueCommandes,
+                erreur.message
+            );
+
+            afficherMessageAdmin(
+                graphiqueCA,
+                erreur.message
+            );
+
+            afficherTableauStatistiques([]);
+
+            console.error(
+                "Erreur statistiques :",
+                erreur
+            );
+        }
+    }
+
+    /* ==========================================
+       MENUS POUR LE FILTRE STATISTIQUE
+    ========================================== */
+
+    async function chargerMenusFiltres() {
+        if (!filtreMenu) return;
+
+        try {
+            const reponse = await fetch(API_STATISTIQUES, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json"
+                }
+            });
+
+            const donnees =
+                await lireReponseAdmin(reponse);
+
+            const statistiques = Array.isArray(
+                donnees.statistiquesParMenu
+            )
+                ? donnees.statistiquesParMenu
+                : [];
+
+            filtreMenu.replaceChildren();
+
+            const optionTous = document.createElement(
+                "option"
+            );
+
+            optionTous.value = "";
+            optionTous.textContent = "Tous les menus";
+
+            filtreMenu.appendChild(optionTous);
+
+            statistiques.forEach(stat => {
+                const option = document.createElement(
+                    "option"
+                );
+
+                option.value = String(stat.menuId);
+                option.textContent = stat.menuNom;
+
+                filtreMenu.appendChild(option);
+            });
+
+        } catch (erreur) {
+            console.error(
+                "Erreur filtres menus :",
+                erreur
+            );
+        }
+    }
+
+    /* ==========================================
+       APPLICATION DES FILTRES
+    ========================================== */
+
+    formulaireFiltres?.addEventListener(
+        "submit",
+        async event => {
+            event.preventDefault();
+
+            if (
+                filtreDateDebut?.value &&
+                filtreDateFin?.value &&
+                filtreDateDebut.value > filtreDateFin.value
+            ) {
+                afficherMessageAdmin(
+                    graphiqueCommandes,
+                    "La date de début doit précéder la date de fin."
+                );
+
+                afficherMessageAdmin(
+                    graphiqueCA,
+                    "Veuillez corriger les dates."
+                );
+
+                return;
+            }
+
+            await chargerStatistiques();
+        }
+    );
+
+    chargerMenusFiltres();
+    chargerStatistiques();
+}
+
+/* =====================================================
+   GESTION DES MENUS ADMINISTRATEUR
+===================================================== */
+
+function initialiserGestionMenusAdmin() {
+    const formulaireAjout = document.getElementById(
+        "formAjoutMenu"
+    );
+
+    const listeMenus = document.getElementById(
+        "listeMenusAdmin"
+    );
+
+    const messageAjout = document.getElementById(
+        "messageAjoutMenu"
+    );
+
+    const messageGestion = document.getElementById(
+        "messageGestionMenus"
+    );
+
+    if (!formulaireAjout || !listeMenus) return;
+
+    if (formulaireAjout.dataset.initialise === "true") {
+        return;
+    }
+
+    formulaireAjout.dataset.initialise = "true";
+
+    /* ==========================================
+       CHARGEMENT DES MENUS
+    ========================================== */
+
+    async function chargerMenusAdmin() {
+        afficherLigneAdmin(
+            listeMenus,
+            "Chargement des menus...",
+            6
+        );
+
+        try {
+            const reponse = await fetch(API_MENUS, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json"
+                }
+            });
+
+            const resultat =
+                await lireReponseAdmin(reponse);
+
+            const menus = Array.isArray(resultat)
+                ? resultat
+                : resultat.menus;
+
+            if (!Array.isArray(menus)) {
                 throw new Error(
-                    resultat.erreur ||
-                    resultat.message ||
-                    "Impossible de supprimer le menu."
+                    "Format de réponse des menus incorrect."
                 );
             }
 
-            dialogueSuppression.close();
+            listeMenus.replaceChildren();
 
-            if (messageGestion) {
-                messageGestion.textContent =
-                    "Menu supprimé avec succès !";
+            // Actualiser aussi le compteur du tableau de bord
+            const compteur = document.getElementById(
+                "adminTotalMenus"
+            );
+
+            if (compteur) {
+                compteur.textContent = menus.filter(
+                    menu => Number(menu.stock) > 0
+                ).length;
             }
 
-            await chargerMenusAdmin();
+            if (menus.length === 0) {
+                afficherLigneAdmin(
+                    listeMenus,
+                    "Aucun menu enregistré.",
+                    6
+                );
+                return;
+            }
+
+            menus.forEach(menu => {
+                const ligne = document.createElement("tr");
+
+                /* IMAGE */
+
+                const celluleImage = document.createElement(
+                    "td"
+                );
+
+                if (menu.image) {
+                    const image = document.createElement(
+                        "img"
+                    );
+
+                    image.src = menu.image;
+                    image.alt = menu.titre || "Image du menu";
+                    image.width = 80;
+                    image.height = 60;
+                    image.style.objectFit = "cover";
+                    image.loading = "lazy";
+
+                    celluleImage.appendChild(image);
+                } else {
+                    celluleImage.textContent = "Aucune image";
+                }
+
+                ligne.appendChild(celluleImage);
+
+                /* NOM */
+
+                creerCelluleAdmin(
+                    ligne,
+                    menu.titre || "Sans titre"
+                );
+
+                /* THÈME */
+
+                const theme = typeof menu.theme === "object"
+                    ? menu.theme?.nom
+                    : menu.theme;
+
+                creerCelluleAdmin(ligne, theme || "—");
+
+                /* PRIX */
+
+                creerCelluleAdmin(
+                    ligne,
+                    formaterEurosAdmin(menu.prix)
+                );
+
+                /* STOCK */
+
+                creerCelluleAdmin(
+                    ligne,
+                    menu.stock ?? 0
+                );
+
+                /* ACTIONS */
+
+                const celluleActions = document.createElement(
+                    "td"
+                );
+
+                const boutonModifier = document.createElement(
+                    "button"
+                );
+
+                boutonModifier.type = "button";
+                boutonModifier.className = "adminBouton";
+                boutonModifier.textContent = "Modifier";
+
+                boutonModifier.addEventListener("click", () => {
+                    const section = document.getElementById(
+                        "sectionModificationMenu"
+                    );
+
+                    if (!section) {
+                        console.error(
+                            "Formulaire de modification introuvable."
+                        );
+                        return;
+                    }
+
+                    const remplir = (id, valeur) => {
+                        const element = document.getElementById(id);
+
+                        if (element) {
+                            element.value = valeur ?? "";
+                        }
+                    };
+
+                    remplir("modifMenuId", menu.id);
+                    remplir("modifTitre", menu.titre);
+                    remplir(
+                        "modifDescription",
+                        menu.description
+                    );
+                    remplir(
+                        "modifPersonnes",
+                        menu.personnesMin ?? 1
+                    );
+                    remplir("modifPrix", menu.prix);
+                    remplir("modifStock", menu.stock ?? 0);
+
+                    remplir(
+                        "modifConditions",
+                        Array.isArray(menu.conditions)
+                            ? menu.conditions.join("\n")
+                            : menu.conditions
+                    );
+
+                    const themes = {
+                        "Pâques": "1",
+                        "Noël": "2",
+                        "Classique": "3"
+                    };
+
+                    const regimes = {
+                        "Classique": "1",
+                        "Pescétarien": "2"
+                    };
+
+                    const nomTheme =
+                        typeof menu.theme === "object"
+                            ? menu.theme?.nom
+                            : menu.theme;
+
+                    const nomRegime =
+                        typeof menu.regime === "object"
+                            ? menu.regime?.nom
+                            : menu.regime;
+
+                    remplir(
+                        "modifTheme",
+                        themes[nomTheme] ?? ""
+                    );
+
+                    remplir(
+                        "modifRegime",
+                        regimes[nomRegime] ?? ""
+                    );
+
+                    remplir("modifImages", "");
+
+                    section.hidden = false;
+
+                    section.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                });
+
+                /* SUPPRESSION */
+
+                const boutonSupprimer = document.createElement(
+                    "button"
+                );
+
+                boutonSupprimer.type = "button";
+                boutonSupprimer.className = "adminBouton";
+                boutonSupprimer.textContent = "Supprimer";
+
+                boutonSupprimer.addEventListener("click", () => {
+                    const dialogue = document.getElementById(
+                        "dialogSuppressionMenu"
+                    );
+
+                    if (!dialogue) {
+                        console.error(
+                            "Fenêtre de confirmation introuvable."
+                        );
+                        return;
+                    }
+
+                    const nom = document.getElementById(
+                        "nomMenuSuppression"
+                    );
+
+                    if (nom) {
+                        nom.textContent = menu.titre;
+                    }
+
+                    dialogue.dataset.menuId = menu.id;
+                    dialogue.showModal();
+                });
+
+                celluleActions.append(
+                    boutonModifier,
+                    boutonSupprimer
+                );
+
+                ligne.appendChild(celluleActions);
+                listeMenus.appendChild(ligne);
+            });
 
         } catch (erreur) {
+            afficherLigneAdmin(
+                listeMenus,
+                erreur.message,
+                6
+            );
 
-            if (messageGestion) {
-                messageGestion.textContent = erreur.message;
+            console.error(
+                "Erreur menus administrateur :",
+                erreur
+            );
+        }
+    }
+
+    /* ==========================================
+       AJOUT D'UN MENU
+    ========================================== */
+
+    formulaireAjout.addEventListener(
+        "submit",
+        async event => {
+            event.preventDefault();
+
+            const bouton = formulaireAjout.querySelector(
+                'button[type="submit"]'
+            );
+
+            const donnees = new FormData(formulaireAjout);
+
+            const fichiers = document.getElementById(
+                "ajoutImages"
+            )?.files;
+
+            if (fichiers && fichiers.length > 10) {
+                if (messageAjout) {
+                    messageAjout.textContent =
+                        "Vous pouvez ajouter au maximum 10 images.";
+                }
+                return;
             }
 
-            console.error("Erreur suppression :", erreur);
+            if (fichiers) {
+                for (const fichier of fichiers) {
+                    if (fichier.size > 5 * 1024 * 1024) {
+                        if (messageAjout) {
+                            messageAjout.textContent =
+                                "Chaque image doit faire moins de 5 Mo.";
+                        }
+                        return;
+                    }
 
-        } finally {
+                    if (
+                        ![
+                            "image/jpeg",
+                            "image/png",
+                            "image/webp"
+                        ].includes(fichier.type)
+                    ) {
+                        if (messageAjout) {
+                            messageAjout.textContent =
+                                "Format accepté : JPG, PNG ou WEBP.";
+                        }
+                        return;
+                    }
+                }
+            }
 
-            bouton.disabled = false;
+            if (bouton) bouton.disabled = true;
+
+            if (messageAjout) {
+                messageAjout.textContent =
+                    "Création du menu en cours...";
+            }
+
+            try {
+                const reponse = await fetch(API_MENUS, {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        Accept: "application/json"
+                    },
+                    body: donnees
+                });
+
+                const resultat =
+                    await lireReponseAdmin(reponse);
+
+                if (messageAjout) {
+                    messageAjout.textContent =
+                        resultat.message ||
+                        "Menu créé avec succès !";
+                }
+
+                formulaireAjout.reset();
+
+                await chargerMenusAdmin();
+
+            } catch (erreur) {
+                if (messageAjout) {
+                    messageAjout.textContent = erreur.message;
+                }
+
+                console.error(
+                    "Erreur création du menu :",
+                    erreur
+                );
+
+            } finally {
+                if (bouton) bouton.disabled = false;
+            }
         }
-    });
-  // =====================================================
-  // CHARGEMENT INITIAL
-  // =====================================================
+    );
 
-  chargerMenusAdmin();
+    /* ==========================================
+       MODIFICATION D'UN MENU
+    ========================================== */
+
+    const formulaireModification = document.getElementById(
+        "formModificationMenu"
+    );
+
+    const sectionModification = document.getElementById(
+        "sectionModificationMenu"
+    );
+
+    const messageModification = document.getElementById(
+        "messageModificationMenu"
+    );
+
+    formulaireModification?.addEventListener(
+        "submit",
+        async event => {
+            event.preventDefault();
+
+            const id = document.getElementById(
+                "modifMenuId"
+            )?.value;
+
+            if (!id) {
+                if (messageModification) {
+                    messageModification.textContent =
+                        "Aucun menu sélectionné.";
+                }
+                return;
+            }
+
+            const donnees = new FormData(
+                formulaireModification
+            );
+
+            const bouton = formulaireModification.querySelector(
+                'button[type="submit"]'
+            );
+
+            if (bouton) bouton.disabled = true;
+
+            if (messageModification) {
+                messageModification.textContent =
+                    "Modification en cours...";
+            }
+
+            try {
+                const reponse = await fetch(
+                    `${API_MENUS}/${encodeURIComponent(id)}/modifier`,
+                    {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            Accept: "application/json"
+                        },
+                        body: donnees
+                    }
+                );
+
+                await lireReponseAdmin(reponse);
+
+                formulaireModification.reset();
+
+                if (sectionModification) {
+                    sectionModification.hidden = true;
+                }
+
+                if (messageGestion) {
+                    messageGestion.textContent =
+                        "Menu modifié avec succès !";
+                }
+
+                await chargerMenusAdmin();
+
+            } catch (erreur) {
+                if (messageModification) {
+                    messageModification.textContent =
+                        erreur.message;
+                }
+
+                console.error(
+                    "Erreur modification :",
+                    erreur
+                );
+
+            } finally {
+                if (bouton) bouton.disabled = false;
+            }
+        }
+    );
+
+    /* ==========================================
+       ANNULATION DE LA MODIFICATION
+    ========================================== */
+
+    document.getElementById("annulerModificationMenu")
+        ?.addEventListener("click", () => {
+            formulaireModification?.reset();
+
+            if (sectionModification) {
+                sectionModification.hidden = true;
+            }
+        });
+
+    /* ==========================================
+       SUPPRESSION D'UN MENU
+    ========================================== */
+
+    const dialogueSuppression = document.getElementById(
+        "dialogSuppressionMenu"
+    );
+
+    document.getElementById("annulerSuppressionMenu")
+        ?.addEventListener("click", () => {
+            dialogueSuppression?.close();
+        });
+
+    document.getElementById("confirmerSuppressionMenu")
+        ?.addEventListener("click", async event => {
+            const id = dialogueSuppression?.dataset.menuId;
+
+            if (!id) return;
+
+            const bouton = event.currentTarget;
+            bouton.disabled = true;
+
+            try {
+                const reponse = await fetch(
+                    `${API_MENUS}/${encodeURIComponent(id)}`,
+                    {
+                        method: "DELETE",
+                        credentials: "include",
+                        headers: {
+                            Accept: "application/json"
+                        }
+                    }
+                );
+
+                await lireReponseAdmin(reponse);
+
+                dialogueSuppression.close();
+
+                if (messageGestion) {
+                    messageGestion.textContent =
+                        "Menu supprimé avec succès !";
+                }
+
+                await chargerMenusAdmin();
+
+            } catch (erreur) {
+                if (messageGestion) {
+                    messageGestion.textContent =
+                        erreur.message;
+                }
+
+                console.error(
+                    "Erreur suppression :",
+                    erreur
+                );
+
+            } finally {
+                bouton.disabled = false;
+            }
+        });
+
+    /* ==========================================
+       CHARGEMENT INITIAL DES MENUS
+    ========================================== */
+
+    chargerMenusAdmin();
 }
 
-// Compatible avec le chargement dynamique de ta SPA.
-initialiserGestionMenusAdmin();
-// =====================================================
-// NAVIGATION ENTRE LES SECTIONS ADMINISTRATEUR
-// =====================================================
+/* =====================================================
+   NAVIGATION ADMINISTRATEUR
+===================================================== */
 
 function initialiserNavigationAdmin() {
-    const espaceAdmin = document.querySelector(".espaceAdmin");
+    const espaceAdmin = document.querySelector(
+        ".espaceAdmin"
+    );
 
     if (!espaceAdmin) return;
 
@@ -1061,22 +1350,28 @@ function initialiserNavigationAdmin() {
         '.adminActions a[href^="#"]'
     );
 
-    liens.forEach((lien) => {
-
-        if (lien.dataset.navigationInitialisee === "true") {
+    liens.forEach(lien => {
+        if (
+            lien.dataset.navigationInitialisee === "true"
+        ) {
             return;
         }
 
         lien.dataset.navigationInitialisee = "true";
 
-        lien.addEventListener("click", (evenement) => {
-            const idSection = lien.getAttribute("href").slice(1);
-            const section = document.getElementById(idSection);
+        lien.addEventListener("click", event => {
+            const idSection = lien
+                .getAttribute("href")
+                .slice(1);
+
+            const section = document.getElementById(
+                idSection
+            );
 
             if (!section) return;
 
-            evenement.preventDefault();
-            evenement.stopPropagation();
+            event.preventDefault();
+            event.stopPropagation();
 
             section.scrollIntoView({
                 behavior: "smooth",
@@ -1086,4 +1381,18 @@ function initialiserNavigationAdmin() {
     });
 }
 
+/* =====================================================
+   INITIALISATION GÉNÉRALE
+===================================================== */
+
+initialiserEspaceAdmin();
+
+initialiserStatistiquesAdmin();
+
+initialiserGestionMenusAdmin();
+
 initialiserNavigationAdmin();
+
+chargerCompteurMenusAdmin();
+
+console.log("Espace administrateur initialisé.");

@@ -467,3 +467,17 @@
     }
 }
 
+/* Conteneur des avis chargés depuis Symfony */
+#listeAvisAccueil {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* Cartes des avis */
+#listeAvisAccueil .avisPersonne {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+}

@@ -11,6 +11,7 @@ export const allRoutes = [
         "/pages/Accueil.html",
         ["/src/js/main.js",
         "/src/js/contact.js",
+        "/src/js/avis.js"
         ],
         ["/src/css/pages/accueil.css",
          "/src/css/pages/form.css"
@@ -125,9 +126,13 @@ export const allRoutes = [
         ["/src/js/main.js",
          "/src/js/compte.js",
          "/src/js/connexion.js",
-         "/src/js/espace-employe.js"
+         "/src/js/espace-employe.js",
+         "/src/js/espace-admin.js",
+         "/src/js/plat.js",
+         "/src/js/avis.js"
         ],
-        "/src/css/pages/espace_employe.css"
+        ["/src/css/pages/espace_employe.css",
+        "/src/css/pages/espace_admin.css"]
     ),
     new Route (
         "/espace-admin",
@@ -136,9 +141,13 @@ export const allRoutes = [
         ["/src/js/main.js",
          "/src/js/compte.js",
          "/src/js/connexion.js",
-         "/src/js/espace-admin.js"
+         "/src/js/espace-admin.js",
+         "/src/js/plat.js",
+         "/src/js/avis.js"
         ],
-        "/src/css/pages/espace_admin.css"
+        ["/src/css/pages/espace_admin.css",
+         "/src/css/pages/espace_employe.css"
+        ]
     ),
     new Route (
         "/mention-legale",

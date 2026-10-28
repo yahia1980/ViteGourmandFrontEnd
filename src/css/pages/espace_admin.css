@@ -1072,3 +1072,41 @@
         transition: none;
     }
 }
+
+/* IMAGES DES MENUS - ADMIN ET EMPLOYÉ */
+
+#listeMenusAdmin img {
+    display: block;
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
+}
+
+/* Tablette */
+@media (min-width: 768px) {
+    #listeMenusAdmin img {
+        width: 120px;
+        height: 90px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    #listeMenusAdmin img {
+        width: 75px;
+        height: 60px;
+    }
+}
+.espaceEmploye {
+    --adm-texte: #243447;
+    --adm-muted: #667588;
+    --adm-fond: #f5f7fa;
+    --adm-border: #e1e7ee;
+    --adm-bleu: var(--bleue, #17456b);
+    --adm-blanc: #ffffff;
+    --adm-rouge: #dc2626;
+    --adm-violet: #3730a3;
+}
+

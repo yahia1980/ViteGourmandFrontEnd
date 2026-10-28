@@ -31,39 +31,7 @@ if (rightBar && btn && !btn.dataset.menuInitialise) {
 }
 
 
-/* =====================================================
-   DÉFILEMENT DES AVIS CLIENTS
-===================================================== */
 
-if (!window.viteGourmandAvisInstalled) {
-
-    window.viteGourmandAvisInstalled = true;
-
-    document.addEventListener("click", (event) => {
-        const spanClique = event.target.closest(".avisRatio .ratio");
-
-        if (!spanClique) return;
-
-        const container = spanClique.closest(".avisContainer");
-        if (!container) return;
-
-        const spans = container.querySelectorAll(".avisRatio .ratio");
-        const avis = container.querySelectorAll(".avisPersonne");
-
-        const index = Array.from(spans).indexOf(spanClique);
-
-        if (index < 0 || index >= avis.length) return;
-
-        avis.forEach((element, i) => {
-            element.style.display = i === index ? "block" : "none";
-        });
-
-        spans.forEach((span, i) => {
-            span.style.backgroundColor =
-                i === index ? "var(--bleue)" : "var(--white)";
-        });
-    });
-}
 
 
 /* =====================================================
@@ -249,3 +217,4 @@ if (!window.viteGourmandPasswordToggleInstalled) {
         );
     });
 }
+
