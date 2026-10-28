@@ -52,6 +52,14 @@ security:
 
         # API commandes
         - { path: ^/api/commandes(?:/|$), roles: ROLE_USER }
+                # Consultation publique des plats
+        - { path: ^/api/plats$, roles: PUBLIC_ACCESS, methods: [GET] }
+
+        # Création réservée aux employés et administrateurs
+        - { path: ^/api/plats$, roles: ROLE_EMPLOYE, methods: [POST] }
+
+        # Modification et suppression réservées aux employés et administrateurs
+        - { path: ^/api/plats/, roles: ROLE_EMPLOYE }
 
 when@test:
     security:

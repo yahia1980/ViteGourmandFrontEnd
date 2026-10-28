@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\AvisRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Utilisateur;
+use App\Entity\Commande;
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
 class Avis
@@ -28,11 +30,11 @@ class Avis
 
     #[ORM\ManyToOne(inversedBy: 'avis')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?utilisateur $utilisateur = null;
+    private ?Utilisateur $utilisateur = null;
 
     #[ORM\ManyToOne(inversedBy: 'avis')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?commande $commande = null;
+    private ?Commande $commande = null;
 
     public function getId(): ?int
     {

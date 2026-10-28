@@ -17,6 +17,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class MenuController extends AbstractController
 {
+    // =====================================================
+    // AFFICHER LES MENUS
+    // =====================================================
+
     #[Route('/api/menus', name: 'api_menus', methods: ['GET'])]
     public function index(MenuRepository $menuRepository): JsonResponse
     {
@@ -39,7 +43,9 @@ final class MenuController extends AbstractController
             $allergenes = [];
 
             foreach ($menu->getPlats() as $plat) {
-                $categorie = strtolower(trim($plat->getCategorie() ?? ''));
+                $categorie = strtolower(
+                    trim($plat->getCategorie() ?? '')
+                );
 
                 switch ($categorie) {
                     case 'entree':
@@ -61,7 +67,10 @@ final class MenuController extends AbstractController
                 foreach ($plat->getAllergenes() as $allergene) {
                     $nom = $allergene->getNom();
 
-                    if ($nom !== null && !in_array($nom, $allergenes, true)) {
+                    if (
+                        $nom !== null &&
+                        !in_array($nom, $allergenes, true)
+                    ) {
                         $allergenes[] = $nom;
                     }
                 }
@@ -89,6 +98,10 @@ final class MenuController extends AbstractController
         return $this->json($resultats);
     }
 
+    // =====================================================
+    // CRÉER UN MENU
+    // =====================================================
+
     #[Route('/api/menus', name: 'api_menus_creation', methods: ['POST'])]
     #[IsGranted('ROLE_EMPLOYE')]
     public function creer(
@@ -97,10 +110,6 @@ final class MenuController extends AbstractController
         RegimeRepository $regimeRepository,
         EntityManagerInterface $entityManager
     ): JsonResponse {
-        /*
-         * JSON : création sans images.
-         * multipart/form-data : création avec images.
-         */
         $contentType = $request->headers->get('Content-Type', '');
 
         if (str_contains($contentType, 'multipart/form-data')) {
@@ -195,19 +204,12 @@ final class MenuController extends AbstractController
             ], 404);
         }
 
-        /*
-         * Récupération des images envoyées.
-         * Le formulaire devra utiliser le nom images[].
-         */
-        $images = $request->files->all('images', []);
-
-        if (!is_array($images)) {
-            $images = [$images];
-        }
+        // Récupération des images
+        $images = $request->files->all('images');
 
         $images = array_values(array_filter(
             $images,
-            fn($image) => $image !== null
+            fn ($image) => $image !== null
         ));
 
         if (count($images) > 10) {
@@ -235,25 +237,22 @@ final class MenuController extends AbstractController
                 ], 400);
             }
 
-            $mimeType = $image->getMimeType();
-
-            if (!isset($extensionsAutorisees[$mimeType])) {
+            if (!isset($extensionsAutorisees[$image->getMimeType()])) {
                 return $this->json([
                     'erreur' => 'Seuls les formats JPEG, PNG et WebP sont autorisés.'
                 ], 400);
             }
         }
 
-        /*
-         * Le dossier public de Vite se trouve
-         * au même niveau que le dossier backend.
-         */
         $dossierImages = dirname(
             $this->getParameter('kernel.project_dir')
         ) . '/public/images/uploads/imagesMenus';
 
         if (!is_dir($dossierImages)) {
-            if (!mkdir($dossierImages, 0775, true) && !is_dir($dossierImages)) {
+            if (
+                !mkdir($dossierImages, 0775, true) &&
+                !is_dir($dossierImages)
+            ) {
                 return $this->json([
                     'erreur' => 'Impossible de créer le dossier des images.'
                 ], 500);
@@ -286,10 +285,11 @@ final class MenuController extends AbstractController
 
                 $image->move($dossierImages, $nomFichier);
 
-                $fichiersEnregistres[] = $dossierImages . '/' . $nomFichier;
+                $fichiersEnregistres[] =
+                    $dossierImages . '/' . $nomFichier;
 
-                $cheminPublic = '/images/uploads/imagesMenus/'
-                    . $nomFichier;
+                $cheminPublic =
+                    '/images/uploads/imagesMenus/' . $nomFichier;
 
                 $menuImage = new MenuImage();
                 $menuImage->setChemin($cheminPublic);
@@ -301,6 +301,7 @@ final class MenuController extends AbstractController
             }
 
             $entityManager->flush();
+
         } catch (\Throwable $exception) {
             foreach ($fichiersEnregistres as $fichier) {
                 if (is_file($fichier)) {
@@ -334,7 +335,12 @@ final class MenuController extends AbstractController
     // MODIFIER UN MENU
     // =====================================================
 
-    #[Route('/api/menus/{id}/modifier', name: 'api_menus_modifier', methods: ['POST'], requirements: ['id' => '\d+'])]
+    #[Route(
+        '/api/menus/{id}/modifier',
+        name: 'api_menus_modifier',
+        methods: ['POST'],
+        requirements: ['id' => '\d+']
+    )]
     #[IsGranted('ROLE_EMPLOYE')]
     public function modifier(
         int $id,
@@ -344,11 +350,12 @@ final class MenuController extends AbstractController
         RegimeRepository $regimeRepository,
         EntityManagerInterface $entityManager
     ): JsonResponse {
-
         $menu = $menuRepository->find($id);
 
         if (!$menu) {
-            return $this->json(['erreur' => 'Menu introuvable.'], 404);
+            return $this->json([
+                'erreur' => 'Menu introuvable.'
+            ], 404);
         }
 
         $donnees = $request->request->all();
@@ -380,8 +387,10 @@ final class MenuController extends AbstractController
         );
 
         if (
-            $titre === '' || mb_strlen($titre) > 150 ||
-            $description === '' || $conditions === ''
+            $titre === '' ||
+            mb_strlen($titre) > 150 ||
+            $description === '' ||
+            $conditions === ''
         ) {
             return $this->json([
                 'erreur' => 'Titre, description ou conditions invalides.'
@@ -389,8 +398,10 @@ final class MenuController extends AbstractController
         }
 
         if (
-            $personnesMin === false || $personnesMin < 1 ||
-            $stock === false || $stock < 0
+            $personnesMin === false ||
+            $personnesMin < 1 ||
+            $stock === false ||
+            $stock < 0
         ) {
             return $this->json([
                 'erreur' => 'Nombre de personnes ou stock invalide.'
@@ -421,7 +432,13 @@ final class MenuController extends AbstractController
             ], 404);
         }
 
+        // Nouvelles images envoyées
         $images = $request->files->all('images');
+
+        $images = array_values(array_filter(
+            $images,
+            fn ($image) => $image !== null
+        ));
 
         if (count($images) > 10) {
             return $this->json([
@@ -432,7 +449,7 @@ final class MenuController extends AbstractController
         $extensions = [
             'image/jpeg' => 'jpg',
             'image/png' => 'png',
-            'image/webp' => 'webp'
+            'image/webp' => 'webp',
         ];
 
         foreach ($images as $image) {
@@ -448,6 +465,7 @@ final class MenuController extends AbstractController
             }
         }
 
+        // Modifier les informations du menu
         $menu->setTitre($titre);
         $menu->setDescription($description);
         $menu->setConditions($conditions);
@@ -462,34 +480,85 @@ final class MenuController extends AbstractController
         ) . '/public/images/uploads/imagesMenus';
 
         $fichiersEnregistres = [];
+        $anciennesImages = $menu->getMenuImages()->toArray();
+        $anciensFichiers = [];
+        $nouveauxChemins = [];
 
         try {
-            if (
-                $images && !is_dir($dossierImages) &&
-                !mkdir($dossierImages, 0775, true) &&
-                !is_dir($dossierImages)
-            ) {
-                throw new \RuntimeException('Dossier images inaccessible.');
-            }
+            // Remplacer les anciennes images uniquement
+            // si de nouvelles images ont été envoyées.
+            if (!empty($images)) {
 
-            foreach ($images as $image) {
-                $extension = $extensions[$image->getMimeType()];
-                $nomFichier = bin2hex(random_bytes(16)) . '.' . $extension;
+                if (
+                    !is_dir($dossierImages) &&
+                    !mkdir($dossierImages, 0775, true) &&
+                    !is_dir($dossierImages)
+                ) {
+                    throw new \RuntimeException(
+                        'Dossier images inaccessible.'
+                    );
+                }
 
-                $image->move($dossierImages, $nomFichier);
+                // Préparer les anciens fichiers à supprimer.
+                foreach ($anciennesImages as $ancienneImage) {
+                    $chemin = $ancienneImage->getChemin();
 
-                $fichiersEnregistres[] = $dossierImages . '/' . $nomFichier;
+                    if (
+                        $chemin !== null &&
+                        str_starts_with(
+                            $chemin,
+                            '/images/uploads/imagesMenus/'
+                        )
+                    ) {
+                        $anciensFichiers[] =
+                            $dossierImages . '/' . basename($chemin);
+                    }
+                }
 
-                $menuImage = new MenuImage();
-                $menuImage->setMenu($menu);
-                $menuImage->setChemin(
-                    '/images/uploads/imagesMenus/' . $nomFichier
-                );
+                // Enregistrer les nouvelles images.
+                foreach ($images as $image) {
+                    $extension = $extensions[$image->getMimeType()];
 
-                $entityManager->persist($menuImage);
+                    $nomFichier =
+                        bin2hex(random_bytes(16)) . '.' . $extension;
+
+                    $image->move($dossierImages, $nomFichier);
+
+                    $fichiersEnregistres[] =
+                        $dossierImages . '/' . $nomFichier;
+
+                    $cheminPublic =
+                        '/images/uploads/imagesMenus/' . $nomFichier;
+
+                    $menuImage = new MenuImage();
+                    $menuImage->setMenu($menu);
+                    $menuImage->setChemin($cheminPublic);
+
+                    $entityManager->persist($menuImage);
+
+                    $nouveauxChemins[] = $cheminPublic;
+                }
+
+                // Retirer les anciennes images de la base.
+                foreach ($anciennesImages as $ancienneImage) {
+                    $menu->getMenuImages()->removeElement(
+                        $ancienneImage
+                    );
+
+                    $entityManager->remove($ancienneImage);
+                }
             }
 
             $entityManager->flush();
+
+            // Supprimer les anciens fichiers après succès.
+            if (!empty($images)) {
+                foreach ($anciensFichiers as $ancienFichier) {
+                    if (is_file($ancienFichier)) {
+                        @unlink($ancienFichier);
+                    }
+                }
+            }
 
         } catch (\Throwable $exception) {
             foreach ($fichiersEnregistres as $fichier) {
@@ -503,24 +572,43 @@ final class MenuController extends AbstractController
             ], 500);
         }
 
+        // Réponse après modification réussie
         return $this->json([
             'message' => 'Menu modifié avec succès.',
-            'id' => $menu->getId()
-        ]);
+            'menu' => [
+                'id' => $menu->getId(),
+                'titre' => $menu->getTitre(),
+                'description' => $menu->getDescription(),
+                'personnesMin' => $menu->getNombrePersonnesMin(),
+                'prix' => (float) $menu->getPrix(),
+                'stock' => $menu->getStockDisponible(),
+                'theme' => $menu->getTheme()?->getNom(),
+                'regime' => $menu->getRegime()?->getNom(),
+                'image' => !empty($nouveauxChemins)
+                    ? $nouveauxChemins[0]
+                    : ($menu->getMenuImages()->first()
+                        ? $menu->getMenuImages()->first()->getChemin()
+                        : null),
+            ]
+        ], 200);
     }
 
     // =====================================================
     // SUPPRIMER UN MENU
     // =====================================================
 
-    #[Route('/api/menus/{id}', name: 'api_menus_supprimer', methods: ['DELETE'], requirements: ['id' => '\d+'])]
+    #[Route(
+        '/api/menus/{id}',
+        name: 'api_menus_supprimer',
+        methods: ['DELETE'],
+        requirements: ['id' => '\d+']
+    )]
     #[IsGranted('ROLE_ADMIN')]
     public function supprimer(
         int $id,
         MenuRepository $menuRepository,
         EntityManagerInterface $entityManager
     ): JsonResponse {
-
         $menu = $menuRepository->find($id);
 
         if (!$menu) {
@@ -565,8 +653,15 @@ final class MenuController extends AbstractController
         foreach ($images as $image) {
             $chemin = $image->getChemin();
 
-            if (str_starts_with($chemin, '/images/uploads/imagesMenus/')) {
-                $fichier = $dossierImages . '/' . basename($chemin);
+            if (
+                $chemin !== null &&
+                str_starts_with(
+                    $chemin,
+                    '/images/uploads/imagesMenus/'
+                )
+            ) {
+                $fichier =
+                    $dossierImages . '/' . basename($chemin);
 
                 if (is_file($fichier)) {
                     @unlink($fichier);
@@ -578,5 +673,4 @@ final class MenuController extends AbstractController
             'message' => 'Menu supprimé avec succès.'
         ]);
     }
-
 }
