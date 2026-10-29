@@ -87,7 +87,10 @@ class StatistiquesController extends AbstractController
         }
 
         // Connexion à MongoDB
-        $client = new Client('mongodb://127.0.0.1:27017');
+$mongoUrl = $_ENV['MONGODB_URL']
+    ?? 'mongodb://127.0.0.1:27017';
+
+$client = new Client($mongoUrl);
 
         $collection = $client
             ->selectDatabase('vite_gourmand')

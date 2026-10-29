@@ -1,0 +1,46 @@
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_PROXY_TARGET: http://backend:8000
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: dev
+      DATABASE_URL: "mysql://root:${MYSQL_PASSWORD_URL}@mysql:3306/vite_gourmand?serverVersion=8.0.0&charset=utf8mb4"
+      MONGODB_URL: "mongodb://mongodb:27017"
+    depends_on:
+      - mysql
+      - mongodb
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: vite_gourmand
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  mongodb:
+    image: mongo:9
+    ports:
+      - "127.0.0.1:27018:27017"
+    volumes:
+      - mongodb9_data:/data/db
+
+volumes:
+  mysql_data:
+  mongodb_data:
+  mongodb9_data:

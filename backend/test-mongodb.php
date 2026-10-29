@@ -3,8 +3,11 @@
 require __DIR__ . '/vendor/autoload.php';
 
 try {
-    $client = new MongoDB\Client('mongodb://127.0.0.1:27017');
+   $mongoUrl = $_ENV['MONGODB_URL']
+    ?? getenv('MONGODB_URL')
+    ?: 'mongodb://127.0.0.1:27017';
 
+$client = new MongoDB\Client($mongoUrl);
     $databases = $client->listDatabases();
 
     echo "Connexion MongoDB réussie !\n";

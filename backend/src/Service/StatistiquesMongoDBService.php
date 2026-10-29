@@ -11,16 +11,19 @@ class StatistiquesMongoDBService
 {
     private Collection $collection;
 
-    public function __construct()
-    {
-        $client = new Client('mongodb://127.0.0.1:27017');
+   public function __construct()
+{
+    $mongoUrl = $_ENV['MONGODB_URL']
+        ?? 'mongodb://127.0.0.1:27017';
 
-        $database = $client->selectDatabase('vite_gourmand');
+    $client = new Client($mongoUrl);
 
-        $this->collection = $database->selectCollection(
-            'statistiques_commandes'
-        );
-    }
+    $database = $client->selectDatabase('vite_gourmand');
+
+    $this->collection = $database->selectCollection(
+        'statistiques_commandes'
+    );
+}
 
     public function enregistrerCommande(Commande $commande): void
     {
