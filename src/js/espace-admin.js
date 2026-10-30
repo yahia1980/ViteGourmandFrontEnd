@@ -3,9 +3,9 @@
    ESPACE ADMINISTRATEUR - VITE & GOURMAND
 ===================================================== */
 
-const API_EMPLOYES = "/api/api/admin/employes";
-const API_STATISTIQUES = "/api/api/admin/statistiques";
-const API_MENUS = "/api/api/menus";
+const API_EMPLOYES = "/api/admin/employes";
+const API_STATISTIQUES = "/api/admin/statistiques";
+const API_MENUS = "/api/menus";
 
 /* =====================================================
    OUTILS COMMUNS
@@ -964,11 +964,15 @@ function initialiserGestionMenusAdmin() {
                             : menu.conditions
                     );
 
-                    const themes = {
-                        "Pâques": "1",
-                        "Noël": "2",
-                        "Classique": "3"
-                    };
+                   const themes = {
+    "Noël": "1",
+    "Mariage": "2",
+    "Anniversaire": "3",
+    "Entreprise": "4",
+    "Pâques": "5",
+    "Réception": "6",
+    "Fêtes de fin d’année": "7"
+};
 
                     const regimes = {
                         "Classique": "1",

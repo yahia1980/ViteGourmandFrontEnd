@@ -10,7 +10,7 @@ async function chargerCompte() {
   }
 
   try {
-    const response = await fetch("/api/api/profil", {
+    const response = await fetch("/api/profil", {
       method: "GET",
       credentials: "include",
     });
@@ -56,7 +56,7 @@ async function chargerMesReservations() {
   }
 
   try {
-    const response = await fetch("/api/api/commandes", {
+    const response = await fetch("/api/commandes", {
       method: "GET",
       credentials: "include",
     });
@@ -278,7 +278,7 @@ statut.append("Statut : ", badgeStatut);
 
           try {
             const response = await fetch(
-              `/api/api/commandes/${commande.id}/annuler`,
+              `/api/commandes/${commande.id}/annuler`,
               {
                 method: "PATCH",
                 credentials: "include",

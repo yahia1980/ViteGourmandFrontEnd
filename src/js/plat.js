@@ -1,6 +1,6 @@
 
 function initialiserGestionPlats() {
-    const API_PLATS = "/api/api/plats";
+    const API_PLATS = "/api/plats";
 
     const listePlats = document.getElementById("listePlatsAdmin");
     const messageGestion = document.getElementById("messageGestionPlats");

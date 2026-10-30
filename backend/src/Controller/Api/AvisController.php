@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/api/avis')]
+#[Route('/avis')]
 class AvisController extends AbstractController
 {
     // Récupérer les avis en attente

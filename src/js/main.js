@@ -73,7 +73,7 @@ if (!window.viteGourmandAuthInstalled) {
         const authLink = document.getElementById("authLink");
 
         try {
-            const response = await fetch("/api/api/profil", {
+            const response = await fetch("/api/profil", {
                 method: "GET",
                 credentials: "include",
                 headers: {
@@ -128,7 +128,7 @@ if (!window.viteGourmandAuthInstalled) {
         event.stopImmediatePropagation();
 
         try {
-            const response = await fetch("/api/api/deconnexion", {
+            const response = await fetch("/api/deconnexion", {
                 method: "POST",
                 credentials: "include"
             });

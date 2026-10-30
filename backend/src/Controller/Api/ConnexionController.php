@@ -10,7 +10,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class ConnexionController extends AbstractController
 {
-    #[Route('/api/connexion', name: 'api_connexion', methods: ['POST'])]
+    #[Route('/connexion', name: 'api_connexion', methods: ['POST'])]
     public function connexion(
         #[CurrentUser] ?Utilisateur $utilisateur
     ): JsonResponse {

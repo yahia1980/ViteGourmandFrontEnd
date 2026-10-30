@@ -40,7 +40,7 @@ document.addEventListener("submit", async function (event) {
 
     try {
 
-        const response = await fetch("/api/api/contact", {
+        const response = await fetch("/api/contact", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

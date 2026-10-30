@@ -15,7 +15,7 @@ async function chargerProfilUtilisateur() {
 
     try {
 
-        const response = await fetch("/api/api/profil", {
+        const response = await fetch("/api/profil", {
             method: "GET",
             credentials: "include"
         });
@@ -123,7 +123,7 @@ function initialiserModificationProfil() {
 
         try {
 
-            const response = await fetch("/api/api/profil", {
+            const response = await fetch("/api/profil", {
                 method: "PATCH",
                 credentials: "include",
                 headers: {

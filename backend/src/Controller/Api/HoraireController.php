@@ -10,7 +10,7 @@ use App\Entity\Horaire;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Route('/api/horaires')]
+#[Route('/horaires')]
 class HoraireController extends AbstractController
 {
     #[Route('', name: 'api_horaires_liste', methods: ['GET'])]

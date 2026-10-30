@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/api/admin/statistiques')]
+#[Route('/admin/statistiques')]
 #[IsGranted('ROLE_ADMIN')]
 class StatistiquesController extends AbstractController
 {

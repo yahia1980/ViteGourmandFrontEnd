@@ -10,7 +10,7 @@ use App\Entity\Plat;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Route('/api/plats')]
+#[Route('/plats')]
 class PlatController extends AbstractController
 {
     #[Route('', name: 'api_plats_liste', methods: ['GET'])]

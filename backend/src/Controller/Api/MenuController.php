@@ -21,7 +21,7 @@ final class MenuController extends AbstractController
     // AFFICHER LES MENUS
     // =====================================================
 
-    #[Route('/api/menus', name: 'api_menus', methods: ['GET'])]
+    #[Route('/menus', name: 'api_menus', methods: ['GET'])]
     public function index(MenuRepository $menuRepository): JsonResponse
     {
         $menus = $menuRepository->findAll();
@@ -102,7 +102,7 @@ final class MenuController extends AbstractController
     // CRÉER UN MENU
     // =====================================================
 
-    #[Route('/api/menus', name: 'api_menus_creation', methods: ['POST'])]
+    #[Route('/menus', name: 'api_menus_creation', methods: ['POST'])]
     #[IsGranted('ROLE_EMPLOYE')]
     public function creer(
         Request $request,
@@ -246,7 +246,7 @@ final class MenuController extends AbstractController
 
         $dossierImages = dirname(
             $this->getParameter('kernel.project_dir')
-        ) . '/public/images/uploads/imagesMenus';
+        ) . '/dist/images/uploads/imagesMenus';
 
         if (!is_dir($dossierImages)) {
             if (
@@ -336,7 +336,7 @@ final class MenuController extends AbstractController
     // =====================================================
 
     #[Route(
-        '/api/menus/{id}/modifier',
+        '/menus/{id}/modifier',
         name: 'api_menus_modifier',
         methods: ['POST'],
         requirements: ['id' => '\d+']
@@ -477,7 +477,7 @@ final class MenuController extends AbstractController
 
         $dossierImages = dirname(
             $this->getParameter('kernel.project_dir')
-        ) . '/public/images/uploads/imagesMenus';
+        ) . '/dist/images/uploads/imagesMenus';
 
         $fichiersEnregistres = [];
         $anciennesImages = $menu->getMenuImages()->toArray();
@@ -598,12 +598,12 @@ final class MenuController extends AbstractController
     // =====================================================
 
     #[Route(
-        '/api/menus/{id}',
+        '/menus/{id}',
         name: 'api_menus_supprimer',
         methods: ['DELETE'],
         requirements: ['id' => '\d+']
     )]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EMPLOYE')]
     public function supprimer(
         int $id,
         MenuRepository $menuRepository,
@@ -648,7 +648,7 @@ final class MenuController extends AbstractController
         // Supprimer uniquement les fichiers du dossier d'upload.
         $dossierImages = dirname(
             $this->getParameter('kernel.project_dir')
-        ) . '/public/images/uploads/imagesMenus';
+        ) . '/dist/images/uploads/imagesMenus';
 
         foreach ($images as $image) {
             $chemin = $image->getChemin();

@@ -17,7 +17,7 @@ class ProfilController extends AbstractController
        RÉCUPÉRER LE PROFIL UTILISATEUR
     ========================================== */
 
-    #[Route('/api/profil', name: 'api_profil', methods: ['GET'])]
+    #[Route('/profil', name: 'api_profil', methods: ['GET'])]
     public function profil(
         #[CurrentUser] ?Utilisateur $utilisateur
     ): JsonResponse {
@@ -46,7 +46,7 @@ class ProfilController extends AbstractController
     ========================================== */
 
     #[Route(
-        '/api/profil',
+        '/profil',
         name: 'api_profil_modifier',
         methods: ['PATCH']
     )]

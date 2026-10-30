@@ -15,7 +15,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/api/admin/employes')]
+#[Route('/admin/employes')]
 #[IsGranted('ROLE_ADMIN')]
 class AdminController extends AbstractController
 {

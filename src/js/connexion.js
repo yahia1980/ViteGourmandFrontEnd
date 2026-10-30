@@ -10,7 +10,7 @@ if (formConnexion) {
     const password = document.getElementById("password").value;
 
     try {
-      const response = await fetch("/api/api/connexion", {
+      const response = await fetch("/api/connexion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +30,7 @@ if (formConnexion) {
       if (response.ok) {
         console.log("Connexion réussie !");
 
-        const profilResponse = await fetch("/api/api/profil", {
+        const profilResponse = await fetch("/api/profil", {
           credentials: "include",
         });
 

@@ -20,7 +20,7 @@ async function initialiserHorairesEmploye() {
     let horaires = [];
 
     async function chargerHoraires() {
-        const reponse = await fetch("/api/api/horaires", {
+        const reponse = await fetch("/api/horaires", {
             credentials: "include"
         });
 
@@ -76,7 +76,7 @@ async function initialiserHorairesEmploye() {
 
         try {
             const reponse = await fetch(
-                `/api/api/horaires/${horaire.id}/modifier`,
+                `/api/horaires/${horaire.id}/modifier`,
                 {
                     method: "POST",
                     credentials: "include",
@@ -338,7 +338,7 @@ async function initialiserCommandesEmploye() {
     async function chargerCommandes() {
         try {
             const reponse = await fetch(
-                "/api/api/employe/commandes",
+                "/api/employe/commandes",
                 {
                     method: "GET",
                     credentials: "include"
@@ -435,7 +435,7 @@ async function initialiserCommandesEmploye() {
             );
 
             const reponse = await fetch(
-                `/api/api/employe/commandes/${encodeURIComponent(commandeId)}/statut`,
+                `/api/employe/commandes/${encodeURIComponent(commandeId)}/statut`,
                 {
                     method: "PATCH",
                     credentials: "include",

@@ -25,53 +25,53 @@ security:
             user_checker: App\Security\UtilisateurChecker
 
             json_login:
-                check_path: /api/connexion
-                login_path: /api/connexion
+                check_path: /connexion
+                login_path: /connexion
                 username_path: email
                 password_path: password
 
             logout:
-                path: /api/deconnexion
+                path: /deconnexion
                 invalidate_session: true
                 enable_csrf: false
 
     access_control:
         # Authentification et inscription publiques
-        - { path: ^/api/connexion$, roles: PUBLIC_ACCESS }
-        - { path: ^/api/inscription$, roles: PUBLIC_ACCESS }
+        - { path: ^/connexion$, roles: PUBLIC_ACCESS }
+        - { path: ^/inscription$, roles: PUBLIC_ACCESS }
 
         # Administration
-        - { path: ^/api/admin(?:/|$), roles: ROLE_ADMIN }
+        - { path: ^/admin(?:/|$), roles: ROLE_ADMIN }
 
         # Employés
-        - { path: ^/api/employe(?:/|$), roles: ROLE_EMPLOYE }
+        - { path: ^/employe(?:/|$), roles: ROLE_EMPLOYE }
 
         # Horaires : consultation publique
-        - { path: ^/api/horaires$, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/horaires$, roles: PUBLIC_ACCESS, methods: [GET] }
 
         # Horaires : modification par les employés
-        - { path: ^/api/horaires/[0-9]+/modifier$, roles: ROLE_EMPLOYE, methods: [POST] }
+        - { path: ^/horaires/[0-9]+/modifier$, roles: ROLE_EMPLOYE, methods: [POST] }
 
         # Commandes : utilisateurs authentifiés
-        - { path: ^/api/commandes(?:/|$), roles: ROLE_USER }
+        - { path: ^/commandes(?:/|$), roles: ROLE_USER }
 
         # Plats : consultation publique
-        - { path: ^/api/plats$, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/plats$, roles: PUBLIC_ACCESS, methods: [GET] }
 
         # Plats : création
-        - { path: ^/api/plats$, roles: ROLE_EMPLOYE, methods: [POST] }
+        - { path: ^/plats$, roles: ROLE_EMPLOYE, methods: [POST] }
 
         # Plats : modification et suppression
-        - { path: ^/api/plats/, roles: ROLE_EMPLOYE }
+        - { path: ^/plats/, roles: ROLE_EMPLOYE }
 
         # Menus : consultation publique
-        - { path: ^/api/menus(?:/|$), roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/menus(?:/|$), roles: PUBLIC_ACCESS, methods: [GET] }
 
         # Menus : création
-        - { path: ^/api/menus$, roles: ROLE_EMPLOYE, methods: [POST] }
+        - { path: ^/menus$, roles: ROLE_EMPLOYE, methods: [POST] }
 
         # Menus : modification et suppression
-        - { path: ^/api/menus(?:/|$), roles: ROLE_EMPLOYE }
+        - { path: ^/menus(?:/|$), roles: ROLE_EMPLOYE }
 
 when@test:
     security:

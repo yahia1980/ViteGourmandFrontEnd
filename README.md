@@ -112,13 +112,125 @@ Les fichiers contenant les secrets locaux sont exclus du versionnement Git.
 
 ## Déploiement
 
-**Statut : en préparation.**
+*## Déploiement en production
 
-Cette section sera complétée après la mise en ligne de l'application.
+**Statut : application déployée et accessible en ligne.**
 
-- URL du site : à ajouter
-- Hébergement : à préciser
-- Configuration de production : à documenter
+### Accès à l'application
+
+- **URL du site :** https://fethi.alwaysdata.net/
+- **Hébergeur :** alwaysdata
+- **Environnement :** production
+
+### Infrastructure de production
+
+L'application est hébergée sur alwaysdata et repose sur les technologies suivantes :
+
+| Composant | Technologie |
+|---|---|
+| Frontend | HTML5, CSS3, JavaScript, Vite |
+| Backend | PHP, Symfony 7.4 |
+| Base de données relationnelle | MariaDB (alwaysdata) |
+| Base de données NoSQL | MongoDB Atlas |
+| Hébergement | alwaysdata |
+| Versionnement | Git et GitHub |
+
+Contrairement à l'environnement local, le déploiement en production ne repose pas sur les conteneurs Docker.
+
+### Organisation des fichiers sur le serveur
+
+Le projet est installé dans le répertoire `~/vite-gourmand`.
+
+```text
+vite-gourmand/
+├── backend/
+│   ├── config/
+│   ├── public/
+│   ├── src/
+│   ├── var/
+│   ├── vendor/
+│   └── ...
+├── dist/
+│   ├── pages/
+│   ├── src/
+│   ├── images/
+│   └── ...
+└── ...
+```
+
+- `backend/` contient l'API Symfony.
+- `dist/` contient les fichiers statiques du frontend compilés avec Vite.
+
+### Compilation du frontend
+
+Le frontend est développé avec Vite.
+
+Pour générer les fichiers destinés à la production, exécuter à la racine du projet :
+
+```bash
+npm install
+npm run build
+```
+
+La compilation génère le dossier `dist/`, qui contient les ressources du site à déployer.
+
+### Configuration du backend Symfony
+
+Le backend Symfony utilise un environnement de production.
+
+Les dépendances PHP sont installées avec Composer :
+
+```bash
+cd ~/vite-gourmand/backend
+composer install --no-dev --optimize-autoloader
+```
+
+Après une modification de la configuration ou du code Symfony, le cache de production peut être vidé avec :
+
+```bash
+APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
+```
+
+### Bases de données
+
+**MariaDB**
+
+La base de données relationnelle est hébergée sur alwaysdata. Elle contient notamment les utilisateurs, les menus, les plats, les commandes et les avis.
+
+La connexion est configurée dans Symfony au moyen de la variable d'environnement `DATABASE_URL`.
+
+**MongoDB Atlas**
+
+MongoDB Atlas est utilisé pour les statistiques des commandes consultées dans l'espace administrateur.
+
+La connexion est configurée avec la variable d'environnement `MONGODB_URL`.
+
+Une commande Symfony permet de synchroniser les statistiques à partir des commandes existantes :
+
+```bash
+APP_ENV=prod APP_DEBUG=0 php bin/console app:sync-statistiques
+```
+
+### Sécurité des variables d'environnement
+
+Les informations sensibles sont configurées directement sur le serveur de production.
+
+Les fichiers tels que `.env.local` et `.env.prod.local` ne doivent pas être publiés sur GitHub.
+
+Les mots de passe, chaînes de connexion et clés d'accès ne doivent jamais apparaître dans le dépôt public.
+
+### Vérification du déploiement
+
+Après la mise en ligne, les fonctionnalités suivantes ont été vérifiées :
+
+- Affichage du site et consultation des menus.
+- Communication entre le frontend et l'API Symfony.
+- Accès aux données MariaDB.
+- Gestion des menus et de leurs images.
+- Connexion à MongoDB Atlas.
+- Affichage des statistiques dans l'espace administrateur.
+
+**Application en ligne :** https://fethi.alwaysdata.net/
 
 ## Auteur
 

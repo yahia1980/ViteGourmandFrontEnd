@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
 {
-    #[Route('/api/contact', name: 'api_contact', methods: ['POST'])]
+    #[Route('/contact', name: 'api_contact', methods: ['POST'])]
     public function envoyer(
         Request $request,
         EntityManagerInterface $entityManager,

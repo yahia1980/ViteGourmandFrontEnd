@@ -15,7 +15,7 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 class MotDePasseOublieController
 {
-    #[Route('/api/mot-de-passe-oublie', name: 'api_mot_de_passe_oublie', methods: ['POST'])]
+    #[Route('/mot-de-passe-oublie', name: 'api_mot_de_passe_oublie', methods: ['POST'])]
     public function demander(
         Request $request,
         EntityManagerInterface $entityManager,

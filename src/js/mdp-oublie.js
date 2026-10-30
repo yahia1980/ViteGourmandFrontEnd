@@ -26,7 +26,7 @@ if (!window.viteGourmandMdpOublieInstalled) {
         bouton.disabled = true;
 
         try {
-            const response = await fetch("/api/api/mot-de-passe-oublie", {
+            const response = await fetch("/api/mot-de-passe-oublie", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -21,7 +21,7 @@ class CommandeController extends AbstractController
        CRÃ‰ATION D'UNE COMMANDE
     ========================================== */
 
-    #[Route('/api/commandes', name: 'api_commande_creer', methods: ['POST'])]
+    #[Route('/commandes', name: 'api_commande_creer', methods: ['POST'])]
     public function creer(
         Request $request,
         MenuRepository $menuRepository,
@@ -324,7 +324,7 @@ class CommandeController extends AbstractController
        LISTE DES COMMANDES DE L'UTILISATEUR
     ========================================== */
 
-    #[Route('/api/commandes', name: 'api_commandes_liste', methods: ['GET'])]
+    #[Route('/commandes', name: 'api_commandes_liste', methods: ['GET'])]
     public function liste(
         CommandeRepository $commandeRepository
     ): JsonResponse {
@@ -381,7 +381,7 @@ class CommandeController extends AbstractController
     ========================================== */
 
     #[Route(
-        '/api/commandes/{id}/annuler',
+        '/commandes/{id}/annuler',
         name: 'api_commande_annuler',
         requirements: ['id' => '\d+'],
         methods: ['PATCH']

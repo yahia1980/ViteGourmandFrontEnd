@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class InscriptionController extends AbstractController
 {
-    #[Route('/api/inscription', name: 'app_api_inscription', methods: ['POST'])]
+    #[Route('/inscription', name: 'app_api_inscription', methods: ['POST'])]
     public function inscription(
         Request $request,
         UtilisateurRepository $utilisateurRepository,

@@ -7,7 +7,7 @@ async function chargerHorairesFooter() {
     if (!conteneur) return;
 
     try {
-        const reponse = await fetch("/api/api/horaires");
+        const reponse = await fetch("/api/horaires");
 
         if (!reponse.ok) {
             throw new Error("Impossible de charger les horaires.");
