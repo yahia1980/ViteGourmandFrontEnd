@@ -173,7 +173,7 @@ async function chargerMenus() {
 
     try {
 
-        const response = await fetch("/api/menus", {
+        const response = await fetch("/api/api/menus", {
             headers: {
                 Accept: "application/json"
             }
