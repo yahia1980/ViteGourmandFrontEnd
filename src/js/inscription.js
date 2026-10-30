@@ -60,7 +60,7 @@
         bouton.textContent = "Inscription en cours...";
 
         try {
-            const reponse = await fetch("/api/inscription", {
+            const reponse = await fetch("/api/api/inscription", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

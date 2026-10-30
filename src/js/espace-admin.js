@@ -3,9 +3,9 @@
    ESPACE ADMINISTRATEUR - VITE & GOURMAND
 ===================================================== */
 
-const API_EMPLOYES = "/api/admin/employes";
-const API_STATISTIQUES = "/api/admin/statistiques";
-const API_MENUS = "/api/menus";
+const API_EMPLOYES = "/api/api/admin/employes";
+const API_STATISTIQUES = "/api/api/admin/statistiques";
+const API_MENUS = "/api/api/menus";
 
 /* =====================================================
    OUTILS COMMUNS

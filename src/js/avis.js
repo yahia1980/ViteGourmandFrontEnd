@@ -43,7 +43,7 @@ async function chargerAvisAccueil() {
     if (!conteneur || !navigation) return;
 
     try {
-        const reponse = await fetch("/api/avis/valides");
+        const reponse = await fetch("/api/api/avis/valides");
 
         if (!reponse.ok) {
             throw new Error(`Erreur HTTP ${reponse.status}`);

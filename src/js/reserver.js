@@ -95,7 +95,7 @@
   }
 
   async function chargerMenus() {
-    const reponse = await fetch("/api/menus", {
+    const reponse = await fetch("/api/api/menus", {
       credentials: "include",
     });
 
@@ -138,7 +138,7 @@
   }
 
   async function chargerProfil() {
-    const reponse = await fetch("/api/profil", {
+    const reponse = await fetch("/api/api/profil", {
       credentials: "include",
     });
 
@@ -237,7 +237,7 @@
     afficherMessage("Enregistrement de votre commande...");
 
     try {
-      const reponse = await fetch("/api/commandes", {
+      const reponse = await fetch("/api/api/commandes", {
         method: "POST",
         credentials: "include",
         headers: {
