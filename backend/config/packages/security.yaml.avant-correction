@@ -1,0 +1,83 @@
+
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\Utilisateur
+                property: email
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_EMPLOYE
+        ROLE_EMPLOYE: ROLE_USER
+
+    firewalls:
+        dev:
+            pattern: ^/(_profiler|_wdt|assets|build)/
+            security: false
+
+        main:
+            lazy: true
+            provider: app_user_provider
+
+            user_checker: App\Security\UtilisateurChecker
+
+            json_login:
+                check_path: /api/connexion
+                login_path: /api/connexion
+                username_path: email
+                password_path: password
+
+            logout:
+                path: /api/deconnexion
+                invalidate_session: true
+                enable_csrf: false
+
+    access_control:
+        # Authentification et inscription publiques
+        - { path: ^/api/connexion$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/inscription$, roles: PUBLIC_ACCESS }
+
+        # Administration
+        - { path: ^/api/admin(?:/|$), roles: ROLE_ADMIN }
+
+        # Employés
+        - { path: ^/api/employe(?:/|$), roles: ROLE_EMPLOYE }
+
+        # Horaires : consultation publique
+        - { path: ^/api/horaires$, roles: PUBLIC_ACCESS, methods: [GET] }
+
+        # Horaires : modification par les employés
+        - { path: ^/api/horaires/[0-9]+/modifier$, roles: ROLE_EMPLOYE, methods: [POST] }
+
+        # Commandes : utilisateurs authentifiés
+        - { path: ^/api/commandes(?:/|$), roles: ROLE_USER }
+
+        # Plats : consultation publique
+        - { path: ^/api/plats$, roles: PUBLIC_ACCESS, methods: [GET] }
+
+        # Plats : création
+        - { path: ^/api/plats$, roles: ROLE_EMPLOYE, methods: [POST] }
+
+        # Plats : modification et suppression
+        - { path: ^/api/plats/, roles: ROLE_EMPLOYE }
+
+        # Menus : consultation publique
+        - { path: ^/api/menus(?:/|$), roles: PUBLIC_ACCESS, methods: [GET] }
+
+        # Menus : création
+        - { path: ^/api/menus$, roles: ROLE_EMPLOYE, methods: [POST] }
+
+        # Menus : modification et suppression
+        - { path: ^/api/menus(?:/|$), roles: ROLE_EMPLOYE }
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10
